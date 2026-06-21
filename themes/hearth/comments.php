@@ -17,8 +17,8 @@ if ( post_password_required() ) {
 	<?php if ( have_comments() ) : ?>
 		<h2 class="comments-title">
 			<?php
-			$hearth_count = get_comments_number();
-			if ( '1' === $hearth_count ) {
+			$hearth_count = (int) get_comments_number();
+			if ( 1 === $hearth_count ) {
 				esc_html_e( 'One note from the table', 'hearth' );
 			} else {
 				printf(

@@ -114,8 +114,8 @@ function beacon_get_title() {
 	} elseif ( is_post_type_archive() ) {
 		$title = post_type_archive_title( '', false );
 	} elseif ( is_search() ) {
-		/* translators: %s: search query. */
-		$title = sprintf( __( 'Search results for "%s"', 'beacon-ai-seo' ), get_search_query() );
+		/* translators: %s: search query. Raw query; escaped at output. */
+		$title = sprintf( __( 'Search results for "%s"', 'beacon-ai-seo' ), get_search_query( false ) );
 	} elseif ( is_404() ) {
 		$title = __( 'Page not found', 'beacon-ai-seo' );
 	} elseif ( is_archive() ) {
@@ -278,7 +278,8 @@ function beacon_get_canonical() {
 	} elseif ( is_front_page() ) {
 		$url = home_url( '/' );
 	} elseif ( is_home() ) {
-		$url = get_permalink( (int) get_option( 'page_for_posts' ) );
+		$posts_page = (int) get_option( 'page_for_posts' );
+		$url        = $posts_page > 0 ? get_permalink( $posts_page ) : '';
 		if ( ! $url ) {
 			$url = home_url( '/' );
 		}

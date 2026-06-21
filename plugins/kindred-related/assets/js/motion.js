@@ -130,16 +130,23 @@
 		}
 	}
 
-	// Defensive bootstrap: the script is deferred, so the DOM is parsed by the
-	// time it runs, but we guard anyway. Any thrown error reveals everything so
-	// the cards can never be left invisible.
-	try {
-		if ( document.readyState === 'loading' ) {
-			document.addEventListener( 'DOMContentLoaded', init, { once: true } );
-		} else {
+	// Run init with a guard so a throw at any point — including after cards have
+	// been primed into their hidden state, and including when init runs from the
+	// DOMContentLoaded listener below — reveals everything rather than leaving
+	// cards stuck invisible.
+	function boot() {
+		try {
 			init();
+		} catch ( e ) {
+			revealAll( document.querySelectorAll( SELECTOR ) );
 		}
-	} catch ( e ) {
-		revealAll( document.querySelectorAll( SELECTOR ) );
+	}
+
+	// Defensive bootstrap: the script is deferred, so the DOM is parsed by the
+	// time it runs, but we guard anyway.
+	if ( document.readyState === 'loading' ) {
+		document.addEventListener( 'DOMContentLoaded', boot, { once: true } );
+	} else {
+		boot();
 	}
 } )();

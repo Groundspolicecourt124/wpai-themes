@@ -17,8 +17,8 @@ if ( post_password_required() ) {
 	<?php if ( have_comments() ) : ?>
 		<h2 class="comments-title">
 			<?php
-			$dispatch_count = get_comments_number();
-			if ( '1' === $dispatch_count ) {
+			$dispatch_count = (int) get_comments_number();
+			if ( 1 === $dispatch_count ) {
 				esc_html_e( 'One response', 'dispatch' );
 			} else {
 				printf(

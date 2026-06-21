@@ -76,7 +76,17 @@
 			return;
 		}
 
-		var text = code.textContent;
+		var rawText = code.textContent;
+
+		// Stash the exact original source before we re-wrap the lines. Dropping the
+		// conventional trailing newline below changes the rebuilt textContent, so
+		// without this the copy action would lose that newline — readCode() prefers
+		// this stash to keep copy byte-for-byte faithful to the source.
+		try {
+			code.cypherRawText = rawText;
+		} catch ( err ) {}
+
+		var text = rawText;
 
 		// Drop a single trailing newline so we don't render an empty final line
 		// number for the conventional trailing \n in fenced code.
@@ -110,8 +120,12 @@
 		if ( ! code ) {
 			return '';
 		}
-		// textContent gives the exact source even after line-wrapping, because
-		// the wrapper spans only add structure, not characters.
+		// Prefer the original source stashed before line-wrapping (numberLines drops
+		// a trailing newline from the rebuilt DOM); fall back to textContent for
+		// blocks that were never numbered, where it is already the exact source.
+		if ( typeof code.cypherRawText === 'string' ) {
+			return code.cypherRawText;
+		}
 		return code.textContent;
 	}
 

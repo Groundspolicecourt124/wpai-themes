@@ -17,6 +17,24 @@ get_header();
 $almanac_is_garden_home = ( is_home() && ! is_paged() );
 ?>
 
+<?php
+/*
+ * On a static-front-page setup the dedicated Posts page renders no <h1>
+ * (the header prints the site title as a <p>, and this template has no
+ * archive/search header), so provide a screen-reader heading to keep every
+ * primary view anchored by exactly one h1.
+ */
+if ( is_home() && ! is_front_page() ) :
+	$almanac_blog_title = single_post_title( '', false );
+	if ( ! $almanac_blog_title ) {
+		$almanac_blog_title = __( 'Latest notes', 'almanac' );
+	}
+	?>
+	<h1 class="screen-reader-text"><?php echo esc_html( $almanac_blog_title ); ?></h1>
+	<?php
+endif;
+?>
+
 <?php if ( $almanac_is_garden_home ) : ?>
 	<section class="garden-intro" aria-label="<?php esc_attr_e( 'Welcome', 'almanac' ); ?>" data-alm-reveal>
 		<p class="garden-intro__kicker"><?php esc_html_e( 'A digital garden', 'almanac' ); ?></p>

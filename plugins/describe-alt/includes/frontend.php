@@ -137,8 +137,14 @@ add_filter( 'the_content', 'describe_alt_filter_content', 20 );
 function describe_alt_rewrite_img_tag( $match ) {
 	$tag = $match[0];
 
-	// An alt attribute is present (empty or not) → respect the author's choice.
-	if ( preg_match( '/\salt\s*=\s*("|\')(.*?)\1/i', $tag ) ) {
+	// An alt attribute is present (empty or not, quoted or unquoted) → respect
+	// the author's choice and never risk injecting a second alt. Detecting the
+	// attribute by its name alone (rather than parsing its value) is what keeps
+	// this safe: a value-parsing pattern can miss an alt whose value is unquoted
+	// or contains a ">" (the tag match having been truncated at that ">"), and
+	// would then wrongly inject a duplicate alt. The leading \s prevents matching
+	// foreign attributes such as data-alt=.
+	if ( preg_match( '/\salt\s*=/i', $tag ) ) {
 		return $tag;
 	}
 

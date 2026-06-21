@@ -109,7 +109,7 @@ if ( ! function_exists( 'wpai_companions_notice' ) ) {
 			echo '<li><strong>' . esc_html( $plugin['name'] ) . '</strong> &mdash; ' . esc_html( $plugin['desc'] ) . '</li>';
 		}
 		echo '</ul>';
-		echo '<p><a class="button button-primary" href="' . esc_url( $install ) . '">' . esc_html( 'Install &amp; activate all' ) . '</a> ';
+		echo '<p><a class="button button-primary" href="' . esc_url( $install ) . '">' . esc_html( 'Install & activate all' ) . '</a> ';
 		echo '<a class="button" href="' . esc_url( $dismiss ) . '">' . esc_html( 'Dismiss' ) . '</a></p>';
 		echo '</div>';
 	}
@@ -162,8 +162,8 @@ if ( ! function_exists( 'wpai_companions_dismiss' ) ) {
 	 * @return void
 	 */
 	function wpai_companions_dismiss() {
-		if ( ! check_admin_referer( 'wpai_companions' ) ) {
-			wp_die( esc_html( 'Invalid request.' ) );
+		if ( ! current_user_can( 'install_plugins' ) || ! check_admin_referer( 'wpai_companions' ) ) {
+			wp_die( esc_html( 'You are not allowed to do that.' ) );
 		}
 		update_user_meta( get_current_user_id(), 'wpai_companions_dismissed', 1 );
 		wp_safe_redirect( wp_get_referer() ? wp_get_referer() : admin_url() );

@@ -18,7 +18,7 @@ if ( post_password_required() ) {
 		<h2 class="comments-title">
 			<?php
 			$atelier_count = get_comments_number();
-			if ( '1' === $atelier_count ) {
+			if ( 1 === (int) $atelier_count ) {
 				esc_html_e( 'One note', 'atelier' );
 			} else {
 				printf(

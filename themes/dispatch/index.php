@@ -65,8 +65,11 @@ $dispatch_is_blog_home = ( is_home() && ! is_paged() );
 						$dispatch_index++;
 					endwhile;
 
-					// Close the secondary column if at least one secondary ran.
-					if ( $dispatch_index > 1 ) {
+					// Close the secondary column wrapper if it was opened. The
+					// opening div is emitted right after the lead renders (when the
+					// index becomes 1), so it must be closed whenever the lead ran —
+					// even if no secondary stories followed (e.g. a one-post home).
+					if ( $dispatch_index >= 1 ) {
 						echo '</div><!-- .news-grid__secondary -->';
 					}
 					?>

@@ -364,8 +364,11 @@
 		}
 
 		var pres = doc.querySelectorAll( '.entry-content pre' );
-		var copyLabel = root.getAttribute( 'data-manual-copy' ) || 'Copy';
-		var copiedLabel = root.getAttribute( 'data-manual-copied' ) || 'Copied';
+		// The translated labels are printed onto <body> in header.php, so read
+		// them from there (root is <html>, which never carries these attrs).
+		var labelHost = doc.body || root;
+		var copyLabel = labelHost.getAttribute( 'data-manual-copy' ) || 'Copy';
+		var copiedLabel = labelHost.getAttribute( 'data-manual-copied' ) || 'Copied';
 
 		for ( var i = 0; i < pres.length; i++ ) {
 			( function ( pre ) {

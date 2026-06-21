@@ -362,11 +362,13 @@ if ( ! function_exists( 'dispatch_ticker' ) ) {
 		}
 
 		$items = '';
-		foreach ( $latest as $post ) {
+		// Use a local variable (not $post) so we never clobber the global $post,
+		// which is read by template tags later in the page after the header.
+		foreach ( $latest as $latest_post ) {
 			$items .= sprintf(
 				'<a class="ticker__item" href="%1$s">%2$s</a>',
-				esc_url( get_permalink( $post ) ),
-				esc_html( get_the_title( $post ) )
+				esc_url( get_permalink( $latest_post ) ),
+				esc_html( get_the_title( $latest_post ) )
 			);
 		}
 		?>

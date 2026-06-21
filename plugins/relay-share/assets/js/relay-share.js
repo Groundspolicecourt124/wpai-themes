@@ -155,9 +155,11 @@
 
 		btn._relayTimer = window.setTimeout( function () {
 			btn.removeAttribute( 'data-relay-copied' );
-			// Restore the default confirmation label for the next copy.
+			// Clear the live region so the next copy writes a genuine change that
+			// the aria-live region re-announces (re-setting the same text would
+			// not reliably be announced by screen readers).
 			if ( status ) {
-				status.textContent = COPIED;
+				status.textContent = '';
 			}
 			btn._relayTimer = null;
 		}, CONFIRM_MS );

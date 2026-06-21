@@ -84,4 +84,35 @@
 			}
 		} );
 	}() );
+
+	/* ---- "/" focuses search (the docs-hero keyboard hint) ------------------ */
+	( function initSearchShortcut() {
+		var field = document.querySelector( '.search-field' );
+		if ( ! field ) {
+			return;
+		}
+
+		document.addEventListener( 'keydown', function ( event ) {
+			if ( '/' !== event.key || event.ctrlKey || event.metaKey || event.altKey ) {
+				return;
+			}
+
+			// Don't hijack "/" while the user is already typing somewhere.
+			var active = document.activeElement;
+			if ( active ) {
+				var tag = active.tagName;
+				if (
+					'INPUT' === tag ||
+					'TEXTAREA' === tag ||
+					'SELECT' === tag ||
+					active.isContentEditable
+				) {
+					return;
+				}
+			}
+
+			event.preventDefault();
+			field.focus();
+		} );
+	}() );
 }() );

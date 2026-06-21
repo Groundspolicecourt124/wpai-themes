@@ -289,12 +289,15 @@ function contents_build_toc_html( $items ) {
 
 	$list      = '';
 	$cur_depth = 0; // Depth of the item currently awaiting its closing </li>.
+	$open      = 0; // Number of nested <ul> wrappers currently open.
 
 	foreach ( $items as $index => $item ) {
 		$depth = $depth_of[ $item['level'] ];
 
 		if ( 0 === $index ) {
 			// First item establishes the baseline depth; no list nesting yet.
+			// (No <ul> wrappers are opened, so $open stays 0 — important when a
+			// post starts at a deeper heading, e.g. an h3 before any h2.)
 			$cur_depth = $depth;
 		} elseif ( $depth > $cur_depth ) {
 			// Descend: open one nested <ul> per depth step, keeping the parent
@@ -305,6 +308,7 @@ function contents_build_toc_html( $items ) {
 			$steps = $depth - $cur_depth;
 			for ( $s = 0; $s < $steps; $s++ ) {
 				$list .= '<ul class="contents-toc__sublist">';
+				$open++;
 			}
 			$cur_depth = $depth;
 		} else {
@@ -313,11 +317,17 @@ function contents_build_toc_html( $items ) {
 
 			if ( $depth < $cur_depth ) {
 				// Shallower: climb back up, closing one nested <ul> and the <li>
-				// that contained it for each depth step we ascend. Mirrors the
-				// per-step descent above so opens and closes stay balanced.
+				// that contained it for each depth step we ascend. Clamp to the
+				// number of wrappers actually open so out-of-order headings (a
+				// shallower heading appearing before its parent ever opened a
+				// wrapper) can never emit an unmatched </ul>.
 				$steps = $cur_depth - $depth;
+				if ( $steps > $open ) {
+					$steps = $open;
+				}
 				for ( $s = 0; $s < $steps; $s++ ) {
 					$list .= '</ul></li>';
+					$open--;
 				}
 				$cur_depth = $depth;
 			}
@@ -331,10 +341,11 @@ function contents_build_toc_html( $items ) {
 	}
 
 	// Close the final item, then unwind every nested list still open back to the
-	// root, closing each wrapper <li> as we go. ($cur_depth is the number of
-	// nested <ul> levels currently open.)
+	// root, closing each wrapper <li> as we go. ($open is the exact number of
+	// nested <ul> wrappers actually opened above, so this stays balanced even
+	// when the first heading was deeper than later ones.)
 	$list .= '</li>';
-	for ( $s = 0; $s < $cur_depth; $s++ ) {
+	for ( $s = 0; $s < $open; $s++ ) {
 		$list .= '</ul></li>';
 	}
 

@@ -244,7 +244,18 @@ function weave_phrase_pattern( $phrase ) {
 	// Collapse runs of escaped whitespace so a phrase typed with one space still
 	// matches text where wptexturize / wpautop left a different run of spaces or
 	// a non-breaking space between words.
-	$quoted = preg_replace( '/(\\\\?\s)+/u', '\\s+', $quoted );
+	$collapsed = preg_replace( '/(\\\\?\s)+/u', '\\s+', $quoted );
+
+	// If the collapse fails (PCRE error on pathological input) keep the safely
+	// quoted phrase rather than letting a null collapse into an empty pattern
+	// that would match a zero-width position and wrap nothing in an anchor.
+	if ( null !== $collapsed ) {
+		$quoted = $collapsed;
+	}
+
+	if ( '' === $quoted ) {
+		return '';
+	}
 
 	// (?<![\w]) / (?![\w]) are Unicode-aware word boundaries with the u flag:
 	// the match may not be flanked by another word character, so "art" never

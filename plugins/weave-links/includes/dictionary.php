@@ -79,8 +79,12 @@ function weave_build_post_dictionary() {
 		$id = (int) $row->ID;
 
 		// Strip any stray tags and collapse whitespace to a single space.
-		$title = wp_strip_all_tags( (string) $row->post_title );
-		$title = trim( preg_replace( '/\s+/u', ' ', $title ) );
+		$title     = wp_strip_all_tags( (string) $row->post_title );
+		$collapsed = preg_replace( '/\s+/u', ' ', $title );
+		// preg_replace returns null on a PCRE error (e.g. malformed UTF-8); fall
+		// back to the un-collapsed title so trim() is never handed null (a
+		// deprecation on PHP 8.1+).
+		$title = trim( null === $collapsed ? $title : $collapsed );
 
 		if ( '' === $title ) {
 			continue;

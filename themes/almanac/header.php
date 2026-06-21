@@ -62,7 +62,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 		<?php if ( has_nav_menu( 'primary' ) ) : ?>
 			<nav class="main-nav" aria-label="<?php esc_attr_e( 'Primary navigation', 'almanac' ); ?>">
-				<button class="nav-toggle" aria-expanded="false" aria-controls="primary-menu">
+				<button type="button" class="nav-toggle" aria-expanded="false" aria-controls="primary-menu">
 					<span class="nav-toggle__bar" aria-hidden="true"></span>
 					<span class="screen-reader-text"><?php esc_html_e( 'Menu', 'almanac' ); ?></span>
 				</button>

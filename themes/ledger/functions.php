@@ -147,6 +147,27 @@ if ( ! function_exists( 'ledger_render_ticker' ) ) {
 		wp_reset_postdata();
 
 		$ledger_track = implode( '<span class="l-ticker__dot" aria-hidden="true">&bull;</span>', $ledger_items );
+
+		// The clone group is aria-hidden (decorative duplicate that makes the
+		// marquee loop seamlessly), so its links must not be keyboard-focusable:
+		// a focusable element inside an aria-hidden subtree strands focus on a
+		// node the accessibility tree cannot see (WCAG 4.1.2). Mark every cloned
+		// link with tabindex="-1" to remove it from the tab order.
+		$ledger_track_clone = str_replace( '<a class="l-ticker__item"', '<a class="l-ticker__item" tabindex="-1"', $ledger_track );
+
+		// wp_kses_post does not allow tabindex on <a> in all supported WP
+		// versions, so permit it explicitly for the clone markup.
+		$ledger_clone_allowed = array(
+			'a'    => array(
+				'class'    => true,
+				'href'     => true,
+				'tabindex' => true,
+			),
+			'span' => array(
+				'class'       => true,
+				'aria-hidden' => true,
+			),
+		);
 		?>
 		<aside class="l-ticker" aria-label="<?php esc_attr_e( 'Latest headlines', 'ledger' ); ?>">
 			<div class="site-wrap l-ticker__inner">
@@ -154,7 +175,7 @@ if ( ! function_exists( 'ledger_render_ticker' ) ) {
 				<div class="l-ticker__viewport">
 					<div class="l-ticker__track">
 						<span class="l-ticker__group"><?php echo wp_kses_post( $ledger_track ); ?></span>
-						<span class="l-ticker__group l-ticker__group--clone" aria-hidden="true"><?php echo wp_kses_post( $ledger_track ); ?></span>
+						<span class="l-ticker__group l-ticker__group--clone" aria-hidden="true"><?php echo wp_kses( $ledger_track_clone, $ledger_clone_allowed ); ?></span>
 					</div>
 				</div>
 			</div>

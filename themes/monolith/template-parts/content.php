@@ -44,7 +44,9 @@ if ( ! is_singular() ) :
 				// Load it eagerly with high priority to avoid a blank flash; keep the rest lazy.
 				$monolith_is_lead = ( 1 === $monolith_index );
 				$monolith_thumb_attr = array(
-					'alt'      => the_title_attribute( array( 'echo' => false ) ),
+					// Pass the raw, tag-stripped title; the_post_thumbnail()/wp_get_attachment_image()
+					// applies esc_attr() to every $attr value, so pre-escaping here would double-encode.
+					'alt'      => wp_strip_all_tags( get_the_title() ),
 					'decoding' => 'async',
 				);
 				if ( $monolith_is_lead ) {
@@ -122,7 +124,8 @@ endif;
 			<?php
 			the_post_thumbnail(
 				'large',
-				array( 'alt' => the_title_attribute( array( 'echo' => false ) ) )
+				// Raw, tag-stripped title; core re-escapes every $attr, so pre-escaping double-encodes.
+				array( 'alt' => wp_strip_all_tags( get_the_title() ) )
 			);
 			?>
 		</div>

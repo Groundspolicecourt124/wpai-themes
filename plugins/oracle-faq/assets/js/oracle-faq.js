@@ -65,15 +65,16 @@
 
 		item.classList.toggle( 'is-open', open );
 
-		if ( open ) {
-			panel.removeAttribute( 'hidden' );
-		} else {
-			// Keep the panel in the DOM for the collapse animation; the CSS clips
-			// it to zero height. We do not re-add `hidden` so the closing
-			// transition can play — the grid track at 0fr already hides it from
-			// view, and screen readers follow aria-expanded on the trigger.
-			panel.setAttribute( 'hidden', '' );
-		}
+		// Once the script controls the panel, the CSS owns visibility: the
+		// grid-rows track collapses to 0fr (with overflow:hidden) when closed and
+		// expands to 1fr when open, driven by the `is-open` class toggled above.
+		// We deliberately do NOT re-add the `hidden` attribute on close: re-adding
+		// it would (a) be overridden by the `.oracle-js .oracle-faq__panel`
+		// display rule yet still sit in the accessibility tree, contradicting
+		// aria-expanded, and (b) hard-hide the panel if the stylesheet ever fails
+		// to load, breaking the "never stuck hidden" guarantee. Removing it here
+		// keeps the closing transition playing and keeps content fail-open.
+		panel.removeAttribute( 'hidden' );
 	}
 
 	Array.prototype.forEach.call( groups, function ( group ) {

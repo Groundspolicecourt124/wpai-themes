@@ -18,7 +18,7 @@ if ( post_password_required() ) {
 		<h2 class="comments-title">
 			<?php
 			$sonnet_count = get_comments_number();
-			if ( '1' === $sonnet_count ) {
+			if ( 1 === (int) $sonnet_count ) {
 				esc_html_e( 'One response', 'sonnet' );
 			} else {
 				printf(

@@ -194,11 +194,21 @@ function shipped_render_timeline_entry( $entry ) {
 
 	$date_html = '';
 	if ( '' !== $entry['date_human'] ) {
-		$date_html = sprintf(
-			'<time class="shipped-tl__date" datetime="%1$s">%2$s</time>',
-			esc_attr( $entry['date_iso'] ),
-			esc_html( $entry['date_human'] )
-		);
+		// Only emit a machine-readable <time datetime> when we actually parsed a
+		// date; a free-text manual date (no valid ISO value) is shown as plain
+		// text so we never output an invalid empty datetime attribute.
+		if ( '' !== $entry['date_iso'] ) {
+			$date_html = sprintf(
+				'<time class="shipped-tl__date" datetime="%1$s">%2$s</time>',
+				esc_attr( $entry['date_iso'] ),
+				esc_html( $entry['date_human'] )
+			);
+		} else {
+			$date_html = sprintf(
+				'<span class="shipped-tl__date">%s</span>',
+				esc_html( $entry['date_human'] )
+			);
+		}
 	}
 
 	$body_html = '';

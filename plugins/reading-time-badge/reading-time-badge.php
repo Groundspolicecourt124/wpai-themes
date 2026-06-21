@@ -294,17 +294,26 @@ add_action( 'wp_head', 'rtb_print_js_class_hook', 1 );
  * visitors keep the badge visible. The early head snippet promotes it to
  * `rtb-js` the instant scripting is confirmed available.
  *
- * @param string $classes Space-separated class list from `language_attributes`.
+ * NOTE: the `language_attributes` filter receives a space-separated list of
+ * HTML *attributes* (e.g. `lang="en-US" dir="rtl"`), not a class list, so we
+ * must append a complete `class="rtb-no-js"` attribute — appending a bare token
+ * would inject an invalid attribute into the `<html>` tag and never become a
+ * class. WordPress core does not emit a `class` attribute here, so this does
+ * not duplicate one.
+ *
+ * @param string $attributes Space-separated list of `<html>` attributes from
+ *                           `language_attributes`.
  * @return string
  */
-function rtb_html_no_js_class( $classes ) {
+function rtb_html_no_js_class( $attributes ) {
 	if ( ! rtb_is_badge_context() ) {
-		return $classes;
+		return $attributes;
 	}
 
-	$classes = trim( $classes );
+	$attributes = trim( $attributes );
+	$class_attr = 'class="rtb-no-js"';
 
-	return '' === $classes ? 'rtb-no-js' : $classes . ' rtb-no-js';
+	return '' === $attributes ? $class_attr : $attributes . ' ' . $class_attr;
 }
 add_filter( 'language_attributes', 'rtb_html_no_js_class' );
 

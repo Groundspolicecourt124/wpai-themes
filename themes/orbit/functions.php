@@ -311,7 +311,7 @@ if ( ! function_exists( 'orbit_featured_media' ) ) {
 if ( ! function_exists( 'orbit_render_hero' ) ) {
 	function orbit_render_hero() {
 		$tagline = get_bloginfo( 'description', 'display' );
-		$lead    = $tagline ? $tagline : esc_html__( 'The developer platform that turns ideas into shipping product — fast, observable, and built to scale from the first commit.', 'orbit' );
+		$lead    = $tagline ? $tagline : __( 'The developer platform that turns ideas into shipping product — fast, observable, and built to scale from the first commit.', 'orbit' );
 		?>
 		<section class="hero" aria-labelledby="hero-title" data-orbit-reveal>
 			<div class="hero__field" aria-hidden="true">
@@ -375,22 +375,22 @@ if ( ! function_exists( 'orbit_render_metrics' ) ) {
 			array(
 				'value'  => '99.99',
 				'suffix' => '%',
-				'label'  => esc_html__( 'Uptime SLA', 'orbit' ),
+				'label'  => __( 'Uptime SLA', 'orbit' ),
 			),
 			array(
 				'value'  => '40',
 				'suffix' => 'ms',
-				'label'  => esc_html__( 'Median deploy', 'orbit' ),
+				'label'  => __( 'Median deploy', 'orbit' ),
 			),
 			array(
 				'value'  => '12',
 				'suffix' => 'k',
-				'label'  => esc_html__( 'Teams shipping', 'orbit' ),
+				'label'  => __( 'Teams shipping', 'orbit' ),
 			),
 			array(
 				'value'  => '2.4',
 				'suffix' => 'M',
-				'label'  => esc_html__( 'Builds per week', 'orbit' ),
+				'label'  => __( 'Builds per week', 'orbit' ),
 			),
 		);
 		?>
@@ -416,18 +416,18 @@ if ( ! function_exists( 'orbit_render_features' ) ) {
 		// Each feature carries a small inline SVG icon (no external assets).
 		$features = array(
 			array(
-				'title' => esc_html__( 'Instant previews', 'orbit' ),
-				'text'  => esc_html__( 'Every push spins up a live, shareable environment in seconds. Review real product, not a static mock.', 'orbit' ),
+				'title' => __( 'Instant previews', 'orbit' ),
+				'text'  => __( 'Every push spins up a live, shareable environment in seconds. Review real product, not a static mock.', 'orbit' ),
 				'icon'  => '<path d="M3 5h18v12H3z" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linejoin="round"/><path d="M8 21h8M12 17v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>',
 			),
 			array(
-				'title' => esc_html__( 'Observability built in', 'orbit' ),
-				'text'  => esc_html__( 'Traces, logs, and metrics ship with the runtime. Find the slow span before your users do.', 'orbit' ),
+				'title' => __( 'Observability built in', 'orbit' ),
+				'text'  => __( 'Traces, logs, and metrics ship with the runtime. Find the slow span before your users do.', 'orbit' ),
 				'icon'  => '<path d="M3 14l4-5 4 4 5-7 5 6" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 19h18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>',
 			),
 			array(
-				'title' => esc_html__( 'Scales on autopilot', 'orbit' ),
-				'text'  => esc_html__( 'From the first commit to ten million requests, the platform grows with you — no infra babysitting.', 'orbit' ),
+				'title' => __( 'Scales on autopilot', 'orbit' ),
+				'text'  => __( 'From the first commit to ten million requests, the platform grows with you — no infra babysitting.', 'orbit' ),
 				'icon'  => '<circle cx="12" cy="12" r="3" fill="currentColor"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>',
 			),
 		);

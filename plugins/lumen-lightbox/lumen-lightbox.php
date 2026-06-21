@@ -106,6 +106,27 @@ function lumen_tag_images( $content ) {
 		return $content;
 	}
 
+	// Protect images that are already inside a link: the author has chosen a
+	// click target, so the lightbox must leave them alone (see plugin docs/FAQ).
+	// Each <a>…</a> block is swapped for an opaque placeholder before tagging and
+	// restored verbatim afterwards, so no <img> within a link is ever matched.
+	$anchors = array();
+	if ( false !== stripos( $content, '<a' ) ) {
+		$content = preg_replace_callback(
+			'/<a\b[^>]*>.*?<\/a>/is',
+			function ( $m ) use ( &$anchors ) {
+				$token              = "\0lumen-a-" . count( $anchors ) . "\0";
+				$anchors[ $token ] = $m[0];
+				return $token;
+			},
+			$content
+		);
+
+		if ( null === $content ) {
+			return ''; // preg failure handled by caller below.
+		}
+	}
+
 	// Walk each <figure> (if any) so a <figcaption> can be attributed to the
 	// image it wraps, then tag the figure's image. Standalone images are handled
 	// in a second pass below.
@@ -128,7 +149,16 @@ function lumen_tag_images( $content ) {
 		$content
 	);
 
-	return null === $content ? '' : $content;
+	if ( null === $content ) {
+		return '';
+	}
+
+	// Restore the untouched linked blocks.
+	if ( $anchors ) {
+		$content = strtr( $content, $anchors );
+	}
+
+	return $content;
 }
 
 /**

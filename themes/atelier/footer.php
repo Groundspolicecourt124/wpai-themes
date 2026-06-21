@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<div class="site-wrap site-footer__inner">
 		<div class="site-footer__identity">
 			<p class="site-footer__brand">
-				<a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a>
+				<a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php echo esc_html( get_bloginfo( 'name' ) ); ?></a>
 			</p>
 			<?php
 			$atelier_footer_desc = get_bloginfo( 'description', 'display' );

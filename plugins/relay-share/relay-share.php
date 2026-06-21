@@ -218,14 +218,14 @@ function relay_render_control( $key, $url, $title ) {
 
 	// Copy and Mastodon are client-side actions: render as real buttons.
 	if ( 'copy' === $key || 'mastodon' === $key ) {
-		// The copy button carries a live confirmation region; reserve its label
-		// text so the "Copied!" swap causes zero layout shift.
+		// The copy button carries a live confirmation region. It starts empty so
+		// that when JS writes "Copied!" into it the change is genuinely announced
+		// by the aria-live region; a pre-filled, identical string is not reliably
+		// re-announced by screen readers. The region is overlaid
+		// (position: absolute), so leaving it empty causes no layout shift.
 		$extra = '';
 		if ( 'copy' === $key ) {
-			$extra = sprintf(
-				'<span class="relay__status" role="status" aria-live="polite" data-relay-status>%s</span>',
-				esc_html__( 'Copied!', 'relay-share' )
-			);
+			$extra = '<span class="relay__status" role="status" aria-live="polite" data-relay-status></span>';
 		}
 
 		return sprintf(
