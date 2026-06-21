@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WPAI Themes — free WordPress themes & plugins</title>
+  <meta name="description" content="Free, open-source WordPress themes and plugins. Preview them running real WordPress in your browser, then download a ready-to-upload zip." />
+  <meta property="og:title" content="WPAI Themes" />
+  <meta property="og:description" content="Free WordPress themes & plugins — preview live in your browser, download in one click." />
+  <meta property="og:type" content="website" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>🎨</text></svg>" />
+  <link rel="stylesheet" href="assets/gallery.css" />
+</head>
+<body>
+  <header class="site">
+    <div class="wrap site__inner">
+      <a class="brand" href="./">
+        <span class="brand__mark">◆</span>
+        <span class="brand__name">WPAI&nbsp;Themes</span>
+      </a>
+      <nav class="site__nav">
+        <a href="https://github.com/lordbasilaiassistant-sudo/wpai-themes">GitHub</a>
+        <a href="https://github.com/lordbasilaiassistant-sudo/wpai-themes/blob/main/CONTRIBUTING.md">Contribute</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="wrap">
+      <h1 class="hero__title">Free WordPress themes &amp; plugins.<br /><em>Previewed in your browser.</em></h1>
+      <p class="hero__lead">
+        Every theme runs <strong>real WordPress</strong> right here in a browser sandbox — no install, no signup.
+        Like one? Download the zip and upload it to your site. 100% open source, GPL, forever free.
+      </p>
+      <p class="hero__stats" id="stats" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <main class="wrap">
+    <div class="toolbar">
+      <div class="tabs" role="tablist">
+        <button class="tab is-active" data-view="themes" role="tab">Themes</button>
+        <button class="tab" data-view="plugins" role="tab">Plugins</button>
+      </div>
+      <input id="search" class="search" type="search" placeholder="Search…" aria-label="Search" />
+    </div>
+
+    <div id="chips" class="chips"></div>
+
+    <div id="grid" class="grid" aria-live="polite"></div>
+    <p id="empty" class="empty" hidden>Nothing here yet — check back soon.</p>
+  </main>
+
+  <footer class="site-foot">
+    <div class="wrap">
+      <p>Built in public · <a href="https://github.com/lordbasilaiassistant-sudo/wpai-themes">github.com/lordbasilaiassistant-sudo/wpai-themes</a></p>
+      <p class="muted">Live previews powered by <a href="https://wordpress.github.io/wordpress-playground/">WordPress Playground</a>. Themes &amp; plugins are GPL-2.0-or-later.</p>
+    </div>
+  </footer>
+
+  <!-- Card template -->
+  <template id="card-tpl">
+    <article class="card">
+      <a class="card__shot" target="_blank" rel="noopener">
+        <span class="chrome"><i></i><i></i><i></i></span>
+        <img loading="lazy" alt="" />
+        <span class="card__preview-hint">▶ Live preview</span>
+      </a>
+      <div class="card__body">
+        <div class="card__head">
+          <h3 class="card__name"></h3>
+          <span class="card__ver"></span>
+        </div>
+        <p class="card__desc"></p>
+        <div class="card__tags"></div>
+      </div>
+      <div class="card__actions">
+        <a class="btn btn--ghost card__preview" target="_blank" rel="noopener">Live preview</a>
+        <a class="btn btn--solid card__dl">Download</a>
+      </div>
+    </article>
+  </template>
+
+  <script src="assets/gallery.js" defer></script>
+</body>
+</html>

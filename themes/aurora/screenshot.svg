@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" font-family="Georgia, 'Times New Roman', serif">
+  <rect width="1200" height="900" fill="#fbfaf7"/>
+
+  <!-- Header -->
+  <rect x="0" y="0" width="1200" height="120" fill="#ffffff"/>
+  <line x1="0" y1="120" x2="1200" y2="120" stroke="#e7e3da" stroke-width="2"/>
+  <text x="120" y="74" font-size="40" font-weight="700" fill="#1f2328">Aurora</text>
+  <g font-family="Arial, sans-serif" font-size="20" fill="#545b66" font-weight="600">
+    <text x="780" y="70">Home</text>
+    <text x="880" y="70">Writing</text>
+    <text x="1010" y="70">About</text>
+  </g>
+
+  <!-- Article 1 -->
+  <text x="120" y="240" font-size="58" font-weight="700" fill="#1f2328" letter-spacing="-1">On quiet mornings</text>
+  <text x="120" y="282" font-family="Arial, sans-serif" font-size="19" fill="#8a929e">June 12, 2026 · by Anthony</text>
+  <g font-size="26" fill="#1f2328">
+    <text x="120" y="340">There is a particular stillness before the house wakes — the kind</text>
+    <text x="120" y="380">that makes a cup of coffee feel like a small ceremony. This is</text>
+    <text x="120" y="420">where Aurora wants you to write, one unhurried sentence at a time.</text>
+  </g>
+  <text x="120" y="476" font-size="22" font-weight="700" fill="#b5532a">Continue reading →</text>
+
+  <line x1="120" y1="528" x2="1080" y2="528" stroke="#e7e3da" stroke-width="2"/>
+
+  <!-- Article 2 -->
+  <text x="120" y="610" font-size="58" font-weight="700" fill="#1f2328" letter-spacing="-1">A smaller, calmer web</text>
+  <text x="120" y="652" font-family="Arial, sans-serif" font-size="19" fill="#8a929e">June 5, 2026 · by Anthony</text>
+  <g font-size="26" fill="#1f2328">
+    <text x="120" y="710">No trackers, no pop-ups, no infinite scroll. Just your words on a</text>
+    <text x="120" y="750">page that loads instantly and reads beautifully on any device.</text>
+  </g>
+  <text x="120" y="806" font-size="22" font-weight="700" fill="#b5532a">Continue reading →</text>
+
+  <!-- Footer hint -->
+  <rect x="0" y="852" width="1200" height="48" fill="#ffffff"/>
+  <line x1="0" y1="852" x2="1200" y2="852" stroke="#e7e3da" stroke-width="2"/>
+  <text x="120" y="884" font-family="Arial, sans-serif" font-size="18" fill="#8a929e">© 2026 Aurora. Built with Aurora.</text>
+</svg>

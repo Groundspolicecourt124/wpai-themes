@@ -1,0 +1,110 @@
+// Renders the gallery from gallery.json and wires up live previews + downloads.
+const PLAYGROUND = 'https://playground.wordpress.net/';
+
+const state = { data: null, view: 'themes', q: '', tag: null };
+
+const $ = (s, r = document) => r.querySelector(s);
+const grid = $('#grid');
+const tpl = $('#card-tpl');
+
+function items() {
+  return (state.data?.[state.view] ?? []);
+}
+
+function filtered() {
+  const q = state.q.trim().toLowerCase();
+  return items().filter((it) => {
+    if (state.tag && !(it.tags || []).includes(state.tag)) return false;
+    if (!q) return true;
+    return (
+      it.name.toLowerCase().includes(q) ||
+      (it.description || '').toLowerCase().includes(q) ||
+      (it.tags || []).some((t) => t.includes(q))
+    );
+  });
+}
+
+// Build the Playground live-preview URL from the item's blueprint, resolved
+// absolutely against the current site so it works under any Pages path.
+function previewUrl(it) {
+  const blueprintUrl = new URL(it.blueprint, location.href).href;
+  return `${PLAYGROUND}?blueprint-url=${encodeURIComponent(blueprintUrl)}`;
+}
+
+function renderChips() {
+  const box = $('#chips');
+  const all = new Set();
+  items().forEach((it) => (it.tags || []).forEach((t) => all.add(t)));
+  const tags = [...all].sort();
+  box.innerHTML = '';
+  if (state.view !== 'themes' || tags.length === 0) return;
+  for (const t of tags) {
+    const c = document.createElement('button');
+    c.className = 'chip' + (state.tag === t ? ' is-active' : '');
+    c.textContent = t;
+    c.onclick = () => { state.tag = state.tag === t ? null : t; render(); };
+    box.appendChild(c);
+  }
+}
+
+function card(it) {
+  const node = tpl.content.firstElementChild.cloneNode(true);
+  const pUrl = previewUrl(it);
+  const shot = $('.card__shot', node);
+  shot.href = pUrl;
+  $('img', shot).src = it.screenshot;
+  $('img', shot).alt = `${it.name} screenshot`;
+  $('.card__name', node).textContent = it.name;
+  $('.card__ver', node).textContent = 'v' + it.version;
+  $('.card__desc', node).textContent = it.description;
+  const tags = $('.card__tags', node);
+  (it.tags || []).slice(0, 4).forEach((t) => {
+    const s = document.createElement('span');
+    s.textContent = t;
+    tags.appendChild(s);
+  });
+  const preview = $('.card__preview', node);
+  preview.href = pUrl;
+  preview.textContent = it.type === 'plugin' ? 'Try it live' : 'Live preview';
+  const dl = $('.card__dl', node);
+  dl.href = it.zip;
+  dl.setAttribute('download', '');
+  return node;
+}
+
+function render() {
+  document.querySelectorAll('.tab').forEach((t) =>
+    t.classList.toggle('is-active', t.dataset.view === state.view));
+  renderChips();
+  const list = filtered();
+  grid.innerHTML = '';
+  list.forEach((it) => grid.appendChild(card(it)));
+  $('#empty').hidden = list.length > 0;
+}
+
+function setStats() {
+  const c = state.data?.counts || { themes: 0, plugins: 0 };
+  $('#stats').textContent =
+    `${c.themes} theme${c.themes === 1 ? '' : 's'} · ${c.plugins} plugin${c.plugins === 1 ? '' : 's'} · all free · all GPL`;
+}
+
+function wire() {
+  document.querySelectorAll('.tab').forEach((t) => {
+    t.onclick = () => { state.view = t.dataset.view; state.tag = null; render(); };
+  });
+  $('#search').addEventListener('input', (e) => { state.q = e.target.value; render(); });
+}
+
+async function init() {
+  wire();
+  try {
+    const res = await fetch('gallery.json', { cache: 'no-cache' });
+    state.data = await res.json();
+  } catch {
+    state.data = { themes: [], plugins: [], counts: { themes: 0, plugins: 0 } };
+  }
+  setStats();
+  render();
+}
+
+init();

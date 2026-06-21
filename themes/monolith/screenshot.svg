@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" font-family="ui-monospace, Menlo, Consolas, monospace">
+  <defs>
+    <linearGradient id="thumb" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#16241e"/>
+      <stop offset="1" stop-color="#0d0d0d"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="900" fill="#0a0a0a"/>
+
+  <!-- Header -->
+  <rect x="0" y="0" width="1200" height="120" fill="#0a0a0a"/>
+  <rect x="64" y="46" width="44" height="44" fill="none" stroke="#3d3d3d" stroke-width="1"/>
+  <text x="128" y="80" font-family="Arial Black, Impact, sans-serif" font-size="42" font-weight="900" fill="#f5f5f5" letter-spacing="-2">MONOLITH</text>
+  <g font-size="15" fill="#b3b3b3" letter-spacing="2" font-weight="700">
+    <text x="744" y="73">WORK</text>
+    <text x="838" y="73">STUDIO</text>
+    <text x="958" y="73">CONTACT</text>
+  </g>
+  <line x1="958" y1="84" x2="1062" y2="84" stroke="#00e5a0" stroke-width="2"/>
+  <line x1="0" y1="120" x2="1200" y2="120" stroke="#3d3d3d" stroke-width="1"/>
+
+  <!-- Main column / sidebar grid guide -->
+  <line x1="848" y1="120" x2="848" y2="852" stroke="#2a2a2a" stroke-width="1"/>
+
+  <!-- Featured work item 1 -->
+  <rect x="64" y="180" width="720" height="200" fill="url(#thumb)" stroke="#3d3d3d" stroke-width="1"/>
+  <line x1="64" y1="180" x2="784" y2="380" stroke="#1c2b24" stroke-width="1"/>
+  <circle cx="424" cy="280" r="34" fill="none" stroke="#00e5a0" stroke-width="2"/>
+  <text x="64" y="452" font-family="Arial Black, Impact, sans-serif" font-size="60" font-weight="900" fill="#f5f5f5" letter-spacing="-3">CONCRETE</text>
+  <text x="64" y="510" font-family="Arial Black, Impact, sans-serif" font-size="60" font-weight="900" fill="#f5f5f5" letter-spacing="-3">SIGNALS</text>
+  <text x="64" y="548" font-size="14" fill="#6f6f6f" letter-spacing="2">JUNE 12, 2026 — STUDIO MONOLITH</text>
+  <g font-size="17" fill="#b3b3b3">
+    <text x="64" y="588">A brand system built on hard edges and an electric accent.</text>
+    <text x="64" y="614">Oversized type, a stark grid, and zero rounded corners.</text>
+  </g>
+  <rect x="64" y="640" width="158" height="42" fill="none" stroke="#00e5a0" stroke-width="1"/>
+  <text x="84" y="667" font-size="14" font-weight="700" fill="#00e5a0" letter-spacing="2">VIEW PROJECT →</text>
+
+  <line x1="64" y1="730" x2="784" y2="730" stroke="#2a2a2a" stroke-width="1"/>
+
+  <!-- Featured work item 2 (peek) -->
+  <text x="64" y="800" font-family="Arial Black, Impact, sans-serif" font-size="52" font-weight="900" fill="#f5f5f5" letter-spacing="-3">GRID THEORY</text>
+  <text x="64" y="836" font-size="14" fill="#6f6f6f" letter-spacing="2">JUNE 05, 2026 — STUDIO MONOLITH</text>
+
+  <!-- Sidebar widget -->
+  <rect x="888" y="180" width="248" height="190" fill="#111111" stroke="#3d3d3d" stroke-width="1"/>
+  <text x="908" y="216" font-size="13" font-weight="700" fill="#00e5a0" letter-spacing="3">CATEGORIES</text>
+  <line x1="908" y1="230" x2="1116" y2="230" stroke="#2a2a2a" stroke-width="1"/>
+  <g font-size="15" fill="#b3b3b3">
+    <text x="908" y="262">Identity</text>
+    <text x="908" y="298">Editorial</text>
+    <text x="908" y="334">Motion</text>
+  </g>
+  <line x1="908" y1="276" x2="1116" y2="276" stroke="#2a2a2a" stroke-width="1"/>
+  <line x1="908" y1="312" x2="1116" y2="312" stroke="#2a2a2a" stroke-width="1"/>
+
+  <!-- Sidebar search widget -->
+  <rect x="888" y="394" width="248" height="120" fill="#111111" stroke="#3d3d3d" stroke-width="1"/>
+  <text x="908" y="430" font-size="13" font-weight="700" fill="#00e5a0" letter-spacing="3">SEARCH</text>
+  <line x1="908" y1="444" x2="1116" y2="444" stroke="#2a2a2a" stroke-width="1"/>
+  <rect x="908" y="462" width="150" height="34" fill="#0a0a0a" stroke="#3d3d3d" stroke-width="1"/>
+  <rect x="1066" y="462" width="50" height="34" fill="#00e5a0"/>
+  <text x="1075" y="484" font-size="12" font-weight="700" fill="#04150e" letter-spacing="1">GO</text>
+
+  <!-- Footer -->
+  <line x1="0" y1="852" x2="1200" y2="852" stroke="#3d3d3d" stroke-width="1"/>
+  <rect x="0" y="852" width="1200" height="48" fill="#0a0a0a"/>
+  <text x="64" y="883" font-family="Arial Black, Impact, sans-serif" font-size="18" fill="#f5f5f5" letter-spacing="-1">MONO<tspan fill="#00e5a0">/</tspan>LITH</text>
+  <text x="1136" y="882" font-size="13" fill="#6f6f6f" letter-spacing="2" text-anchor="end">© 2026 — BUILT WITH MONOLITH</text>
+</svg>

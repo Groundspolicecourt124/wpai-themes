@@ -1,0 +1,50 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/theme.json",
+  "version": 2,
+  "settings": {
+    "layout": { "contentSize": "704px", "wideSize": "1024px" },
+    "color": {
+      "palette": [
+        { "slug": "ink", "color": "#1e2230", "name": "Ink" },
+        { "slug": "soft", "color": "#4a5168", "name": "Soft" },
+        { "slug": "accent", "color": "#6366f1", "name": "Indigo" },
+        { "slug": "violet", "color": "#8b5cf6", "name": "Violet" },
+        { "slug": "canvas", "color": "#f7f8fc", "name": "Canvas" },
+        { "slug": "surface", "color": "#ffffff", "name": "Surface" }
+      ],
+      "gradients": [
+        {
+          "slug": "violet-indigo",
+          "gradient": "linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)",
+          "name": "Violet to Indigo"
+        }
+      ]
+    },
+    "typography": {
+      "fontFamilies": [
+        {
+          "fontFamily": "\"Geist\", \"Inter\", system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif",
+          "slug": "sans",
+          "name": "Sans"
+        },
+        {
+          "fontFamily": "\"SF Mono\", \"JetBrains Mono\", ui-monospace, Menlo, Consolas, monospace",
+          "slug": "mono",
+          "name": "Mono"
+        }
+      ],
+      "fontSizes": [
+        { "slug": "small", "size": "0.875rem", "name": "Small" },
+        { "slug": "medium", "size": "1.0625rem", "name": "Medium" },
+        { "slug": "large", "size": "1.25rem", "name": "Large" },
+        { "slug": "x-large", "size": "2rem", "name": "Extra large" }
+      ]
+    }
+  },
+  "styles": {
+    "color": { "background": "#f7f8fc", "text": "#1e2230" },
+    "elements": {
+      "link": { "color": { "text": "#4f46e5" } }
+    }
+  }
+}

@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" font-family="'Avenir Next','Segoe UI',system-ui,sans-serif">
+  <defs>
+    <linearGradient id="accentStrip" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#6f9c6e"/>
+      <stop offset="1" stop-color="#2f5d3f"/>
+    </linearGradient>
+    <linearGradient id="thumb" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#cfe0c6"/>
+      <stop offset="1" stop-color="#8fb585"/>
+    </linearGradient>
+    <linearGradient id="divider" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#f4f7f1"/>
+      <stop offset="0.5" stop-color="#6f9c6e"/>
+      <stop offset="1" stop-color="#f4f7f1"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Paper background -->
+  <rect width="1200" height="900" fill="#f4f7f1"/>
+
+  <!-- Header (white surface) -->
+  <rect x="0" y="0" width="1200" height="118" fill="#ffffff"/>
+  <rect x="0" y="118" width="1200" height="4" fill="url(#accentStrip)"/>
+
+  <!-- Branding: leaf mark + title -->
+  <text x="72" y="62" font-size="34" fill="#6f9c6e">&#10087;</text>
+  <text x="108" y="64" font-size="32" font-weight="600" fill="#243b2c" font-family="'Iowan Old Style',Palatino,Georgia,serif">Verdant</text>
+  <text x="108" y="88" font-size="14" fill="#84977f">Wellness &amp; garden studio</text>
+
+  <!-- Pill nav -->
+  <rect x="690" y="44" width="78" height="34" rx="17" fill="#6f9c6e"/>
+  <text x="729" y="66" font-size="15" font-weight="600" fill="#ffffff" text-anchor="middle">Home</text>
+  <text x="816" y="66" font-size="15" font-weight="600" fill="#4d6453" text-anchor="middle">About</text>
+  <text x="912" y="66" font-size="15" font-weight="600" fill="#4d6453" text-anchor="middle">Services</text>
+  <text x="1020" y="66" font-size="15" font-weight="600" fill="#4d6453" text-anchor="middle">Journal</text>
+  <text x="1118" y="66" font-size="15" font-weight="600" fill="#4d6453" text-anchor="middle">Visit</text>
+
+  <!-- ===== Main content column (cards) ===== -->
+
+  <!-- Card 1 -->
+  <rect x="72" y="172" width="700" height="316" rx="16" fill="#ffffff" stroke="#dfe7d8" stroke-width="1"/>
+  <text x="104" y="226" font-size="30" font-weight="600" fill="#243b2c" font-family="'Iowan Old Style',Palatino,Georgia,serif">Slow mornings in the garden</text>
+  <text x="104" y="254" font-size="14" fill="#84977f">June 14, 2026 &#183; by Mara</text>
+  <rect x="104" y="272" width="636" height="120" rx="16" fill="url(#thumb)"/>
+  <circle cx="690" cy="312" r="26" fill="#ffffff" opacity="0.55"/>
+  <rect x="104" y="408" width="600" height="11" rx="5.5" fill="#dfe7d8"/>
+  <rect x="104" y="430" width="560" height="11" rx="5.5" fill="#dfe7d8"/>
+  <text x="104" y="468" font-size="15" font-weight="600" fill="#2f5d3f">Continue reading &#8594;</text>
+
+  <!-- Card 2 -->
+  <rect x="72" y="508" width="700" height="220" rx="16" fill="#ffffff" stroke="#dfe7d8" stroke-width="1"/>
+  <text x="104" y="560" font-size="28" font-weight="600" fill="#243b2c" font-family="'Iowan Old Style',Palatino,Georgia,serif">Five calming herbs to grow</text>
+  <text x="104" y="586" font-size="14" fill="#84977f">June 2, 2026 &#183; by Mara</text>
+  <rect x="104" y="606" width="620" height="11" rx="5.5" fill="#dfe7d8"/>
+  <rect x="104" y="628" width="584" height="11" rx="5.5" fill="#dfe7d8"/>
+  <rect x="104" y="650" width="520" height="11" rx="5.5" fill="#dfe7d8"/>
+  <text x="104" y="700" font-size="15" font-weight="600" fill="#2f5d3f">Continue reading &#8594;</text>
+
+  <!-- ===== Sidebar widgets ===== -->
+
+  <!-- Search widget -->
+  <rect x="812" y="172" width="316" height="92" rx="16" fill="#ffffff" stroke="#dfe7d8" stroke-width="1"/>
+  <text x="836" y="206" font-size="13" font-weight="700" letter-spacing="1.5" fill="#2f5d3f">SEARCH</text>
+  <rect x="836" y="220" width="200" height="30" rx="10" fill="#f4f7f1" stroke="#dfe7d8"/>
+  <rect x="1044" y="220" width="60" height="30" rx="15" fill="#6f9c6e"/>
+
+  <!-- Recent posts widget -->
+  <rect x="812" y="288" width="316" height="200" rx="16" fill="#ffffff" stroke="#dfe7d8" stroke-width="1"/>
+  <text x="836" y="322" font-size="13" font-weight="700" letter-spacing="1.5" fill="#2f5d3f">RECENT POSTS</text>
+  <rect x="836" y="344" width="252" height="10" rx="5" fill="#dfe7d8"/>
+  <line x1="836" y1="370" x2="1104" y2="370" stroke="#dfe7d8" stroke-dasharray="3 4"/>
+  <rect x="836" y="384" width="236" height="10" rx="5" fill="#dfe7d8"/>
+  <line x1="836" y1="410" x2="1104" y2="410" stroke="#dfe7d8" stroke-dasharray="3 4"/>
+  <rect x="836" y="424" width="216" height="10" rx="5" fill="#dfe7d8"/>
+  <line x1="836" y1="450" x2="1104" y2="450" stroke="#dfe7d8" stroke-dasharray="3 4"/>
+  <rect x="836" y="464" width="200" height="10" rx="5" fill="#dfe7d8"/>
+
+  <!-- Categories widget -->
+  <rect x="812" y="512" width="316" height="216" rx="16" fill="#ffffff" stroke="#dfe7d8" stroke-width="1"/>
+  <text x="836" y="546" font-size="13" font-weight="700" letter-spacing="1.5" fill="#2f5d3f">CATEGORIES</text>
+  <rect x="836" y="568" width="150" height="10" rx="5" fill="#dfe7d8"/>
+  <line x1="836" y1="594" x2="1104" y2="594" stroke="#dfe7d8" stroke-dasharray="3 4"/>
+  <rect x="836" y="608" width="180" height="10" rx="5" fill="#dfe7d8"/>
+  <line x1="836" y1="634" x2="1104" y2="634" stroke="#dfe7d8" stroke-dasharray="3 4"/>
+  <rect x="836" y="648" width="132" height="10" rx="5" fill="#dfe7d8"/>
+  <line x1="836" y1="674" x2="1104" y2="674" stroke="#dfe7d8" stroke-dasharray="3 4"/>
+  <rect x="836" y="688" width="164" height="10" rx="5" fill="#dfe7d8"/>
+
+  <!-- Leaf-green divider -->
+  <rect x="72" y="772" width="1056" height="2" fill="url(#divider)"/>
+
+  <!-- Footer (forest) -->
+  <rect x="0" y="800" width="1200" height="100" fill="#2f5d3f"/>
+  <text x="600" y="838" font-size="22" fill="#6f9c6e" text-anchor="middle">&#10087;</text>
+  <text x="600" y="868" font-size="15" fill="#d8e6d6" text-anchor="middle">&#169; 2026 Verdant. Grown with Verdant.</text>
+</svg>

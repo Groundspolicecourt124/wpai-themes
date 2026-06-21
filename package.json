@@ -1,0 +1,25 @@
+{
+  "name": "wpai-themes",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Free, open-source WordPress themes & plugins with one-click in-browser previews and Docker-free local testing.",
+  "license": "GPL-2.0-or-later",
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "build": "node scripts/gen-screenshots.mjs && node scripts/build-zips.mjs && node scripts/gen-gallery.mjs",
+    "build:screenshots": "node scripts/gen-screenshots.mjs",
+    "build:zips": "node scripts/build-zips.mjs",
+    "build:gallery": "node scripts/gen-gallery.mjs",
+    "serve": "node scripts/serve-gallery.mjs",
+    "preview": "node scripts/preview.mjs",
+    "new:theme": "node scripts/new-theme.mjs"
+  },
+  "devDependencies": {
+    "archiver": "^7.0.1",
+    "sharp": "^0.33.5"
+  }
+}

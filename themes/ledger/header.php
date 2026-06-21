@@ -1,0 +1,57 @@
+<?php
+/**
+ * Header template.
+ *
+ * @package Ledger
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+?>
+<!DOCTYPE html>
+<html <?php language_attributes(); ?>>
+<head>
+	<meta charset="<?php bloginfo( 'charset' ); ?>" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<?php wp_head(); ?>
+</head>
+<body <?php body_class(); ?>>
+<?php wp_body_open(); ?>
+<a class="skip-link" href="#content"><?php esc_html_e( 'Skip to content', 'ledger' ); ?></a>
+
+<header class="site-header">
+	<div class="site-wrap site-header__inner">
+		<div class="site-branding">
+			<?php if ( has_custom_logo() ) : ?>
+				<?php the_custom_logo(); ?>
+			<?php endif; ?>
+			<p class="site-title">
+				<a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a>
+			</p>
+			<?php
+			$ledger_desc = get_bloginfo( 'description', 'display' );
+			if ( $ledger_desc || is_customize_preview() ) :
+				?>
+				<p class="site-description"><?php echo esc_html( $ledger_desc ); ?></p>
+			<?php endif; ?>
+		</div>
+	</div>
+</header>
+
+<nav class="main-nav" aria-label="<?php esc_attr_e( 'Primary', 'ledger' ); ?>">
+	<div class="site-wrap main-nav__inner">
+		<?php
+		wp_nav_menu( array(
+			'theme_location' => 'primary',
+			'container'      => false,
+			'fallback_cb'    => false,
+			'depth'          => 2,
+		) );
+		?>
+	</div>
+</nav>
+
+<main id="content" class="site-main">
+	<div class="site-wrap content-area">
+		<div class="site-content">

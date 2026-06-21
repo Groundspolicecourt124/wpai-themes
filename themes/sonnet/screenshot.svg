@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" role="img" aria-label="Sonnet theme preview">
+  <defs>
+    <linearGradient id="goldFade" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#caa15a"/>
+      <stop offset="1" stop-color="#e0bd7e"/>
+    </linearGradient>
+    <linearGradient id="bgFade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#181a20"/>
+      <stop offset="1" stop-color="#15171c"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Page background -->
+  <rect width="1200" height="900" fill="url(#bgFade)"/>
+
+  <!-- Header band -->
+  <rect x="0" y="0" width="1200" height="118" fill="#15171c"/>
+  <line x1="0" y1="118" x2="1200" y2="118" stroke="#2a2d35" stroke-width="1"/>
+
+  <!-- Site title + tagline -->
+  <text x="300" y="58" font-family="Georgia, 'Times New Roman', serif" font-size="30" font-weight="600" fill="#e8e3d8" letter-spacing="0.5">Sonnet</text>
+  <text x="300" y="84" font-family="system-ui, Arial, sans-serif" font-size="14" font-style="italic" fill="#7c7768" letter-spacing="0.6">a quiet place for long-form writing</text>
+
+  <!-- Nav -->
+  <text x="640" y="68" font-family="system-ui, Arial, sans-serif" font-size="13" fill="#caa15a" letter-spacing="2">ESSAYS</text>
+  <text x="730" y="68" font-family="system-ui, Arial, sans-serif" font-size="13" fill="#b3ad9f" letter-spacing="2">NOTES</text>
+  <text x="812" y="68" font-family="system-ui, Arial, sans-serif" font-size="13" fill="#b3ad9f" letter-spacing="2">ABOUT</text>
+
+  <!-- ============ Article column (narrow measure, centered) ============ -->
+
+  <!-- Post meta -->
+  <text x="300" y="208" font-family="system-ui, Arial, sans-serif" font-size="13" fill="#7c7768" letter-spacing="2">JUNE 20, 2026 — BY THE EDITOR</text>
+
+  <!-- Headline -->
+  <text x="300" y="262" font-family="Georgia, 'Times New Roman', serif" font-size="52" font-weight="600" fill="#e8e3d8" letter-spacing="-0.5">On the Quiet</text>
+  <text x="300" y="320" font-family="Georgia, 'Times New Roman', serif" font-size="52" font-weight="600" fill="#e8e3d8" letter-spacing="-0.5">Craft of Reading</text>
+
+  <!-- Drop cap -->
+  <text x="300" y="430" font-family="Georgia, serif" font-size="92" font-weight="600" fill="#caa15a">T</text>
+
+  <!-- Body paragraph lines (serif off-white) -->
+  <g fill="#d8d2c5">
+    <rect x="364" y="372" width="536" height="11" rx="2"/>
+    <rect x="364" y="398" width="536" height="11" rx="2"/>
+    <rect x="300" y="424" width="600" height="11" rx="2"/>
+    <rect x="300" y="450" width="600" height="11" rx="2"/>
+    <rect x="300" y="476" width="470" height="11" rx="2"/>
+  </g>
+
+  <!-- Italic pull-quote with gold left rule -->
+  <line x1="300" y1="528" x2="300" y2="612" stroke="#caa15a" stroke-width="2"/>
+  <text x="326" y="560" font-family="Georgia, serif" font-size="26" font-style="italic" fill="#b3ad9f">The words ask only for</text>
+  <text x="326" y="596" font-family="Georgia, serif" font-size="26" font-style="italic" fill="#b3ad9f">a little silence around them.</text>
+
+  <!-- More body lines -->
+  <g fill="#d8d2c5">
+    <rect x="300" y="648" width="600" height="11" rx="2"/>
+    <rect x="300" y="674" width="600" height="11" rx="2"/>
+    <rect x="300" y="700" width="540" height="11" rx="2"/>
+  </g>
+
+  <!-- Hairline divider (centered, 40%) -->
+  <line x1="480" y1="748" x2="720" y2="748" stroke="#3a3d46" stroke-width="1"/>
+
+  <!-- Next-entry teaser -->
+  <text x="300" y="800" font-family="Georgia, serif" font-size="22" font-weight="600" fill="#e8e3d8">A Margin of One&#8217;s Own</text>
+  <g fill="#9a9486">
+    <rect x="300" y="822" width="600" height="9" rx="2"/>
+    <rect x="300" y="842" width="430" height="9" rx="2"/>
+  </g>
+  <text x="300" y="884" font-family="system-ui, Arial, sans-serif" font-size="12" fill="#caa15a" letter-spacing="2">CONTINUE READING →</text>
+
+  <!-- Subtle outer column hairlines to imply the reading measure -->
+  <line x1="270" y1="170" x2="270" y2="900" stroke="#1f222a" stroke-width="1"/>
+  <line x1="930" y1="170" x2="930" y2="900" stroke="#1f222a" stroke-width="1"/>
+</svg>

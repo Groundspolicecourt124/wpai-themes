@@ -1,0 +1,42 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/theme.json",
+  "version": 2,
+  "settings": {
+    "layout": { "contentSize": "720px", "wideSize": "1024px" },
+    "color": {
+      "palette": [
+        { "slug": "ink", "color": "#16130f", "name": "Ink" },
+        { "slug": "soft", "color": "#4a443c", "name": "Soft" },
+        { "slug": "accent", "color": "#b00020", "name": "Accent" },
+        { "slug": "paper", "color": "#faf8f4", "name": "Paper" },
+        { "slug": "surface", "color": "#fffdf9", "name": "Surface" }
+      ]
+    },
+    "typography": {
+      "fontFamilies": [
+        {
+          "fontFamily": "Charter, \"Iowan Old Style\", Palatino, Georgia, \"Times New Roman\", serif",
+          "slug": "serif",
+          "name": "Serif"
+        },
+        {
+          "fontFamily": "\"Helvetica Neue\", Helvetica, Arial, system-ui, sans-serif",
+          "slug": "sans",
+          "name": "Sans"
+        }
+      ],
+      "fontSizes": [
+        { "slug": "small", "size": "0.85rem", "name": "Small" },
+        { "slug": "medium", "size": "1.06rem", "name": "Medium" },
+        { "slug": "large", "size": "1.7rem", "name": "Large" },
+        { "slug": "x-large", "size": "2.6rem", "name": "Extra large" }
+      ]
+    }
+  },
+  "styles": {
+    "color": { "background": "#faf8f4", "text": "#16130f" },
+    "elements": {
+      "link": { "color": { "text": "#b00020" } }
+    }
+  }
+}

@@ -1,0 +1,124 @@
+/*
+Theme Name: Aurora
+Theme URI: https://lordbasilaiassistant-sudo.github.io/wpai-themes/
+Author: WPAI Themes
+Author URI: https://github.com/lordbasilaiassistant-sudo/wpai-themes
+Description: A clean, airy personal-blog theme with serif headings and effortless reading. Light, fast, and accessible out of the box.
+Version: 1.0.0
+Requires at least: 5.0
+Tested up to: 6.5
+Requires PHP: 7.4
+License: GNU General Public License v2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: aurora
+Tags: blog, one-column, custom-menu, featured-images, threaded-comments, translation-ready, light, accessibility-ready
+*/
+
+:root {
+  --a-bg: #fbfaf7;
+  --a-surface: #ffffff;
+  --a-ink: #1f2328;
+  --a-ink-soft: #545b66;
+  --a-faint: #8a929e;
+  --a-line: #e7e3da;
+  --a-accent: #b5532a;
+  --a-accent-soft: #f3e7df;
+  --a-max: 42rem;
+  --a-serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+  --a-sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--a-bg);
+  color: var(--a-ink);
+  font-family: var(--a-sans);
+  font-size: 18px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--a-accent); text-underline-offset: 2px; }
+a:hover { text-decoration: underline; }
+img { max-width: 100%; height: auto; }
+
+/* Accessibility */
+.skip-link { position: absolute; left: -9999px; }
+.skip-link:focus { left: 1rem; top: 1rem; background: var(--a-ink); color: #fff;
+  padding: .6rem 1rem; border-radius: 6px; z-index: 100; }
+.screen-reader-text { position: absolute !important; clip: rect(1px,1px,1px,1px);
+  width: 1px; height: 1px; overflow: hidden; }
+:focus-visible { outline: 3px solid var(--a-accent); outline-offset: 2px; }
+
+/* Layout */
+.site-wrap { max-width: var(--a-max); margin-inline: auto; padding-inline: 1.25rem; }
+.site-header { border-bottom: 1px solid var(--a-line); background: var(--a-surface); }
+.site-header__inner { display: flex; align-items: center; justify-content: space-between;
+  gap: 1rem; padding: 1.4rem 0; flex-wrap: wrap; }
+.site-title { font-family: var(--a-serif); font-size: 1.6rem; font-weight: 700; margin: 0; }
+.site-title a { color: var(--a-ink); }
+.site-description { color: var(--a-faint); font-size: .92rem; margin: .1rem 0 0; }
+
+/* Nav */
+.main-nav ul { list-style: none; display: flex; gap: 1.2rem; margin: 0; padding: 0; flex-wrap: wrap; }
+.main-nav a { color: var(--a-ink-soft); font-weight: 600; font-size: .95rem; }
+.main-nav a:hover { color: var(--a-accent); text-decoration: none; }
+.main-nav .current-menu-item > a { color: var(--a-accent); }
+
+/* Content */
+.site-main { padding: 2.5rem 0 3rem; }
+.entry { margin-bottom: 3rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--a-line); }
+.entry:last-child { border-bottom: 0; }
+.entry-title { font-family: var(--a-serif); line-height: 1.2; font-size: clamp(1.6rem, 4vw, 2.3rem);
+  margin: 0 0 .4rem; letter-spacing: -.01em; }
+.entry-title a { color: var(--a-ink); }
+.entry-title a:hover { color: var(--a-accent); text-decoration: none; }
+.entry-meta { color: var(--a-faint); font-size: .85rem; margin-bottom: 1.1rem; }
+.entry-meta a { color: var(--a-faint); }
+.featured-image { margin: 1.2rem 0; border-radius: 10px; overflow: hidden; }
+.entry-content { font-family: var(--a-serif); font-size: 1.12rem; }
+.entry-content h2, .entry-content h3 { font-family: var(--a-serif); line-height: 1.25; margin-top: 2rem; }
+.entry-content p, .entry-content ul, .entry-content ol { margin: 1rem 0; }
+.entry-content blockquote { margin: 1.6rem 0; padding: .4rem 1.3rem; border-left: 3px solid var(--a-accent);
+  color: var(--a-ink-soft); font-style: italic; }
+.entry-content pre { background: #1f2328; color: #f3f3f0; padding: 1rem 1.2rem; border-radius: 8px;
+  overflow: auto; font-size: .9rem; }
+.entry-content code { background: var(--a-accent-soft); padding: .12em .4em; border-radius: 4px; font-size: .9em; }
+.entry-content pre code { background: none; padding: 0; }
+.more-link { font-weight: 600; }
+
+/* Read-more / buttons / pagination */
+.read-more { display: inline-block; margin-top: 1rem; font-weight: 600; }
+.pagination { display: flex; gap: .8rem; justify-content: space-between; margin-top: 2rem; }
+.pagination a, .pagination span { color: var(--a-ink-soft); font-weight: 600; }
+.wp-block-button__link, .button { display: inline-block; background: var(--a-accent); color: #fff;
+  padding: .6rem 1.2rem; border-radius: 8px; font-weight: 600; }
+
+/* Sidebar / widgets */
+.widget { margin-bottom: 2rem; }
+.widget-title { font-family: var(--a-serif); font-size: 1.05rem; margin: 0 0 .6rem;
+  text-transform: uppercase; letter-spacing: .06em; color: var(--a-ink-soft); }
+.widget ul { list-style: none; padding: 0; margin: 0; }
+.widget li { padding: .3rem 0; border-bottom: 1px solid var(--a-line); }
+
+/* Comments */
+.comments-area { margin-top: 3rem; }
+.comment-list { list-style: none; padding: 0; }
+.comment-list .children { list-style: none; padding-left: 1.4rem; }
+.comment-body { padding: 1rem 0; border-bottom: 1px solid var(--a-line); }
+.comment-author { font-weight: 600; }
+.comment-form input[type=text], .comment-form input[type=email], .comment-form input[type=url],
+.comment-form textarea, .search-form input[type=search] {
+  width: 100%; padding: .6rem .8rem; border: 1px solid var(--a-line); border-radius: 8px;
+  font: inherit; background: var(--a-surface); }
+.comment-form p { margin: .8rem 0; }
+.search-form { display: flex; gap: .5rem; }
+.search-form .search-submit { width: auto; }
+
+/* Footer */
+.site-footer { border-top: 1px solid var(--a-line); background: var(--a-surface);
+  padding: 2rem 0; color: var(--a-faint); font-size: .9rem; text-align: center; }
+
+/* 404 */
+.error-404 { text-align: center; padding: 3rem 0; }
+.error-404 .big { font-family: var(--a-serif); font-size: 4rem; margin: 0; color: var(--a-accent); }
