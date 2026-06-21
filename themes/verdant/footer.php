@@ -14,6 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 <footer class="site-footer">
 	<div class="site-wrap">
+		<span class="site-footer__mark" aria-hidden="true">&#10087;</span>
 		<p>
 			<?php
 			printf(

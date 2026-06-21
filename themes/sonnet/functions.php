@@ -9,6 +9,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+// Live color customization (Appearance → Customize → Colors & Style).
+require_once get_template_directory() . '/inc/customizer.php';
+
 if ( ! function_exists( 'sonnet_setup' ) ) {
 	/**
 	 * Register theme supports and nav menus.
@@ -20,8 +23,8 @@ if ( ! function_exists( 'sonnet_setup' ) ) {
 		add_theme_support( 'title-tag' );
 		add_theme_support( 'post-thumbnails' );
 		add_theme_support( 'custom-logo', array(
-			'height'      => 80,
-			'width'       => 80,
+			'height'      => 96,
+			'width'       => 96,
 			'flex-height' => true,
 			'flex-width'  => true,
 		) );
@@ -37,6 +40,11 @@ if ( ! function_exists( 'sonnet_setup' ) ) {
 		add_theme_support( 'responsive-embeds' );
 		add_theme_support( 'align-wide' );
 		add_theme_support( 'editor-styles' );
+		add_theme_support( 'wp-block-styles' );
+		add_editor_style( 'style.css' );
+
+		// A tasteful default image size for the list-card thumbnails (3:2).
+		add_image_size( 'sonnet-card', 720, 480, true );
 
 		register_nav_menus( array(
 			'primary' => esc_html__( 'Primary Menu', 'sonnet' ),
@@ -46,10 +54,10 @@ if ( ! function_exists( 'sonnet_setup' ) ) {
 add_action( 'after_setup_theme', 'sonnet_setup' );
 
 /**
- * Set the content width in pixels.
+ * Set the content width in pixels (matches the reading measure plus its gutters).
  */
 function sonnet_content_width() {
-	$GLOBALS['content_width'] = apply_filters( 'sonnet_content_width', 608 );
+	$GLOBALS['content_width'] = apply_filters( 'sonnet_content_width', 660 );
 }
 add_action( 'after_setup_theme', 'sonnet_content_width', 0 );
 
@@ -72,7 +80,7 @@ function sonnet_widgets_init() {
 	register_sidebar( array(
 		'name'          => esc_html__( 'Sidebar', 'sonnet' ),
 		'id'            => 'sidebar-1',
-		'description'   => esc_html__( 'Add widgets here.', 'sonnet' ),
+		'description'   => esc_html__( 'Widgets here appear below the writing, in the journal footer rail.', 'sonnet' ),
 		'before_widget' => '<section id="%1$s" class="widget %2$s">',
 		'after_widget'  => '</section>',
 		'before_title'  => '<h2 class="widget-title">',
@@ -81,16 +89,136 @@ function sonnet_widgets_init() {
 }
 add_action( 'widgets_init', 'sonnet_widgets_init' );
 
-/**
- * Print human-readable post meta (date + author).
- */
 if ( ! function_exists( 'sonnet_posted_meta' ) ) {
+	/**
+	 * Print a literary byline: "By Mara Ellison · June 21, 2026".
+	 */
 	function sonnet_posted_meta() {
 		printf(
-			/* translators: 1: post date, 2: post author */
-			esc_html__( '%1$s — by %2$s', 'sonnet' ),
-			'<time datetime="' . esc_attr( get_the_date( DATE_W3C ) ) . '">' . esc_html( get_the_date() ) . '</time>',
-			'<span class="author">' . esc_html( get_the_author() ) . '</span>'
+			/* translators: 1: post author, 2: post date. */
+			esc_html__( 'By %1$s %2$s', 'sonnet' ),
+			'<span class="byline-author">' . esc_html( get_the_author() ) . '</span>',
+			'<span class="byline-sep" aria-hidden="true">·</span> <time class="byline-date" datetime="' . esc_attr( get_the_date( DATE_W3C ) ) . '">' . esc_html( get_the_date() ) . '</time>'
 		);
 	}
 }
+
+if ( ! function_exists( 'sonnet_primary_category' ) ) {
+	/**
+	 * Return the name of the post's first category, or an empty string.
+	 *
+	 * @return string Category name (unescaped — escape on output).
+	 */
+	function sonnet_primary_category() {
+		if ( 'post' !== get_post_type() ) {
+			return '';
+		}
+
+		$categories = get_the_category();
+		if ( empty( $categories ) || is_wp_error( $categories ) ) {
+			return '';
+		}
+
+		return $categories[0]->name;
+	}
+}
+
+if ( ! function_exists( 'sonnet_masthead_kicker' ) ) {
+	/**
+	 * The small all-caps line that crowns the homepage masthead.
+	 *
+	 * @return string Unescaped label.
+	 */
+	function sonnet_masthead_kicker() {
+		/* translators: shown above the homepage tagline. */
+		return apply_filters( 'sonnet_masthead_kicker', __( 'The Journal', 'sonnet' ) );
+	}
+}
+
+if ( ! function_exists( 'sonnet_archive_kicker' ) ) {
+	/**
+	 * A context-aware eyebrow for archive headers.
+	 *
+	 * @return string Unescaped label.
+	 */
+	function sonnet_archive_kicker() {
+		if ( is_category() ) {
+			return __( 'Category', 'sonnet' );
+		}
+		if ( is_tag() ) {
+			return __( 'Tag', 'sonnet' );
+		}
+		if ( is_author() ) {
+			return __( 'Author', 'sonnet' );
+		}
+		if ( is_date() ) {
+			return __( 'Archive', 'sonnet' );
+		}
+		return __( 'Browse', 'sonnet' );
+	}
+}
+
+/**
+ * Drop WordPress's "Category:", "Tag:", etc. prefix from archive titles — the
+ * matching context is already shown in the eyebrow kicker above the title.
+ *
+ * @param string $title Archive title markup.
+ * @return string
+ */
+function sonnet_archive_title( $title ) {
+	if ( is_category() || is_tag() || is_tax() ) {
+		$title = single_term_title( '', false );
+	} elseif ( is_author() ) {
+		$title = get_the_author();
+	} elseif ( is_post_type_archive() ) {
+		$title = post_type_archive_title( '', false );
+	} elseif ( is_year() ) {
+		$title = get_the_date( _x( 'Y', 'yearly archives date format', 'sonnet' ) );
+	} elseif ( is_month() ) {
+		$title = get_the_date( _x( 'F Y', 'monthly archives date format', 'sonnet' ) );
+	} elseif ( is_day() ) {
+		$title = get_the_date( _x( 'F j, Y', 'daily archives date format', 'sonnet' ) );
+	}
+	return $title;
+}
+add_filter( 'get_the_archive_title', 'sonnet_archive_title' );
+
+/**
+ * Trim the auto-excerpt to a tidy length for the reading list.
+ *
+ * @param int $length Default word count.
+ * @return int
+ */
+function sonnet_excerpt_length( $length ) {
+	return is_home() && ! is_paged() ? 44 : 30;
+}
+add_filter( 'excerpt_length', 'sonnet_excerpt_length', 999 );
+
+/**
+ * Replace the auto-excerpt ellipsis with a quiet typographic one.
+ *
+ * @param string $more Default "more" string.
+ * @return string
+ */
+function sonnet_excerpt_more( $more ) {
+	return '&#8202;&hellip;';
+}
+add_filter( 'excerpt_more', 'sonnet_excerpt_more' );
+
+/**
+ * Give the <body> a helpful class when the front page has a featured lead post,
+ * so the masthead spacing can adapt.
+ *
+ * @param string[] $classes Body classes.
+ * @return string[]
+ */
+function sonnet_body_classes( $classes ) {
+	if ( is_home() && ! is_paged() ) {
+		$classes[] = 'has-lead-essay';
+	}
+	if ( ! is_active_sidebar( 'sidebar-1' ) ) {
+		$classes[] = 'no-sidebar';
+	}
+	return $classes;
+}
+add_filter( 'body_class', 'sonnet_body_classes' );

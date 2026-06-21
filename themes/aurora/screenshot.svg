@@ -1,39 +1,82 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" font-family="Georgia, 'Times New Roman', serif">
-  <rect width="1200" height="900" fill="#fbfaf7"/>
+  <defs>
+    <linearGradient id="cover" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f1d9cb"/>
+      <stop offset="0.5" stop-color="#e7b79c"/>
+      <stop offset="1" stop-color="#b98a6e"/>
+    </linearGradient>
+    <linearGradient id="thumb" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#dfe6dc"/>
+      <stop offset="1" stop-color="#a9bda5"/>
+    </linearGradient>
+    <linearGradient id="thumb2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e3dcec"/>
+      <stop offset="1" stop-color="#a99cc0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Paper -->
+  <rect width="1200" height="900" fill="#f7f4ee"/>
 
   <!-- Header -->
-  <rect x="0" y="0" width="1200" height="120" fill="#ffffff"/>
-  <line x1="0" y1="120" x2="1200" y2="120" stroke="#e7e3da" stroke-width="2"/>
-  <text x="120" y="74" font-size="40" font-weight="700" fill="#1f2328">Aurora</text>
-  <g font-family="Arial, sans-serif" font-size="20" fill="#545b66" font-weight="600">
-    <text x="780" y="70">Home</text>
-    <text x="880" y="70">Writing</text>
-    <text x="1010" y="70">About</text>
+  <rect x="0" y="0" width="1200" height="104" fill="#ffffff"/>
+  <line x1="0" y1="104" x2="1200" y2="104" stroke="#e6e0d4" stroke-width="2"/>
+  <text x="80" y="58" font-size="34" font-weight="600" fill="#21201c" letter-spacing="-1">Northwind</text>
+  <text x="80" y="82" font-family="Arial, Helvetica, sans-serif" font-size="14" fill="#736d62">Ideas worth shipping.</text>
+  <g font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="600">
+    <text x="828" y="62" fill="#a5462a">Home</text>
+    <text x="908" y="62" fill="#57534b">About</text>
+    <text x="988" y="62" fill="#57534b">Design</text>
+    <text x="1078" y="62" fill="#57534b">Engineering</text>
   </g>
 
-  <!-- Article 1 -->
-  <text x="120" y="240" font-size="58" font-weight="700" fill="#1f2328" letter-spacing="-1">On quiet mornings</text>
-  <text x="120" y="282" font-family="Arial, sans-serif" font-size="19" fill="#8a929e">June 12, 2026 · by Anthony</text>
-  <g font-size="26" fill="#1f2328">
-    <text x="120" y="340">There is a particular stillness before the house wakes — the kind</text>
-    <text x="120" y="380">that makes a cup of coffee feel like a small ceremony. This is</text>
-    <text x="120" y="420">where Aurora wants you to write, one unhurried sentence at a time.</text>
+  <!-- Lead essay (tagline kicker) -->
+  <text x="80" y="168" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="700" letter-spacing="3" fill="#a5462a">THE JOURNAL</text>
+  <text x="80" y="216" font-size="42" font-weight="600" fill="#21201c" letter-spacing="-1">Ideas worth shipping.</text>
+
+  <line x1="80" y1="260" x2="1120" y2="260" stroke="#e6e0d4" stroke-width="1"/>
+
+  <!-- LEAD STORY: cover + body -->
+  <!-- Cover image -->
+  <rect x="80" y="300" width="520" height="416" rx="16" fill="url(#cover)"/>
+  <circle cx="180" cy="392" r="64" fill="#ffffff" opacity="0.18"/>
+  <circle cx="470" cy="640" r="92" fill="#7f3520" opacity="0.12"/>
+
+  <!-- Lead body -->
+  <g>
+    <rect x="648" y="312" width="118" height="28" rx="14" fill="#faf2ed" stroke="#f3e6df" stroke-width="1"/>
+    <text x="668" y="331" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="700" letter-spacing="1.5" fill="#a5462a">DESIGN</text>
+    <text x="786" y="332" font-family="Arial, Helvetica, sans-serif" font-size="14" fill="#736d62">by Mara Ellison &#183; Jun 18, 2026</text>
+
+    <text x="648" y="392" font-size="46" font-weight="600" fill="#21201c" letter-spacing="-1">The shape of a</text>
+    <text x="648" y="444" font-size="46" font-weight="600" fill="#21201c" letter-spacing="-1">calmer interface</text>
+
+    <g font-size="22" fill="#57534b">
+      <text x="648" y="506">Restraint is a feature. When a page stops</text>
+      <text x="648" y="538">competing for attention, the reader finally</text>
+      <text x="648" y="570">arrives — and the words get to do the work</text>
+      <text x="648" y="602">they were always meant to do.</text>
+    </g>
+
+    <text x="648" y="668" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" fill="#a5462a">Read the story  &#8594;</text>
   </g>
-  <text x="120" y="476" font-size="22" font-weight="700" fill="#b5532a">Continue reading →</text>
 
-  <line x1="120" y1="528" x2="1080" y2="528" stroke="#e7e3da" stroke-width="2"/>
+  <line x1="80" y1="760" x2="1120" y2="760" stroke="#e6e0d4" stroke-width="2"/>
 
-  <!-- Article 2 -->
-  <text x="120" y="610" font-size="58" font-weight="700" fill="#1f2328" letter-spacing="-1">A smaller, calmer web</text>
-  <text x="120" y="652" font-family="Arial, sans-serif" font-size="19" fill="#8a929e">June 5, 2026 · by Anthony</text>
-  <g font-size="26" fill="#1f2328">
-    <text x="120" y="710">No trackers, no pop-ups, no infinite scroll. Just your words on a</text>
-    <text x="120" y="750">page that loads instantly and reads beautifully on any device.</text>
+  <!-- LIST CARD: thumbnail + text -->
+  <rect x="80" y="792" width="172" height="92" rx="12" fill="url(#thumb)"/>
+  <g>
+    <rect x="288" y="794" width="150" height="26" rx="13" fill="#faf2ed" stroke="#f3e6df" stroke-width="1"/>
+    <text x="306" y="812" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="700" letter-spacing="1.5" fill="#a5462a">ENGINEERING</text>
+    <text x="452" y="813" font-family="Arial, Helvetica, sans-serif" font-size="13" fill="#736d62">by Mara Ellison &#183; Jun 11</text>
+    <text x="288" y="852" font-size="27" font-weight="600" fill="#21201c">Shipping is a habit, not an event</text>
+    <text x="288" y="882" font-size="17" fill="#57534b" font-family="Georgia, serif">Small, steady releases beat the grand rewrite every time.</text>
   </g>
-  <text x="120" y="806" font-size="22" font-weight="700" fill="#b5532a">Continue reading →</text>
 
-  <!-- Footer hint -->
-  <rect x="0" y="852" width="1200" height="48" fill="#ffffff"/>
-  <line x1="0" y1="852" x2="1200" y2="852" stroke="#e7e3da" stroke-width="2"/>
-  <text x="120" y="884" font-family="Arial, sans-serif" font-size="18" fill="#8a929e">© 2026 Aurora. Built with Aurora.</text>
+  <!-- Sidebar hint -->
+  <rect x="1040" y="792" width="80" height="92" rx="10" fill="#ffffff" stroke="#e6e0d4" stroke-width="1"/>
+  <line x1="1056" y1="816" x2="1104" y2="816" stroke="#a5462a" stroke-width="2"/>
+  <line x1="1056" y1="836" x2="1104" y2="836" stroke="#e6e0d4" stroke-width="2"/>
+  <line x1="1056" y1="852" x2="1104" y2="852" stroke="#e6e0d4" stroke-width="2"/>
+  <line x1="1056" y1="868" x2="1088" y2="868" stroke="#e6e0d4" stroke-width="2"/>
 </svg>

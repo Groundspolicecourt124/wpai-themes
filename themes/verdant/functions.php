@@ -9,6 +9,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * Customizer color & style controls with live preview.
+ */
+require_once get_template_directory() . '/inc/customizer.php';
+
 if ( ! function_exists( 'verdant_setup' ) ) {
 	/**
 	 * Register theme supports and nav menus.
@@ -94,3 +99,67 @@ if ( ! function_exists( 'verdant_posted_meta' ) ) {
 		);
 	}
 }
+
+/**
+ * Output the post's primary category as a small pill "eyebrow".
+ *
+ * Prints nothing when the post has no categories, so it degrades gracefully.
+ */
+if ( ! function_exists( 'verdant_category_pill' ) ) {
+	function verdant_category_pill() {
+		if ( 'post' !== get_post_type() ) {
+			return;
+		}
+
+		$categories = get_the_category();
+		if ( empty( $categories ) ) {
+			return;
+		}
+
+		$primary = $categories[0];
+
+		printf(
+			'<a class="entry-eyebrow" href="%1$s">%2$s</a>',
+			esc_url( get_category_link( $primary->term_id ) ),
+			esc_html( $primary->name )
+		);
+	}
+}
+
+/**
+ * Decorative botanical mark used as a graceful fallback when a post has no
+ * featured image. Inline SVG keeps it dependency-free and crisp at any size.
+ */
+if ( ! function_exists( 'verdant_leaf_mark' ) ) {
+	function verdant_leaf_mark() {
+		return '<svg class="leaf-mark" viewBox="0 0 64 64" width="64" height="64" aria-hidden="true" focusable="false" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M32 6C18 14 12 26 12 40c0 9 6 16 16 18 0-16 2-30 12-44-3 12-6 26-6 42 10-3 14-12 14-22C58 22 46 12 32 6Z" fill="currentColor" opacity="0.9"/><path d="M30 58c0-18 4-32 14-44" stroke="#fff" stroke-width="1.6" stroke-linecap="round" opacity="0.55"/></svg>';
+	}
+}
+
+/**
+ * Filter the excerpt "read more" ellipsis to a calm character.
+ */
+function verdant_excerpt_more() {
+	return '…';
+}
+add_filter( 'excerpt_more', 'verdant_excerpt_more' );
+
+/**
+ * A slightly longer, more inviting excerpt length.
+ */
+function verdant_excerpt_length() {
+	return 32;
+}
+add_filter( 'excerpt_length', 'verdant_excerpt_length' );
+
+/**
+ * Add a body class on the blog/front page so the homepage hero can be styled
+ * and the first post can be promoted to a lead "featured" card.
+ */
+function verdant_body_classes( $classes ) {
+	if ( ( is_home() || is_front_page() ) && ! is_paged() ) {
+		$classes[] = 'verdant-has-hero';
+	}
+	return $classes;
+}
+add_filter( 'body_class', 'verdant_body_classes' );

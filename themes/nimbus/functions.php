@@ -37,6 +37,7 @@ if ( ! function_exists( 'nimbus_setup' ) ) {
 		add_theme_support( 'responsive-embeds' );
 		add_theme_support( 'align-wide' );
 		add_theme_support( 'editor-styles' );
+		add_theme_support( 'custom-background', array( 'default-color' => 'f6f7fb' ) );
 
 		register_nav_menus( array(
 			'primary' => esc_html__( 'Primary Menu', 'nimbus' ),
@@ -66,6 +67,11 @@ function nimbus_assets() {
 add_action( 'wp_enqueue_scripts', 'nimbus_assets' );
 
 /**
+ * Load the Customizer integration (live color & style controls).
+ */
+require_once get_template_directory() . '/inc/customizer.php';
+
+/**
  * Register the sidebar widget area.
  */
 function nimbus_widgets_init() {
@@ -82,6 +88,58 @@ function nimbus_widgets_init() {
 add_action( 'widgets_init', 'nimbus_widgets_init' );
 
 /**
+ * Add helper classes to <body> so the layout can react to the sidebar.
+ *
+ * @param array $classes Existing body classes.
+ * @return array
+ */
+function nimbus_body_classes( $classes ) {
+	if ( is_active_sidebar( 'sidebar-1' ) && ! is_404() ) {
+		$classes[] = 'has-sidebar';
+	} else {
+		$classes[] = 'no-sidebar';
+	}
+	return $classes;
+}
+add_filter( 'body_class', 'nimbus_body_classes' );
+
+/**
+ * Trim the auto-excerpt to a tidy length.
+ *
+ * @param int $length Default word length.
+ * @return int
+ */
+function nimbus_excerpt_length( $length ) {
+	return 28;
+}
+add_filter( 'excerpt_length', 'nimbus_excerpt_length' );
+
+/**
+ * Replace the [...] excerpt suffix with an ellipsis.
+ *
+ * @param string $more Default more string.
+ * @return string
+ */
+function nimbus_excerpt_more( $more ) {
+	return '&hellip;';
+}
+add_filter( 'excerpt_more', 'nimbus_excerpt_more' );
+
+/**
+ * Add the feature modifier class to the first post card in a listing.
+ * Toggled via the $nimbus_feature global around get_template_part().
+ *
+ * @param array $classes Existing post classes.
+ * @return array
+ */
+function nimbus_feature_class( $classes ) {
+	if ( ! empty( $GLOBALS['nimbus_feature'] ) ) {
+		$classes[] = 'entry--feature';
+	}
+	return $classes;
+}
+
+/**
  * Print human-readable post meta (date + author).
  */
 if ( ! function_exists( 'nimbus_posted_meta' ) ) {
@@ -92,5 +150,35 @@ if ( ! function_exists( 'nimbus_posted_meta' ) ) {
 			'<time datetime="' . esc_attr( get_the_date( DATE_W3C ) ) . '">' . esc_html( get_the_date() ) . '</time>',
 			'<span class="author">' . esc_html( get_the_author() ) . '</span>'
 		);
+	}
+}
+
+/**
+ * Print the primary category as a linked chip, for listing covers.
+ */
+if ( ! function_exists( 'nimbus_primary_category' ) ) {
+	function nimbus_primary_category() {
+		$categories = get_the_category();
+		if ( empty( $categories ) ) {
+			return;
+		}
+		$category = $categories[0];
+		printf(
+			'<span class="entry__cat"><a class="cat-chip" href="%1$s">%2$s</a></span>',
+			esc_url( get_category_link( $category->term_id ) ),
+			esc_html( $category->name )
+		);
+	}
+}
+
+/**
+ * Render a gradient placeholder cover when a post has no featured image.
+ * Uses the first letter of the title as a mark.
+ */
+if ( ! function_exists( 'nimbus_placeholder_cover' ) ) {
+	function nimbus_placeholder_cover() {
+		$title = wp_strip_all_tags( get_the_title() );
+		$mark  = $title ? mb_substr( $title, 0, 1 ) : 'N';
+		echo '<span class="placeholder-mark" aria-hidden="true">' . esc_html( mb_strtoupper( $mark ) ) . '</span>';
 	}
 }

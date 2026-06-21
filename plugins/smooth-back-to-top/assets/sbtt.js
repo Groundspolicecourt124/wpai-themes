@@ -3,7 +3,7 @@
  *
  * Reveals the floating button once the user has scrolled past a threshold and
  * smoothly returns to the top of the document when activated. Vanilla JS, no
- * dependencies, respects prefers-reduced-motion.
+ * dependencies, no external calls, and respects prefers-reduced-motion.
  */
 ( function () {
 	'use strict';
@@ -19,23 +19,26 @@
 	// that we can manage its visibility.
 	button.removeAttribute( 'hidden' );
 
-	var prefersReducedMotion = window.matchMedia
+	// Read this live on each use so toggling the OS setting takes effect without
+	// a reload, and degrade gracefully where matchMedia is unavailable.
+	var reducedMotionQuery = window.matchMedia
 		? window.matchMedia( '(prefers-reduced-motion: reduce)' )
 		: { matches: false };
 
 	var ticking = false;
 
 	function currentScroll() {
-		return window.pageYOffset || document.documentElement.scrollTop || 0;
+		return (
+			window.pageYOffset ||
+			( document.scrollingElement && document.scrollingElement.scrollTop ) ||
+			document.documentElement.scrollTop ||
+			0
+		);
 	}
 
 	function update() {
 		ticking = false;
-		if ( currentScroll() > SHOW_AFTER ) {
-			button.classList.add( 'sbtt-visible' );
-		} else {
-			button.classList.remove( 'sbtt-visible' );
-		}
+		button.classList.toggle( 'sbtt-visible', currentScroll() > SHOW_AFTER );
 	}
 
 	function onScroll() {
@@ -46,32 +49,34 @@
 	}
 
 	function scrollToTop() {
-		var behavior = prefersReducedMotion.matches ? 'auto' : 'smooth';
+		var behavior = reducedMotionQuery.matches ? 'auto' : 'smooth';
 
 		try {
 			window.scrollTo( { top: 0, left: 0, behavior: behavior } );
 		} catch ( e ) {
-			// Older browsers without smooth-scroll support.
+			// Older browsers without the options-object form of scrollTo().
 			window.scrollTo( 0, 0 );
 		}
 
-		// Move focus to the top of the page for keyboard/screen-reader users.
+		// Move focus to the top of the page so keyboard and screen-reader users
+		// continue from there rather than from the bottom of the document.
 		var target = document.querySelector( 'main' ) || document.body;
-		if ( target && typeof target.focus === 'function' ) {
-			var hadTabindex = target.hasAttribute( 'tabindex' );
-			if ( ! hadTabindex ) {
-				target.setAttribute( 'tabindex', '-1' );
-			}
-			target.focus( { preventScroll: true } );
-			if ( ! hadTabindex ) {
-				target.addEventListener(
-					'blur',
-					function handler() {
-						target.removeAttribute( 'tabindex' );
-						target.removeEventListener( 'blur', handler );
-					}
-				);
-			}
+		if ( ! target || typeof target.focus !== 'function' ) {
+			return;
+		}
+
+		var hadTabindex = target.hasAttribute( 'tabindex' );
+		if ( ! hadTabindex ) {
+			target.setAttribute( 'tabindex', '-1' );
+		}
+
+		target.focus( { preventScroll: true } );
+
+		if ( ! hadTabindex ) {
+			target.addEventListener( 'blur', function handler() {
+				target.removeAttribute( 'tabindex' );
+				target.removeEventListener( 'blur', handler );
+			} );
 		}
 	}
 
@@ -81,4 +86,4 @@
 
 	// Set the correct initial state (e.g. when the page loads already scrolled).
 	update();
-} )();
+}() );

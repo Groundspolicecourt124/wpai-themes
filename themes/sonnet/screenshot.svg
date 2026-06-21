@@ -1,76 +1,97 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" role="img" aria-label="Sonnet theme preview">
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" role="img" aria-label="Sonnet — a dark literary longform theme">
   <defs>
-    <linearGradient id="goldFade" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#caa15a"/>
-      <stop offset="1" stop-color="#e0bd7e"/>
+    <linearGradient id="page" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#161920"/>
+      <stop offset="0.4" stop-color="#14161b"/>
+      <stop offset="1" stop-color="#101217"/>
     </linearGradient>
-    <linearGradient id="bgFade" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#181a20"/>
-      <stop offset="1" stop-color="#15171c"/>
+    <radialGradient id="glow" cx="50%" cy="0%" r="70%">
+      <stop offset="0" stop-color="#cba35d" stop-opacity="0.14"/>
+      <stop offset="0.55" stop-color="#cba35d" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="cover" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2a2742"/>
+      <stop offset="0.45" stop-color="#5a4a52"/>
+      <stop offset="1" stop-color="#caa15a"/>
+    </linearGradient>
+    <linearGradient id="thumb" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1e3340"/>
+      <stop offset="1" stop-color="#3f6d6a"/>
+    </linearGradient>
+    <linearGradient id="rule" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#383b45" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#a9863f"/>
+      <stop offset="1" stop-color="#383b45" stop-opacity="0"/>
     </linearGradient>
   </defs>
 
-  <!-- Page background -->
-  <rect width="1200" height="900" fill="url(#bgFade)"/>
+  <!-- Canvas -->
+  <rect width="1200" height="900" fill="url(#page)"/>
+  <rect width="1200" height="520" fill="url(#glow)"/>
 
-  <!-- Header band -->
-  <rect x="0" y="0" width="1200" height="118" fill="#15171c"/>
-  <line x1="0" y1="118" x2="1200" y2="118" stroke="#2a2d35" stroke-width="1"/>
+  <!-- ===================== Header ===================== -->
+  <rect x="0" y="0" width="1200" height="100" fill="#12141a"/>
+  <line x1="0" y1="100" x2="1200" y2="100" stroke="#272a33" stroke-width="1"/>
+  <rect x="0" y="100" width="1200" height="1" fill="url(#rule)"/>
 
-  <!-- Site title + tagline -->
-  <text x="300" y="58" font-family="Georgia, 'Times New Roman', serif" font-size="30" font-weight="600" fill="#e8e3d8" letter-spacing="0.5">Sonnet</text>
-  <text x="300" y="84" font-family="system-ui, Arial, sans-serif" font-size="14" font-style="italic" fill="#7c7768" letter-spacing="0.6">a quiet place for long-form writing</text>
+  <text x="300" y="50" font-family="Georgia, 'Times New Roman', serif" font-size="30" font-weight="600" fill="#ece7db" letter-spacing="-0.3">Sonnet</text>
+  <text x="300" y="76" font-family="Georgia, serif" font-size="15" font-style="italic" fill="#837d6e">A quiet place for long-form writing.</text>
 
   <!-- Nav -->
-  <text x="640" y="68" font-family="system-ui, Arial, sans-serif" font-size="13" fill="#caa15a" letter-spacing="2">ESSAYS</text>
-  <text x="730" y="68" font-family="system-ui, Arial, sans-serif" font-size="13" fill="#b3ad9f" letter-spacing="2">NOTES</text>
-  <text x="812" y="68" font-family="system-ui, Arial, sans-serif" font-size="13" fill="#b3ad9f" letter-spacing="2">ABOUT</text>
+  <g font-family="system-ui, Arial, sans-serif" font-size="13" letter-spacing="2.4">
+    <text x="648" y="55" fill="#cba35d">ESSAYS</text>
+    <line x1="648" y1="63" x2="722" y2="63" stroke="#cba35d" stroke-width="1"/>
+    <text x="772" y="55" fill="#b6b0a1">NOTES</text>
+    <text x="860" y="55" fill="#b6b0a1">ABOUT</text>
+  </g>
 
-  <!-- ============ Article column (narrow measure, centered) ============ -->
+  <!-- ===================== Masthead ===================== -->
+  <g text-anchor="middle">
+    <line x1="470" y1="156" x2="522" y2="156" stroke="#383b45" stroke-width="1"/>
+    <text x="600" y="161" font-family="system-ui, Arial, sans-serif" font-size="13" font-weight="600" letter-spacing="5" fill="#cba35d">THE JOURNAL</text>
+    <line x1="678" y1="156" x2="730" y2="156" stroke="#383b45" stroke-width="1"/>
+    <text x="600" y="206" font-family="Georgia, serif" font-size="34" font-style="italic" fill="#ece7db" letter-spacing="-0.5">A quiet place for writing.</text>
+  </g>
 
-  <!-- Post meta -->
-  <text x="300" y="208" font-family="system-ui, Arial, sans-serif" font-size="13" fill="#7c7768" letter-spacing="2">JUNE 20, 2026 — BY THE EDITOR</text>
+  <!-- ===================== Featured lead essay (single column) ===================== -->
+  <!-- Cover image, pulled wider than the text measure -->
+  <rect x="300" y="250" width="600" height="216" fill="url(#cover)"/>
+  <line x1="300" y1="250" x2="900" y2="250" stroke="#272a33" stroke-width="1"/>
+  <line x1="300" y1="466" x2="900" y2="466" stroke="#272a33" stroke-width="1"/>
+  <!-- soft horizon detail in the cover -->
+  <rect x="300" y="412" width="600" height="54" fill="#101217" opacity="0.28"/>
+  <circle cx="784" cy="318" r="30" fill="#e3c184" opacity="0.55"/>
+
+  <!-- Featured kicker -->
+  <rect x="300" y="494" width="92" height="26" rx="13" fill="#cba35d"/>
+  <text x="346" y="512" text-anchor="middle" font-family="system-ui, Arial, sans-serif" font-size="12" font-weight="700" letter-spacing="1.5" fill="#101217">FEATURED</text>
+  <text x="412" y="512" font-family="system-ui, Arial, sans-serif" font-size="13" font-weight="600" letter-spacing="2" fill="#cba35d">DESIGN</text>
 
   <!-- Headline -->
-  <text x="300" y="262" font-family="Georgia, 'Times New Roman', serif" font-size="52" font-weight="600" fill="#e8e3d8" letter-spacing="-0.5">On the Quiet</text>
-  <text x="300" y="320" font-family="Georgia, 'Times New Roman', serif" font-size="52" font-weight="600" fill="#e8e3d8" letter-spacing="-0.5">Craft of Reading</text>
+  <text x="300" y="566" font-family="Georgia, 'Times New Roman', serif" font-size="46" font-weight="600" fill="#ece7db" letter-spacing="-1">On the Quiet Craft</text>
+  <text x="300" y="614" font-family="Georgia, 'Times New Roman', serif" font-size="46" font-weight="600" fill="#ece7db" letter-spacing="-1">of Reading</text>
 
-  <!-- Drop cap -->
-  <text x="300" y="430" font-family="Georgia, serif" font-size="92" font-weight="600" fill="#caa15a">T</text>
+  <!-- Byline -->
+  <text x="300" y="648" font-family="system-ui, Arial, sans-serif" font-size="14" letter-spacing="0.5" fill="#837d6e">By <tspan fill="#b6b0a1">Mara Ellison</tspan> · June 21, 2026</text>
 
-  <!-- Body paragraph lines (serif off-white) -->
-  <g fill="#d8d2c5">
-    <rect x="364" y="372" width="536" height="11" rx="2"/>
-    <rect x="364" y="398" width="536" height="11" rx="2"/>
-    <rect x="300" y="424" width="600" height="11" rx="2"/>
-    <rect x="300" y="450" width="600" height="11" rx="2"/>
-    <rect x="300" y="476" width="470" height="11" rx="2"/>
+  <!-- Drop cap + excerpt -->
+  <text x="300" y="722" font-family="Georgia, serif" font-size="64" font-weight="600" fill="#cba35d">T</text>
+  <g fill="#b6b0a1">
+    <rect x="346" y="674" width="554" height="10" rx="3"/>
+    <rect x="346" y="698" width="554" height="10" rx="3"/>
+    <rect x="300" y="722" width="600" height="10" rx="3"/>
+    <rect x="300" y="746" width="420" height="10" rx="3"/>
   </g>
+  <text x="300" y="792" font-family="system-ui, Arial, sans-serif" font-size="13" font-weight="600" letter-spacing="1.6" fill="#cba35d">READ THE ESSAY →</text>
 
-  <!-- Italic pull-quote with gold left rule -->
-  <line x1="300" y1="528" x2="300" y2="612" stroke="#caa15a" stroke-width="2"/>
-  <text x="326" y="560" font-family="Georgia, serif" font-size="26" font-style="italic" fill="#b3ad9f">The words ask only for</text>
-  <text x="326" y="596" font-family="Georgia, serif" font-size="26" font-style="italic" fill="#b3ad9f">a little silence around them.</text>
+  <!-- Lead / list divider -->
+  <line x1="300" y1="824" x2="900" y2="824" stroke="#272a33" stroke-width="1"/>
 
-  <!-- More body lines -->
-  <g fill="#d8d2c5">
-    <rect x="300" y="648" width="600" height="11" rx="2"/>
-    <rect x="300" y="674" width="600" height="11" rx="2"/>
-    <rect x="300" y="700" width="540" height="11" rx="2"/>
-  </g>
+  <!-- ===================== More reading (stacked below the lead) ===================== -->
+  <text x="300" y="852" font-family="system-ui, Arial, sans-serif" font-size="12" font-weight="700" letter-spacing="2.6" fill="#837d6e">MORE READING</text>
 
-  <!-- Hairline divider (centered, 40%) -->
-  <line x1="480" y1="748" x2="720" y2="748" stroke="#3a3d46" stroke-width="1"/>
-
-  <!-- Next-entry teaser -->
-  <text x="300" y="800" font-family="Georgia, serif" font-size="22" font-weight="600" fill="#e8e3d8">A Margin of One&#8217;s Own</text>
-  <g fill="#9a9486">
-    <rect x="300" y="822" width="600" height="9" rx="2"/>
-    <rect x="300" y="842" width="430" height="9" rx="2"/>
-  </g>
-  <text x="300" y="884" font-family="system-ui, Arial, sans-serif" font-size="12" fill="#caa15a" letter-spacing="2">CONTINUE READING →</text>
-
-  <!-- Subtle outer column hairlines to imply the reading measure -->
-  <line x1="270" y1="170" x2="270" y2="900" stroke="#1f222a" stroke-width="1"/>
-  <line x1="930" y1="170" x2="930" y2="900" stroke="#1f222a" stroke-width="1"/>
+  <!-- list row: compact thumbnail beside the title -->
+  <rect x="300" y="866" width="84" height="34" rx="4" fill="url(#thumb)" stroke="#272a33"/>
+  <text x="404" y="882" font-family="system-ui, Arial, sans-serif" font-size="11" font-weight="600" letter-spacing="1.6" fill="#cba35d">ENGINEERING</text>
+  <text x="404" y="900" font-family="Georgia, serif" font-size="20" font-weight="600" fill="#ece7db">A Margin of One&#8217;s Own</text>
 </svg>

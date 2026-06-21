@@ -1,58 +1,91 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" font-family="'Segoe UI', Helvetica, Arial, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" font-family="'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
   <defs>
     <linearGradient id="grad" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#6366f1"/>
       <stop offset="1" stop-color="#8b5cf6"/>
     </linearGradient>
-    <filter id="card" x="-10%" y="-10%" width="120%" height="130%">
-      <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#1e2230" flood-opacity="0.07"/>
+    <linearGradient id="gradBtn" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#5b5ef0"/>
+      <stop offset="1" stop-color="#7c4fe8"/>
+    </linearGradient>
+    <linearGradient id="gradTitle" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#4f46e5"/>
+      <stop offset="1" stop-color="#7c3aed"/>
+    </linearGradient>
+    <radialGradient id="heroGlow" cx="0.5" cy="0" r="0.9">
+      <stop offset="0" stop-color="#a78bfa" stop-opacity="0.28"/>
+      <stop offset="0.6" stop-color="#8b5cf6" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="cover" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6366f1"/>
+      <stop offset="1" stop-color="#a78bfa"/>
+    </linearGradient>
+    <filter id="card" x="-10%" y="-10%" width="120%" height="135%">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#181b27" flood-opacity="0.08"/>
     </filter>
     <filter id="btn" x="-30%" y="-30%" width="160%" height="190%">
-      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#6366f1" flood-opacity="0.30"/>
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#6366f1" flood-opacity="0.32"/>
     </filter>
+    <clipPath id="coverClip"><rect x="80" y="556" width="700" height="232" rx="20"/></clipPath>
   </defs>
 
   <!-- Canvas -->
-  <rect width="1200" height="900" fill="#f7f8fc"/>
+  <rect width="1200" height="900" fill="#f6f7fb"/>
 
   <!-- Sticky header -->
-  <rect x="0" y="0" width="1200" height="92" fill="#ffffff"/>
-  <line x1="0" y1="92" x2="1200" y2="92" stroke="#e6e9f2" stroke-width="2"/>
-  <text x="80" y="58" font-size="34" font-weight="800" letter-spacing="-1" fill="url(#grad)">Nimbus</text>
-  <g font-size="17" font-weight="600">
-    <rect x="772" y="32" width="84" height="36" rx="18" fill="url(#grad)"/>
-    <text x="792" y="56" fill="#ffffff">Home</text>
-    <text x="884" y="56" fill="#4a5168">Product</text>
-    <text x="996" y="56" fill="#4a5168">Pricing</text>
-    <text x="1092" y="56" fill="#4a5168">Blog</text>
+  <rect x="0" y="0" width="1200" height="84" fill="#ffffff"/>
+  <line x1="0" y1="84" x2="1200" y2="84" stroke="#e7eaf3" stroke-width="2"/>
+  <rect x="80" y="28" width="28" height="28" rx="8" fill="url(#grad)"/>
+  <text x="120" y="52" font-size="30" font-weight="800" letter-spacing="-1.2" fill="url(#gradTitle)">Northwind</text>
+  <g font-size="16" font-weight="600">
+    <rect x="772" y="28" width="78" height="34" rx="17" fill="url(#gradBtn)"/>
+    <text x="794" y="50" fill="#ffffff">Home</text>
+    <text x="876" y="50" fill="#4a5168">About</text>
+    <text x="972" y="50" fill="#4a5168">Design</text>
+    <text x="1062" y="50" fill="#4a5168">Engineering</text>
   </g>
 
-  <!-- Card 1 -->
-  <rect x="80" y="150" width="1040" height="288" rx="20" fill="#ffffff" stroke="#e6e9f2" stroke-width="2" filter="url(#card)"/>
-  <text x="120" y="222" font-size="40" font-weight="700" letter-spacing="-1" fill="#1e2230">Ship your launch in days, not months</text>
-  <text x="120" y="258" font-size="16" font-weight="600" fill="#8b93a7">June 18, 2026 · by <tspan fill="#4f46e5">Anthony</tspan></text>
-  <g font-size="20" fill="#4a5168">
-    <text x="120" y="306">Nimbus gives SaaS teams a bright, conversion-ready home page out of</text>
-    <text x="120" y="338">the box — floating cards, roomy spacing, and a gradient that pulls every</text>
-    <text x="120" y="370">eye straight to the call-to-action button.</text>
-  </g>
-  <rect x="120" y="392" width="172" height="40" rx="20" fill="url(#grad)" filter="url(#btn)"/>
-  <text x="142" y="418" font-size="16" font-weight="700" fill="#ffffff">Read more →</text>
+  <!-- Hero -->
+  <rect x="80" y="116" width="1040" height="300" rx="20" fill="#ffffff" stroke="#e7eaf3" stroke-width="2" filter="url(#card)"/>
+  <rect x="80" y="116" width="1040" height="300" rx="20" fill="url(#heroGlow)"/>
+  <!-- eyebrow pill -->
+  <rect x="520" y="156" width="160" height="34" rx="17" fill="#ffffff" stroke="#e7eaf3" stroke-width="2"/>
+  <circle cx="546" cy="173" r="5" fill="url(#grad)"/>
+  <text x="560" y="178" font-size="15" font-weight="700" fill="#4f46e5">Northwind</text>
+  <!-- hero title -->
+  <text x="600" y="252" font-size="52" font-weight="800" letter-spacing="-2" fill="#181b27" text-anchor="middle">Ideas worth shipping.</text>
+  <text x="600" y="300" font-size="20" fill="#4a5168" text-anchor="middle">A bright, fast home for your product and your writing.</text>
+  <!-- CTA -->
+  <rect x="446" y="332" width="180" height="46" rx="23" fill="url(#gradBtn)" filter="url(#btn)"/>
+  <text x="536" y="361" font-size="17" font-weight="700" fill="#ffffff" text-anchor="middle">Read the latest</text>
+  <rect x="640" y="332" width="114" height="46" rx="23" fill="#ffffff" stroke="#e7eaf3" stroke-width="2"/>
+  <text x="697" y="361" font-size="16" fill="#646b82" text-anchor="middle">Search…</text>
 
-  <!-- Card 2 -->
-  <rect x="80" y="478" width="1040" height="288" rx="20" fill="#ffffff" stroke="#e6e9f2" stroke-width="2" filter="url(#card)"/>
-  <text x="120" y="550" font-size="40" font-weight="700" letter-spacing="-1" fill="#1e2230">Built to convert, easy to love</text>
-  <text x="120" y="586" font-size="16" font-weight="600" fill="#8b93a7">June 11, 2026 · by <tspan fill="#4f46e5">Anthony</tspan></text>
-  <g font-size="20" fill="#4a5168">
-    <text x="120" y="634">Crisp geometric type on a soft white surface, violet-to-indigo accents,</text>
-    <text x="120" y="666">and accessible focus states baked in. Fast, modern, and translation</text>
-    <text x="120" y="698">ready — no page builders required.</text>
-  </g>
-  <rect x="120" y="720" width="172" height="40" rx="20" fill="url(#grad)" filter="url(#btn)"/>
-  <text x="142" y="746" font-size="16" font-weight="700" fill="#ffffff">Read more →</text>
+  <!-- Section eyebrow -->
+  <rect x="80" y="470" width="26" height="3" rx="2" fill="url(#grad)"/>
+  <text x="116" y="478" font-size="15" font-weight="800" letter-spacing="1.6" fill="#4f46e5">LATEST WRITING</text>
 
-  <!-- Footer -->
-  <rect x="0" y="836" width="1200" height="64" fill="#ffffff"/>
-  <line x1="0" y1="836" x2="1200" y2="836" stroke="#e6e9f2" stroke-width="2"/>
-  <text x="600" y="876" font-size="16" fill="#8b93a7" text-anchor="middle">© 2026 Nimbus. Built with Nimbus.</text>
+  <!-- Lead feature card with featured image cover -->
+  <rect x="80" y="504" width="1040" height="356" rx="20" fill="#ffffff" stroke="#e7eaf3" stroke-width="2" filter="url(#card)"/>
+
+  <!-- Cover image (left) -->
+  <g clip-path="url(#coverClip)">
+    <rect x="80" y="556" width="700" height="232" fill="url(#cover)"/>
+    <circle cx="250" cy="600" r="120" fill="#ffffff" opacity="0.12"/>
+    <circle cx="640" cy="760" r="150" fill="#ffffff" opacity="0.10"/>
+    <rect x="80" y="556" width="700" height="232" fill="none"/>
+  </g>
+  <!-- category chip on cover -->
+  <rect x="108" y="584" width="100" height="32" rx="16" fill="#ffffff" opacity="0.94"/>
+  <text x="158" y="605" font-size="13" font-weight="800" letter-spacing="1" fill="#4f46e5" text-anchor="middle">DESIGN</text>
+
+  <!-- Card text (right) -->
+  <text x="812" y="600" font-size="32" font-weight="800" letter-spacing="-1" fill="#181b27">Designing for clarity</text>
+  <text x="812" y="632" font-size="15" font-weight="600" fill="#646b82">June 18, 2026 · by <tspan fill="#4f46e5">Mara Ellison</tspan></text>
+  <g font-size="17" fill="#4a5168">
+    <text x="812" y="676">Good interfaces disappear. We unpack the small</text>
+    <text x="812" y="702">decisions — spacing, type, contrast — that make a</text>
+    <text x="812" y="728">product feel effortless to the people who use it.</text>
+  </g>
+  <text x="812" y="772" font-size="16" font-weight="800" fill="#4f46e5">Read more →</text>
 </svg>

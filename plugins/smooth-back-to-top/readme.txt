@@ -2,9 +2,9 @@
 Contributors: wpaithemes
 Tags: back to top, scroll, accessibility, button, navigation
 Requires at least: 5.0
-Tested up to: 6.5
+Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 1.0.0
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -18,14 +18,17 @@ smoothly scrolls the page back to the top when clicked.
 
 It is built to be polite and accessible:
 
-* Rendered as a native `<button>`, so it is fully keyboard-focusable.
-* Carries a descriptive `aria-label` for screen readers.
-* Respects the `prefers-reduced-motion` setting — no animation for users who ask for none.
+* Rendered as a native `<button>`, so it is fully keyboard-focusable and operable.
+* Carries a descriptive `aria-label` and a crisp upward-chevron icon.
+* Fades and scales in once you scroll past about 400 pixels — no layout shift, ever.
+* Respects the `prefers-reduced-motion` setting — it jumps instead of animating for users who ask for no motion.
+* Adapts to both light and dark themes via `prefers-color-scheme`.
+* Keeps clear of mobile safe-area insets (such as the iOS home indicator).
 * Moves focus to the top of the page after scrolling, so keyboard users keep their place.
 
 It works on any theme, adds no settings page, makes no external requests, and stores no data.
-The styles are added inline and the script is a tiny, dependency-free vanilla JavaScript file
-loaded in the footer.
+The styles and the script are tiny, dependency-free files enqueued from the plugin's own
+`assets` folder; the script loads in the footer so it never blocks rendering.
 
 == Installation ==
 
@@ -48,7 +51,19 @@ is saved to your database.
 
 Yes. The button is fixed to the viewport and does not depend on any specific theme markup.
 
+== Screenshots ==
+
+1. The floating Back to Top button in the lower-right corner of a page.
+
 == Changelog ==
+
+= 1.1.0 =
+* Stylesheet now ships as a real, cache-busted asset file instead of inline CSS.
+* Added dark-theme support via prefers-color-scheme so the button stays visible on dark sites.
+* Added a subtle fade-and-scale reveal animation (still honors prefers-reduced-motion).
+* Button now respects mobile safe-area insets and shrinks slightly on small screens to avoid overlapping content.
+* Added an `sbtt_is_active` filter so themes can opt the button in or out per view.
+* Tightened scroll-position detection (uses document.scrollingElement) and hardened markup escaping.
 
 = 1.0.0 =
 * Initial release.

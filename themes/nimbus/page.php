@@ -21,4 +21,5 @@ while ( have_posts() ) :
 
 endwhile;
 
+get_sidebar();
 get_footer();

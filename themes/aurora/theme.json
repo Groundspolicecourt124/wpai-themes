@@ -2,41 +2,67 @@
   "$schema": "https://schemas.wp.org/trunk/theme.json",
   "version": 2,
   "settings": {
-    "layout": { "contentSize": "672px", "wideSize": "960px" },
+    "appearanceTools": true,
+    "layout": { "contentSize": "720px", "wideSize": "1024px" },
     "color": {
       "palette": [
-        { "slug": "ink", "color": "#1f2328", "name": "Ink" },
-        { "slug": "soft", "color": "#545b66", "name": "Soft" },
-        { "slug": "accent", "color": "#b5532a", "name": "Accent" },
-        { "slug": "paper", "color": "#fbfaf7", "name": "Paper" },
+        { "slug": "ink", "color": "#21201c", "name": "Ink" },
+        { "slug": "soft", "color": "#57534b", "name": "Soft ink" },
+        { "slug": "faint", "color": "#736d62", "name": "Faint" },
+        { "slug": "line", "color": "#e6e0d4", "name": "Hairline" },
+        { "slug": "accent", "color": "#a5462a", "name": "Accent" },
+        { "slug": "accent-soft", "color": "#f3e6df", "name": "Accent soft" },
+        { "slug": "paper", "color": "#f7f4ee", "name": "Paper" },
         { "slug": "surface", "color": "#ffffff", "name": "Surface" }
-      ]
+      ],
+      "custom": false,
+      "customGradient": false
     },
     "typography": {
+      "customFontSize": false,
       "fontFamilies": [
         {
-          "fontFamily": "\"Iowan Old Style\", Palatino, Georgia, serif",
+          "fontFamily": "\"Iowan Old Style\", \"Palatino Linotype\", \"Book Antiqua\", Palatino, Georgia, \"Times New Roman\", serif",
           "slug": "serif",
           "name": "Serif"
         },
         {
-          "fontFamily": "system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif",
+          "fontFamily": "ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif",
           "slug": "sans",
           "name": "Sans"
+        },
+        {
+          "fontFamily": "ui-monospace, \"SFMono-Regular\", \"SF Mono\", Menlo, Consolas, \"Liberation Mono\", monospace",
+          "slug": "mono",
+          "name": "Mono"
         }
       ],
       "fontSizes": [
-        { "slug": "small", "size": "0.9rem", "name": "Small" },
-        { "slug": "medium", "size": "1.12rem", "name": "Medium" },
+        { "slug": "small", "size": "0.875rem", "name": "Small" },
+        { "slug": "medium", "size": "1.1875rem", "name": "Medium" },
         { "slug": "large", "size": "1.5rem", "name": "Large" },
-        { "slug": "x-large", "size": "2.3rem", "name": "Extra large" }
+        { "slug": "x-large", "size": "2.25rem", "name": "Extra large" },
+        { "slug": "xx-large", "size": "3.4rem", "name": "Huge" }
       ]
+    },
+    "spacing": {
+      "units": ["px", "em", "rem", "%", "vw"]
     }
   },
   "styles": {
-    "color": { "background": "#fbfaf7", "text": "#1f2328" },
+    "color": { "background": "#f7f4ee", "text": "#21201c" },
+    "typography": {
+      "fontFamily": "ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif",
+      "lineHeight": "1.5"
+    },
     "elements": {
-      "link": { "color": { "text": "#b5532a" } }
+      "link": {
+        "color": { "text": "#a5462a" },
+        ":hover": { "color": { "text": "#7f3520" } }
+      },
+      "h1": { "typography": { "fontFamily": "var(--wp--preset--font-family--serif)" } },
+      "h2": { "typography": { "fontFamily": "var(--wp--preset--font-family--serif)" } },
+      "h3": { "typography": { "fontFamily": "var(--wp--preset--font-family--serif)" } }
     }
   }
 }

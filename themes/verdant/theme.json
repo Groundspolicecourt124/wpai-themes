@@ -2,22 +2,22 @@
   "$schema": "https://schemas.wp.org/trunk/theme.json",
   "version": 2,
   "settings": {
-    "layout": { "contentSize": "720px", "wideSize": "1120px" },
+    "layout": { "contentSize": "640px", "wideSize": "1152px" },
     "color": {
       "palette": [
-        { "slug": "ink", "color": "#243b2c", "name": "Ink" },
-        { "slug": "soft", "color": "#4d6453", "name": "Soft" },
-        { "slug": "accent", "color": "#6f9c6e", "name": "Sage" },
-        { "slug": "accent-deep", "color": "#2f5d3f", "name": "Forest" },
-        { "slug": "accent-soft", "color": "#e6efe1", "name": "Mist" },
-        { "slug": "paper", "color": "#f4f7f1", "name": "Paper" },
+        { "slug": "ink", "color": "#1f3527", "name": "Ink" },
+        { "slug": "soft", "color": "#46604f", "name": "Soft" },
+        { "slug": "accent", "color": "#5f9265", "name": "Sage" },
+        { "slug": "accent-deep", "color": "#2c5639", "name": "Forest" },
+        { "slug": "accent-soft", "color": "#e4efdd", "name": "Mist" },
+        { "slug": "paper", "color": "#f3f6ef", "name": "Paper" },
         { "slug": "surface", "color": "#ffffff", "name": "Surface" }
       ]
     },
     "typography": {
       "fontFamilies": [
         {
-          "fontFamily": "\"Iowan Old Style\", Palatino, Georgia, serif",
+          "fontFamily": "\"Iowan Old Style\", \"Palatino Linotype\", Palatino, Georgia, serif",
           "slug": "serif",
           "name": "Serif"
         },
@@ -36,9 +36,9 @@
     }
   },
   "styles": {
-    "color": { "background": "#f4f7f1", "text": "#243b2c" },
+    "color": { "background": "#f3f6ef", "text": "#1f3527" },
     "elements": {
-      "link": { "color": { "text": "#2f5d3f" } }
+      "link": { "color": { "text": "#2c5639" } }
     }
   }
 }

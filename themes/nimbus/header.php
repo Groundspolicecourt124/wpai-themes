@@ -51,4 +51,5 @@ if ( ! defined( 'ABSPATH' ) ) {
 </header>
 
 <main id="content" class="site-main">
-	<div class="site-wrap">
+	<div class="site-wrap site-layout">
+		<div class="content-area">

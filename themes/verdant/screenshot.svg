@@ -1,96 +1,129 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" font-family="'Avenir Next','Segoe UI',system-ui,sans-serif">
   <defs>
     <linearGradient id="accentStrip" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#6f9c6e"/>
-      <stop offset="1" stop-color="#2f5d3f"/>
+      <stop offset="0" stop-color="#e4efdd"/>
+      <stop offset="0.4" stop-color="#5f9265"/>
+      <stop offset="1" stop-color="#2c5639"/>
     </linearGradient>
-    <linearGradient id="thumb" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#cfe0c6"/>
-      <stop offset="1" stop-color="#8fb585"/>
+    <linearGradient id="hero" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#e4efdd"/>
     </linearGradient>
-    <linearGradient id="divider" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#f4f7f1"/>
-      <stop offset="0.5" stop-color="#6f9c6e"/>
-      <stop offset="1" stop-color="#f4f7f1"/>
+    <linearGradient id="cover1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#7fae7c"/>
+      <stop offset="1" stop-color="#2c5639"/>
+    </linearGradient>
+    <linearGradient id="cover2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#c9883f"/>
+      <stop offset="1" stop-color="#5f9265"/>
+    </linearGradient>
+    <radialGradient id="sprig" cx="35%" cy="35%" r="65%">
+      <stop offset="0" stop-color="#5f9265" stop-opacity="0.30"/>
+      <stop offset="1" stop-color="#5f9265" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="footerg" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#21412c"/>
+      <stop offset="1" stop-color="#2c5639"/>
     </linearGradient>
   </defs>
 
-  <!-- Paper background -->
-  <rect width="1200" height="900" fill="#f4f7f1"/>
+  <!-- Paper canvas -->
+  <rect width="1200" height="900" fill="#f3f6ef"/>
+  <ellipse cx="1180" cy="40" rx="360" ry="220" fill="#f0f6ea"/>
 
-  <!-- Header (white surface) -->
-  <rect x="0" y="0" width="1200" height="118" fill="#ffffff"/>
-  <rect x="0" y="118" width="1200" height="4" fill="url(#accentStrip)"/>
-
-  <!-- Branding: leaf mark + title -->
-  <text x="72" y="62" font-size="34" fill="#6f9c6e">&#10087;</text>
-  <text x="108" y="64" font-size="32" font-weight="600" fill="#243b2c" font-family="'Iowan Old Style',Palatino,Georgia,serif">Verdant</text>
-  <text x="108" y="88" font-size="14" fill="#84977f">Wellness &amp; garden studio</text>
+  <!-- ===== Header ===== -->
+  <rect x="0" y="0" width="1200" height="96" fill="#ffffff"/>
+  <rect x="0" y="96" width="1200" height="4" fill="url(#accentStrip)"/>
+  <text x="72" y="58" font-size="30" fill="#5f9265" font-family="'Iowan Old Style',Palatino,Georgia,serif">&#10087;</text>
+  <text x="106" y="58" font-size="30" font-weight="600" fill="#1f3527" font-family="'Iowan Old Style',Palatino,Georgia,serif">Northwind</text>
 
   <!-- Pill nav -->
-  <rect x="690" y="44" width="78" height="34" rx="17" fill="#6f9c6e"/>
-  <text x="729" y="66" font-size="15" font-weight="600" fill="#ffffff" text-anchor="middle">Home</text>
-  <text x="816" y="66" font-size="15" font-weight="600" fill="#4d6453" text-anchor="middle">About</text>
-  <text x="912" y="66" font-size="15" font-weight="600" fill="#4d6453" text-anchor="middle">Services</text>
-  <text x="1020" y="66" font-size="15" font-weight="600" fill="#4d6453" text-anchor="middle">Journal</text>
-  <text x="1118" y="66" font-size="15" font-weight="600" fill="#4d6453" text-anchor="middle">Visit</text>
+  <rect x="724" y="34" width="74" height="34" rx="17" fill="#4e7d53"/>
+  <text x="761" y="56" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">Home</text>
+  <text x="852" y="56" font-size="15" font-weight="700" fill="#46604f" text-anchor="middle">About</text>
+  <text x="952" y="56" font-size="15" font-weight="700" fill="#46604f" text-anchor="middle">Design</text>
+  <text x="1078" y="56" font-size="15" font-weight="700" fill="#46604f" text-anchor="middle">Engineering</text>
 
-  <!-- ===== Main content column (cards) ===== -->
+  <!-- ===== Welcome hero ===== -->
+  <rect x="72" y="140" width="700" height="208" rx="28" fill="url(#hero)" stroke="#dde7d4"/>
+  <circle cx="752" cy="158" r="120" fill="url(#sprig)"/>
+  <text x="104" y="190" font-size="13" font-weight="700" letter-spacing="2.4" fill="#2c5639">&#10087;  WELCOME</text>
+  <text x="104" y="248" font-size="44" font-weight="600" fill="#21412c" font-family="'Iowan Old Style',Palatino,Georgia,serif">Ideas worth shipping.</text>
+  <text x="104" y="296" font-size="17" fill="#46604f">Stories, notes, and ideas — gathered slowly and shared</text>
+  <text x="104" y="320" font-size="17" fill="#46604f">with care. Settle in and read a while.</text>
 
-  <!-- Card 1 -->
-  <rect x="72" y="172" width="700" height="316" rx="16" fill="#ffffff" stroke="#dfe7d8" stroke-width="1"/>
-  <text x="104" y="226" font-size="30" font-weight="600" fill="#243b2c" font-family="'Iowan Old Style',Palatino,Georgia,serif">Slow mornings in the garden</text>
-  <text x="104" y="254" font-size="14" fill="#84977f">June 14, 2026 &#183; by Mara</text>
-  <rect x="104" y="272" width="636" height="120" rx="16" fill="url(#thumb)"/>
-  <circle cx="690" cy="312" r="26" fill="#ffffff" opacity="0.55"/>
-  <rect x="104" y="408" width="600" height="11" rx="5.5" fill="#dfe7d8"/>
-  <rect x="104" y="430" width="560" height="11" rx="5.5" fill="#dfe7d8"/>
-  <text x="104" y="468" font-size="15" font-weight="600" fill="#2f5d3f">Continue reading &#8594;</text>
+  <!-- Section label -->
+  <text x="72" y="392" font-size="13" font-weight="700" letter-spacing="2.4" fill="#5e7360">LATEST STORIES</text>
+  <line x1="248" y1="387" x2="772" y2="387" stroke="#dde7d4"/>
 
-  <!-- Card 2 -->
-  <rect x="72" y="508" width="700" height="220" rx="16" fill="#ffffff" stroke="#dfe7d8" stroke-width="1"/>
-  <text x="104" y="560" font-size="28" font-weight="600" fill="#243b2c" font-family="'Iowan Old Style',Palatino,Georgia,serif">Five calming herbs to grow</text>
-  <text x="104" y="586" font-size="14" fill="#84977f">June 2, 2026 &#183; by Mara</text>
-  <rect x="104" y="606" width="620" height="11" rx="5.5" fill="#dfe7d8"/>
-  <rect x="104" y="628" width="584" height="11" rx="5.5" fill="#dfe7d8"/>
-  <rect x="104" y="650" width="520" height="11" rx="5.5" fill="#dfe7d8"/>
-  <text x="104" y="700" font-size="15" font-weight="600" fill="#2f5d3f">Continue reading &#8594;</text>
+  <!-- ===== Lead card (featured image) ===== -->
+  <rect x="72" y="412" width="700" height="300" rx="22" fill="#ffffff" stroke="#dde7d4"/>
+  <path d="M72 434a22 22 0 0 1 22-22h656a22 22 0 0 1 22 22v124H72z" fill="url(#cover1)"/>
+  <!-- leafy motif on cover -->
+  <path d="M150 540c-24-40-12-86 40-118 0 40-4 84-24 118 14-30 30-60 56-86-10 40-24 70-30 102 30-8 44-32 44-58 4 30-10 56-40 64-18 4-36-2-46-22z" fill="#ffffff" opacity="0.22"/>
+  <circle cx="690" cy="468" r="34" fill="#ffffff" opacity="0.18"/>
+  <!-- eyebrow pill -->
+  <rect x="104" y="582" width="92" height="26" rx="13" fill="#e4efdd"/>
+  <text x="150" y="600" font-size="12" font-weight="700" letter-spacing="1.2" fill="#2c5639" text-anchor="middle">DESIGN</text>
+  <text x="104" y="642" font-size="28" font-weight="600" fill="#1f3527" font-family="'Iowan Old Style',Palatino,Georgia,serif">Slow mornings, shipped ideas</text>
+  <text x="104" y="668" font-size="13" fill="#5e7360">June 14, 2026 · by <tspan fill="#46604f" font-weight="700">Mara Ellison</tspan></text>
+  <rect x="104" y="682" width="560" height="9" rx="4.5" fill="#e9efe2"/>
+  <text x="104" y="704" font-size="14" font-weight="700" fill="#2c5639">Continue reading →</text>
+
+  <!-- ===== Compact card (image left) ===== -->
+  <rect x="72" y="732" width="700" height="120" rx="22" fill="#ffffff" stroke="#dde7d4"/>
+  <path d="M72 754a22 22 0 0 1 22-22h168v120H94a22 22 0 0 1-22-22z" fill="url(#cover2)"/>
+  <circle cx="178" cy="792" r="24" fill="#ffffff" opacity="0.18"/>
+  <rect x="290" y="752" width="80" height="24" rx="12" fill="#e4efdd"/>
+  <text x="330" y="769" font-size="11" font-weight="700" letter-spacing="1" fill="#2c5639" text-anchor="middle">CRAFT</text>
+  <text x="290" y="804" font-size="22" font-weight="600" fill="#1f3527" font-family="'Iowan Old Style',Palatino,Georgia,serif">Five calming notes on focus</text>
+  <text x="290" y="828" font-size="13" fill="#5e7360">June 2, 2026 · by Mara Ellison</text>
 
   <!-- ===== Sidebar widgets ===== -->
+  <!-- Search -->
+  <rect x="812" y="140" width="316" height="96" rx="22" fill="#ffffff" stroke="#dde7d4"/>
+  <circle cx="844" cy="174" r="5" fill="#5f9265"/>
+  <text x="858" y="179" font-size="12" font-weight="700" letter-spacing="1.6" fill="#2c5639">SEARCH</text>
+  <rect x="836" y="192" width="196" height="30" rx="10" fill="#f3f6ef" stroke="#dde7d4"/>
+  <rect x="1040" y="192" width="64" height="30" rx="15" fill="#4e7d53"/>
 
-  <!-- Search widget -->
-  <rect x="812" y="172" width="316" height="92" rx="16" fill="#ffffff" stroke="#dfe7d8" stroke-width="1"/>
-  <text x="836" y="206" font-size="13" font-weight="700" letter-spacing="1.5" fill="#2f5d3f">SEARCH</text>
-  <rect x="836" y="220" width="200" height="30" rx="10" fill="#f4f7f1" stroke="#dfe7d8"/>
-  <rect x="1044" y="220" width="60" height="30" rx="15" fill="#6f9c6e"/>
+  <!-- Recent posts -->
+  <rect x="812" y="260" width="316" height="196" rx="22" fill="#ffffff" stroke="#dde7d4"/>
+  <circle cx="844" cy="294" r="5" fill="#5f9265"/>
+  <text x="858" y="299" font-size="12" font-weight="700" letter-spacing="1.6" fill="#2c5639">RECENT POSTS</text>
+  <rect x="836" y="316" width="252" height="9" rx="4.5" fill="#e9efe2"/>
+  <line x1="836" y1="342" x2="1104" y2="342" stroke="#dde7d4" stroke-dasharray="3 4"/>
+  <rect x="836" y="356" width="236" height="9" rx="4.5" fill="#e9efe2"/>
+  <line x1="836" y1="382" x2="1104" y2="382" stroke="#dde7d4" stroke-dasharray="3 4"/>
+  <rect x="836" y="396" width="216" height="9" rx="4.5" fill="#e9efe2"/>
+  <line x1="836" y1="422" x2="1104" y2="422" stroke="#dde7d4" stroke-dasharray="3 4"/>
+  <rect x="836" y="436" width="190" height="9" rx="4.5" fill="#e9efe2"/>
 
-  <!-- Recent posts widget -->
-  <rect x="812" y="288" width="316" height="200" rx="16" fill="#ffffff" stroke="#dfe7d8" stroke-width="1"/>
-  <text x="836" y="322" font-size="13" font-weight="700" letter-spacing="1.5" fill="#2f5d3f">RECENT POSTS</text>
-  <rect x="836" y="344" width="252" height="10" rx="5" fill="#dfe7d8"/>
-  <line x1="836" y1="370" x2="1104" y2="370" stroke="#dfe7d8" stroke-dasharray="3 4"/>
-  <rect x="836" y="384" width="236" height="10" rx="5" fill="#dfe7d8"/>
-  <line x1="836" y1="410" x2="1104" y2="410" stroke="#dfe7d8" stroke-dasharray="3 4"/>
-  <rect x="836" y="424" width="216" height="10" rx="5" fill="#dfe7d8"/>
-  <line x1="836" y1="450" x2="1104" y2="450" stroke="#dfe7d8" stroke-dasharray="3 4"/>
-  <rect x="836" y="464" width="200" height="10" rx="5" fill="#dfe7d8"/>
+  <!-- Categories -->
+  <rect x="812" y="480" width="316" height="232" rx="22" fill="#ffffff" stroke="#dde7d4"/>
+  <circle cx="844" cy="514" r="5" fill="#5f9265"/>
+  <text x="858" y="519" font-size="12" font-weight="700" letter-spacing="1.6" fill="#2c5639">CATEGORIES</text>
+  <rect x="836" y="536" width="150" height="9" rx="4.5" fill="#e9efe2"/>
+  <line x1="836" y1="562" x2="1104" y2="562" stroke="#dde7d4" stroke-dasharray="3 4"/>
+  <rect x="836" y="576" width="180" height="9" rx="4.5" fill="#e9efe2"/>
+  <line x1="836" y1="602" x2="1104" y2="602" stroke="#dde7d4" stroke-dasharray="3 4"/>
+  <rect x="836" y="616" width="132" height="9" rx="4.5" fill="#e9efe2"/>
+  <line x1="836" y1="642" x2="1104" y2="642" stroke="#dde7d4" stroke-dasharray="3 4"/>
+  <rect x="836" y="656" width="164" height="9" rx="4.5" fill="#e9efe2"/>
+  <line x1="836" y1="682" x2="1104" y2="682" stroke="#dde7d4" stroke-dasharray="3 4"/>
+  <rect x="836" y="696" width="120" height="9" rx="4.5" fill="#e9efe2"/>
 
-  <!-- Categories widget -->
-  <rect x="812" y="512" width="316" height="216" rx="16" fill="#ffffff" stroke="#dfe7d8" stroke-width="1"/>
-  <text x="836" y="546" font-size="13" font-weight="700" letter-spacing="1.5" fill="#2f5d3f">CATEGORIES</text>
-  <rect x="836" y="568" width="150" height="10" rx="5" fill="#dfe7d8"/>
-  <line x1="836" y1="594" x2="1104" y2="594" stroke="#dfe7d8" stroke-dasharray="3 4"/>
-  <rect x="836" y="608" width="180" height="10" rx="5" fill="#dfe7d8"/>
-  <line x1="836" y1="634" x2="1104" y2="634" stroke="#dfe7d8" stroke-dasharray="3 4"/>
-  <rect x="836" y="648" width="132" height="10" rx="5" fill="#dfe7d8"/>
-  <line x1="836" y1="674" x2="1104" y2="674" stroke="#dfe7d8" stroke-dasharray="3 4"/>
-  <rect x="836" y="688" width="164" height="10" rx="5" fill="#dfe7d8"/>
+  <!-- Tag cloud pills -->
+  <rect x="812" y="736" width="316" height="116" rx="22" fill="#ffffff" stroke="#dde7d4"/>
+  <circle cx="844" cy="770" r="5" fill="#5f9265"/>
+  <text x="858" y="775" font-size="12" font-weight="700" letter-spacing="1.6" fill="#2c5639">ARCHIVES</text>
+  <rect x="836" y="790" width="84" height="24" rx="12" fill="#e4efdd"/>
+  <rect x="930" y="790" width="64" height="24" rx="12" fill="#e4efdd"/>
+  <rect x="1004" y="790" width="100" height="24" rx="12" fill="#e4efdd"/>
+  <rect x="836" y="822" width="72" height="24" rx="12" fill="#e4efdd"/>
+  <rect x="918" y="822" width="92" height="24" rx="12" fill="#e4efdd"/>
 
-  <!-- Leaf-green divider -->
-  <rect x="72" y="772" width="1056" height="2" fill="url(#divider)"/>
-
-  <!-- Footer (forest) -->
-  <rect x="0" y="800" width="1200" height="100" fill="#2f5d3f"/>
-  <text x="600" y="838" font-size="22" fill="#6f9c6e" text-anchor="middle">&#10087;</text>
-  <text x="600" y="868" font-size="15" fill="#d8e6d6" text-anchor="middle">&#169; 2026 Verdant. Grown with Verdant.</text>
+  <!-- ===== Footer ===== -->
+  <rect x="0" y="868" width="1200" height="32" fill="url(#footerg)"/>
+  <text x="600" y="889" font-size="13" fill="#cfe0cd" text-anchor="middle">&#10087;  © 2026 Northwind. Grown with Verdant.</text>
 </svg>

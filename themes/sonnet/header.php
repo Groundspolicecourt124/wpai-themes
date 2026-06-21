@@ -24,11 +24,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<div class="site-wrap site-header__inner">
 		<div class="site-branding">
 			<?php if ( has_custom_logo() ) : ?>
-				<?php the_custom_logo(); ?>
+				<div class="site-logo"><?php the_custom_logo(); ?></div>
 			<?php endif; ?>
-			<p class="site-title">
-				<a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a>
-			</p>
+
+			<?php if ( is_front_page() && is_home() ) : ?>
+				<h1 class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></h1>
+			<?php else : ?>
+				<p class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></p>
+			<?php endif; ?>
+
 			<?php
 			$sonnet_desc = get_bloginfo( 'description', 'display' );
 			if ( $sonnet_desc || is_customize_preview() ) :
@@ -37,18 +41,25 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<?php endif; ?>
 		</div>
 
-		<nav class="main-nav" aria-label="<?php esc_attr_e( 'Primary', 'sonnet' ); ?>">
-			<?php
-			wp_nav_menu( array(
-				'theme_location' => 'primary',
-				'container'      => false,
-				'fallback_cb'    => false,
-				'depth'          => 2,
-			) );
+		<?php
+		if ( has_nav_menu( 'primary' ) ) :
 			?>
-		</nav>
+			<nav class="main-nav" aria-label="<?php esc_attr_e( 'Primary navigation', 'sonnet' ); ?>">
+				<?php
+				wp_nav_menu( array(
+					'theme_location' => 'primary',
+					'container'      => false,
+					'menu_class'     => 'main-nav__menu',
+					'fallback_cb'    => false,
+					'depth'          => 2,
+				) );
+				?>
+			</nav>
+			<?php
+		endif;
+		?>
 	</div>
 </header>
 
-<main id="content" class="site-main">
+<main id="content" class="site-main" tabindex="-1">
 	<div class="site-wrap">

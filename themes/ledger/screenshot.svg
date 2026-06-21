@@ -1,96 +1,114 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" font-family="Georgia, 'Times New Roman', serif">
+  <defs>
+    <!-- Lead-story featured image: a full-bleed gradient cover, like the demo posts -->
+    <linearGradient id="lead" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#b23a48"/>
+      <stop offset="0.55" stop-color="#7d0014"/>
+      <stop offset="1" stop-color="#2a0f14"/>
+    </linearGradient>
+    <linearGradient id="card1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#3d4a5c"/>
+      <stop offset="1" stop-color="#161d28"/>
+    </linearGradient>
+    <linearGradient id="card2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#9a7b3f"/>
+      <stop offset="1" stop-color="#4a3614"/>
+    </linearGradient>
+  </defs>
+
   <!-- Paper background -->
   <rect width="1200" height="900" fill="#faf8f4"/>
 
-  <!-- Heavy top rule (masthead) -->
-  <rect x="0" y="0" width="1200" height="8" fill="#16130f"/>
+  <!-- Dateline strip -->
+  <rect x="0" y="0" width="1200" height="26" fill="#16130f"/>
+  <text x="80" y="18" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="700" letter-spacing="2.4" fill="#faf8f4">JUNE 21, 2026 · VOL. 2026</text>
+  <text x="1120" y="18" text-anchor="end" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="700" letter-spacing="2.4" fill="#e7b8bf">THE EDITORIAL REVIEW</text>
 
-  <!-- Masthead title + tagline -->
-  <text x="80" y="120" font-size="76" font-weight="700" fill="#16130f" letter-spacing="-1.5">Ledger</text>
-  <text x="84" y="152" font-family="Helvetica, Arial, sans-serif" font-size="15" letter-spacing="6" fill="#8a8276">THE EDITORIAL REVIEW</text>
-  <line x1="80" y1="178" x2="1120" y2="178" stroke="#ddd6c9" stroke-width="1"/>
+  <!-- Heavy top rule of masthead -->
+  <rect x="0" y="26" width="1200" height="6" fill="#16130f"/>
 
-  <!-- Nav bar -->
-  <line x1="80" y1="222" x2="1120" y2="222" stroke="#ddd6c9" stroke-width="1"/>
-  <g font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="700" letter-spacing="2.5">
-    <text x="80" y="206" fill="#b00020">HOME</text>
-    <text x="180" y="206" fill="#4a443c">POLITICS</text>
-    <text x="310" y="206" fill="#4a443c">CULTURE</text>
-    <text x="435" y="206" fill="#4a443c">BUSINESS</text>
-    <text x="575" y="206" fill="#4a443c">OPINION</text>
+  <!-- Centered masthead with flanking rules -->
+  <line x1="80" y1="78" x2="430" y2="78" stroke="#ddd5c7" stroke-width="1"/>
+  <line x1="770" y1="78" x2="1120" y2="78" stroke="#ddd5c7" stroke-width="1"/>
+  <text x="600" y="92" text-anchor="middle" font-size="74" font-weight="700" fill="#16130f" letter-spacing="-1.6">Northwind</text>
+  <text x="600" y="120" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="13" letter-spacing="7" fill="#756c5e">IDEAS WORTH SHIPPING.</text>
+
+  <!-- Sticky nav (centered, bordered) -->
+  <line x1="0" y1="146" x2="1200" y2="146" stroke="#16130f" stroke-width="1.5"/>
+  <line x1="0" y1="186" x2="1200" y2="186" stroke="#16130f" stroke-width="1.5"/>
+  <g font-family="Helvetica, Arial, sans-serif" font-size="13" font-weight="700" letter-spacing="2.6" text-anchor="middle">
+    <text x="468" y="171" fill="#a4001a">HOME</text>
+    <rect x="436" y="183" width="64" height="3" fill="#a4001a"/>
+    <text x="558" y="171" fill="#463f37">ABOUT</text>
+    <text x="652" y="171" fill="#463f37">DESIGN</text>
+    <text x="758" y="171" fill="#463f37">ENGINEERING</text>
   </g>
 
-  <!-- Column rule between content and sidebar -->
-  <line x1="830" y1="270" x2="830" y2="840" stroke="#ddd6c9" stroke-width="1"/>
+  <!-- ===================== LEAD STORY (full width) ===================== -->
+  <!-- Lead featured image (right) -->
+  <rect x="650" y="222" width="470" height="352" fill="url(#lead)"/>
+  <circle cx="990" cy="300" r="80" fill="#ffffff" opacity="0.06"/>
+  <circle cx="760" cy="500" r="120" fill="#000000" opacity="0.10"/>
 
-  <!-- ===== Main article column ===== -->
-  <!-- Kicker -->
-  <text x="80" y="300" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="700" letter-spacing="3" fill="#b00020">CULTURE</text>
-  <!-- Headline -->
-  <text x="80" y="350" font-size="46" font-weight="700" fill="#16130f" letter-spacing="-1">The Long Read on</text>
-  <text x="80" y="402" font-size="46" font-weight="700" fill="#16130f" letter-spacing="-1">Typographic Order</text>
-  <!-- Byline (small caps) -->
-  <text x="80" y="436" font-family="Helvetica, Arial, sans-serif" font-size="13" font-weight="700" letter-spacing="2" fill="#16130f">BY A. EDITOR
-    <tspan fill="#8a8276" font-weight="400"> &#183; JUNE 20, 2026</tspan>
+  <!-- Lead body (left) -->
+  <text x="80" y="262" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="700" letter-spacing="3" fill="#a4001a">DESIGN</text>
+  <rect x="80" y="272" width="62" height="2.5" fill="#a4001a"/>
+  <text x="80" y="330" font-size="52" font-weight="700" fill="#16130f" letter-spacing="-1.4">Designing for</text>
+  <text x="80" y="386" font-size="52" font-weight="700" fill="#16130f" letter-spacing="-1.4">the long now</text>
+  <!-- Byline -->
+  <text x="80" y="420" font-family="Helvetica, Arial, sans-serif" font-size="13" font-weight="700" letter-spacing="1.5" fill="#16130f">BY MARA ELLISON
+    <tspan fill="#756c5e" font-weight="400"> &#183; JUNE 21, 2026</tspan>
   </text>
-  <line x1="80" y1="456" x2="790" y2="456" stroke="#ddd6c9" stroke-width="1"/>
-
-  <!-- Drop cap -->
-  <text x="78" y="552" font-size="96" font-weight="700" fill="#b00020">T</text>
-  <!-- Body lines (paragraph 1, wraps around drop cap) -->
-  <g fill="#16130f">
-    <rect x="148" y="490" width="642" height="10" rx="2"/>
-    <rect x="148" y="514" width="642" height="10" rx="2"/>
-    <rect x="148" y="538" width="600" height="10" rx="2"/>
-    <rect x="80" y="566" width="710" height="10" rx="2"/>
-    <rect x="80" y="590" width="710" height="10" rx="2"/>
-    <rect x="80" y="614" width="540" height="10" rx="2"/>
+  <!-- Standfirst -->
+  <g fill="#463f37">
+    <rect x="80" y="446" width="520" height="11" rx="2"/>
+    <rect x="80" y="470" width="520" height="11" rx="2"/>
+    <rect x="80" y="494" width="430" height="11" rx="2"/>
   </g>
+  <text x="80" y="546" font-family="Helvetica, Arial, sans-serif" font-size="13" font-weight="700" letter-spacing="2" fill="#a4001a">READ THE LEAD STORY &#8594;</text>
 
-  <!-- Subhead -->
-  <text x="80" y="678" font-size="30" font-weight="700" fill="#16130f" letter-spacing="-0.5">A second movement</text>
-  <g fill="#16130f">
-    <rect x="80" y="704" width="710" height="10" rx="2"/>
-    <rect x="80" y="728" width="710" height="10" rx="2"/>
-    <rect x="80" y="752" width="670" height="10" rx="2"/>
+  <!-- Double rule dividing lead from the grid -->
+  <line x1="80" y1="600" x2="1120" y2="600" stroke="#16130f" stroke-width="1"/>
+  <line x1="80" y1="604" x2="1120" y2="604" stroke="#16130f" stroke-width="1"/>
+
+  <!-- ===================== MORE STORIES + SIDEBAR ===================== -->
+  <!-- Section heading -->
+  <text x="80" y="648" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="700" letter-spacing="3" fill="#16130f">MORE STORIES</text>
+  <line x1="240" y1="644" x2="790" y2="644" stroke="#16130f" stroke-width="1"/>
+
+  <!-- Card 1 -->
+  <rect x="80" y="672" width="340" height="104" fill="url(#card1)"/>
+  <text x="80" y="800" font-family="Helvetica, Arial, sans-serif" font-size="12" font-weight="700" letter-spacing="2.5" fill="#a4001a">ENGINEERING</text>
+  <text x="80" y="828" font-size="26" font-weight="700" fill="#16130f" letter-spacing="-0.5">Shipping less, often</text>
+  <rect x="80" y="846" width="330" height="9" rx="2" fill="#463f37"/>
+
+  <!-- Card 2 -->
+  <rect x="450" y="672" width="340" height="104" fill="url(#card2)"/>
+  <text x="450" y="800" font-family="Helvetica, Arial, sans-serif" font-size="12" font-weight="700" letter-spacing="2.5" fill="#a4001a">CRAFT</text>
+  <text x="450" y="828" font-size="26" font-weight="700" fill="#16130f" letter-spacing="-0.5">The weight of a rule</text>
+  <rect x="450" y="846" width="330" height="9" rx="2" fill="#463f37"/>
+
+  <!-- Column rule before sidebar -->
+  <line x1="830" y1="624" x2="830" y2="858" stroke="#ddd5c7" stroke-width="1"/>
+
+  <!-- Sidebar: Search widget -->
+  <text x="870" y="648" font-family="Helvetica, Arial, sans-serif" font-size="13" font-weight="700" letter-spacing="2.5" fill="#16130f">SEARCH</text>
+  <rect x="870" y="658" width="250" height="2.5" fill="#16130f"/>
+  <rect x="870" y="676" width="178" height="36" fill="#fffdf9" stroke="#ddd5c7" stroke-width="1"/>
+  <rect x="1052" y="676" width="68" height="36" fill="#a4001a"/>
+  <text x="1086" y="699" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="10" font-weight="700" letter-spacing="1.5" fill="#ffffff">GO</text>
+
+  <!-- Sidebar: Recent Posts widget -->
+  <text x="870" y="752" font-family="Helvetica, Arial, sans-serif" font-size="13" font-weight="700" letter-spacing="2.5" fill="#16130f">RECENT POSTS</text>
+  <rect x="870" y="762" width="250" height="2.5" fill="#16130f"/>
+  <g fill="#16130f" font-family="Helvetica, Arial, sans-serif">
+    <rect x="870" y="784" width="240" height="9" rx="2"/>
+    <line x1="870" y1="806" x2="1120" y2="806" stroke="#ddd5c7" stroke-width="1"/>
+    <rect x="870" y="822" width="200" height="9" rx="2"/>
+    <line x1="870" y1="844" x2="1120" y2="844" stroke="#ddd5c7" stroke-width="1"/>
   </g>
-
-  <!-- Pull-quote accent rule -->
-  <rect x="80" y="784" width="4" height="56" fill="#b00020"/>
-  <text x="104" y="812" font-size="22" font-style="italic" fill="#4a443c">"Order is the quiet</text>
-  <text x="104" y="838" font-size="22" font-style="italic" fill="#4a443c">authority of the page."</text>
-
-  <!-- ===== Sidebar column ===== -->
-  <!-- Widget 1 -->
-  <text x="870" y="300" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="700" letter-spacing="2.5" fill="#16130f">MOST READ</text>
-  <rect x="870" y="312" width="250" height="3" fill="#16130f"/>
-  <g fill="#16130f">
-    <rect x="870" y="340" width="250" height="9" rx="2"/>
-    <rect x="870" y="358" width="180" height="9" rx="2"/>
-    <line x1="870" y1="382" x2="1120" y2="382" stroke="#ddd6c9" stroke-width="1"/>
-    <rect x="870" y="402" width="250" height="9" rx="2"/>
-    <rect x="870" y="420" width="200" height="9" rx="2"/>
-    <line x1="870" y1="444" x2="1120" y2="444" stroke="#ddd6c9" stroke-width="1"/>
-    <rect x="870" y="464" width="240" height="9" rx="2"/>
-    <rect x="870" y="482" width="160" height="9" rx="2"/>
-  </g>
-
-  <!-- Widget 2 -->
-  <text x="870" y="556" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="700" letter-spacing="2.5" fill="#16130f">CATEGORIES</text>
-  <rect x="870" y="568" width="250" height="3" fill="#16130f"/>
-  <g fill="#16130f">
-    <rect x="870" y="596" width="150" height="9" rx="2"/>
-    <line x1="870" y1="620" x2="1120" y2="620" stroke="#ddd6c9" stroke-width="1"/>
-    <rect x="870" y="640" width="190" height="9" rx="2"/>
-    <line x1="870" y1="664" x2="1120" y2="664" stroke="#ddd6c9" stroke-width="1"/>
-    <rect x="870" y="684" width="130" height="9" rx="2"/>
-  </g>
-
-  <!-- Search submit button (accent) -->
-  <rect x="870" y="730" width="130" height="38" fill="#b00020"/>
-  <text x="895" y="755" font-family="Helvetica, Arial, sans-serif" font-size="13" font-weight="700" letter-spacing="2" fill="#ffffff">SEARCH</text>
 
   <!-- Footer rule -->
-  <rect x="0" y="868" width="1200" height="6" fill="#16130f"/>
-  <text x="600" y="892" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="12" letter-spacing="2" fill="#4a443c">&#169; 2026 LEDGER &#183; SET IN LEDGER</text>
+  <rect x="0" y="872" width="1200" height="6" fill="#16130f"/>
+  <text x="600" y="895" text-anchor="middle" font-size="17" font-weight="700" fill="#16130f" letter-spacing="-0.5">Northwind</text>
 </svg>

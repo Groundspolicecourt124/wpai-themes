@@ -1,6 +1,10 @@
 <?php
 /**
- * Post / page content partial.
+ * Single post / page content partial.
+ *
+ * Renders the long-form reading view: category eyebrow, large title, byline,
+ * a full-bleed cover image, and the body (with its drop-cap lead-in styled in
+ * CSS). The same partial is used for pages, minus the post meta.
  *
  * @package Sonnet
  */
@@ -8,55 +12,64 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-?>
-<article id="post-<?php the_ID(); ?>" <?php post_class( 'entry' ); ?>>
-	<header class="entry-header">
-		<?php
-		if ( is_singular() ) :
-			the_title( '<h1 class="entry-title">', '</h1>' );
-		else :
-			the_title( '<h2 class="entry-title"><a href="' . esc_url( get_permalink() ) . '" rel="bookmark">', '</a></h2>' );
-		endif;
 
-		if ( 'post' === get_post_type() ) :
-			?>
-			<div class="entry-meta"><?php sonnet_posted_meta(); ?></div>
+$sonnet_is_post = ( 'post' === get_post_type() );
+?>
+<article id="post-<?php the_ID(); ?>" <?php post_class( 'entry entry--single' ); ?>>
+
+	<header class="entry-header entry-header--single">
+		<?php if ( $sonnet_is_post ) : ?>
+			<?php
+			$sonnet_cat = sonnet_primary_category();
+			if ( $sonnet_cat ) :
+				?>
+				<p class="entry-kicker"><span class="entry-kicker__cat"><?php echo esc_html( $sonnet_cat ); ?></span></p>
+			<?php endif; ?>
+		<?php endif; ?>
+
+		<?php the_title( '<h1 class="entry-title">', '</h1>' ); ?>
+
+		<?php if ( $sonnet_is_post ) : ?>
+			<p class="entry-meta entry-meta--single"><?php sonnet_posted_meta(); ?></p>
 		<?php endif; ?>
 	</header>
 
-	<?php if ( has_post_thumbnail() && ! is_singular() ) : ?>
-		<a class="featured-image" href="<?php the_permalink(); ?>" aria-hidden="true" tabindex="-1">
-			<?php the_post_thumbnail( 'large' ); ?>
-		</a>
-	<?php elseif ( has_post_thumbnail() ) : ?>
-		<div class="featured-image"><?php the_post_thumbnail( 'large' ); ?></div>
+	<?php if ( has_post_thumbnail() ) : ?>
+		<figure class="featured-image featured-image--single">
+			<?php
+			the_post_thumbnail( 'large', array( 'fetchpriority' => 'high' ) );
+			$sonnet_caption = wp_get_attachment_caption( get_post_thumbnail_id() );
+			if ( $sonnet_caption ) :
+				?>
+				<figcaption class="featured-image__caption"><?php echo wp_kses_post( $sonnet_caption ); ?></figcaption>
+			<?php endif; ?>
+		</figure>
 	<?php endif; ?>
 
 	<div class="entry-content">
 		<?php
-		if ( is_singular() ) :
-			the_content();
-			wp_link_pages( array(
-				'before' => '<div class="page-links">' . esc_html__( 'Pages:', 'sonnet' ),
-				'after'  => '</div>',
-			) );
-		else :
-			the_excerpt();
-			?>
-			<a class="read-more" href="<?php the_permalink(); ?>">
-				<?php esc_html_e( 'Continue reading →', 'sonnet' ); ?>
-			</a>
-			<?php
-		endif;
+		the_content();
+
+		wp_link_pages( array(
+			'before'      => '<nav class="page-links" aria-label="' . esc_attr__( 'Post pages', 'sonnet' ) . '">' . esc_html__( 'Pages:', 'sonnet' ) . ' ',
+			'after'       => '</nav>',
+			'link_before' => '<span>',
+			'link_after'  => '</span>',
+		) );
 		?>
 	</div>
 
-	<?php if ( is_singular() ) : ?>
+	<?php if ( $sonnet_is_post ) : ?>
 		<footer class="entry-footer">
 			<?php
-			$sonnet_cats = get_the_category_list( ', ' );
+			$sonnet_tags = get_the_tag_list( '<span class="entry-tag">', '</span><span class="entry-tag">', '</span>' );
+			if ( $sonnet_tags ) {
+				echo '<div class="entry-tags">' . wp_kses_post( $sonnet_tags ) . '</div>';
+			}
+
+			$sonnet_cats = get_the_category_list( '<span class="sep">·</span>' );
 			if ( $sonnet_cats ) {
-				echo '<p class="entry-cats">' . wp_kses_post( $sonnet_cats ) . '</p>';
+				echo '<p class="entry-cats"><span class="entry-cats__label">' . esc_html__( 'Filed under', 'sonnet' ) . '</span> ' . wp_kses_post( $sonnet_cats ) . '</p>';
 			}
 			?>
 		</footer>

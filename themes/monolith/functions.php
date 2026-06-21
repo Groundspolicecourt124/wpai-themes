@@ -9,6 +9,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * Load the Customizer (live color controls).
+ */
+require_once get_template_directory() . '/inc/customizer.php';
+
 if ( ! function_exists( 'monolith_setup' ) ) {
 	/**
 	 * Register theme supports and nav menus.
@@ -37,6 +42,11 @@ if ( ! function_exists( 'monolith_setup' ) ) {
 		add_theme_support( 'responsive-embeds' );
 		add_theme_support( 'align-wide' );
 		add_theme_support( 'editor-styles' );
+
+		add_theme_support( 'wp-block-styles' );
+
+		// A slightly wider crop for project covers and featured images.
+		add_image_size( 'monolith-cover', 1200, 750, true );
 
 		register_nav_menus( array(
 			'primary' => esc_html__( 'Primary Menu', 'monolith' ),
@@ -82,15 +92,49 @@ function monolith_widgets_init() {
 add_action( 'widgets_init', 'monolith_widgets_init' );
 
 /**
- * Print human-readable post meta (date + author).
+ * Print human-readable post meta (byline + date).
  */
 if ( ! function_exists( 'monolith_posted_meta' ) ) {
 	function monolith_posted_meta() {
+		$monolith_author = '<span class="author">' . esc_html( get_the_author() ) . '</span>';
+		$monolith_date   = '<time datetime="' . esc_attr( get_the_date( DATE_W3C ) ) . '">' . esc_html( get_the_date() ) . '</time>';
+
 		printf(
-			/* translators: 1: post date, 2: post author */
-			esc_html__( '%1$s — %2$s', 'monolith' ),
-			'<time datetime="' . esc_attr( get_the_date( DATE_W3C ) ) . '">' . esc_html( get_the_date() ) . '</time>',
-			'<span class="author">' . esc_html( get_the_author() ) . '</span>'
+			/* translators: 1: post author, 2: separator, 3: post date */
+			esc_html__( 'By %1$s%2$s%3$s', 'monolith' ),
+			$monolith_author, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- pre-escaped above.
+			'<span class="sep" aria-hidden="true">/</span>',
+			$monolith_date // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- pre-escaped above.
 		);
 	}
 }
+
+/**
+ * Tighten the auto-excerpt for the project grid.
+ */
+function monolith_excerpt_length( $length ) {
+	return 28;
+}
+add_filter( 'excerpt_length', 'monolith_excerpt_length' );
+
+/**
+ * Replace the default [...] excerpt tail.
+ */
+function monolith_excerpt_more( $more ) {
+	return '…';
+}
+add_filter( 'excerpt_more', 'monolith_excerpt_more' );
+
+/**
+ * Give the body a helpful class when the front page is the blog index.
+ */
+function monolith_body_classes( $classes ) {
+	if ( is_front_page() && is_home() ) {
+		$classes[] = 'monolith-home';
+	}
+	if ( ! is_active_sidebar( 'sidebar-1' ) ) {
+		$classes[] = 'monolith-no-sidebar';
+	}
+	return $classes;
+}
+add_filter( 'body_class', 'monolith_body_classes' );

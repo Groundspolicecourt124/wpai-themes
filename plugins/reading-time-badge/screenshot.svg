@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" role="img" aria-label="Reading Time Badge preview">
+  <defs>
+    <linearGradient id="rtb-bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f8fafc"/>
+      <stop offset="1" stop-color="#eef2f7"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Page background -->
+  <rect width="1200" height="900" fill="url(#rtb-bg)"/>
+
+  <!-- Browser chrome -->
+  <rect x="80" y="70" width="1040" height="760" rx="18" fill="#ffffff" stroke="#e2e8f0" stroke-width="2"/>
+  <rect x="80" y="70" width="1040" height="56" rx="18" fill="#f1f5f9"/>
+  <rect x="80" y="108" width="1040" height="18" fill="#f1f5f9"/>
+  <circle cx="116" cy="98" r="8" fill="#f87171"/>
+  <circle cx="144" cy="98" r="8" fill="#fbbf24"/>
+  <circle cx="172" cy="98" r="8" fill="#34d399"/>
+  <rect x="210" y="86" width="820" height="24" rx="12" fill="#e2e8f0"/>
+
+  <!-- Article headline -->
+  <rect x="140" y="184" width="560" height="40" rx="8" fill="#1f2937"/>
+
+  <!-- The reading-time badge: pill with clock glyph + label -->
+  <g>
+    <rect x="140" y="256" width="214" height="46" rx="23" fill="#1f29371a" stroke="#1f293733" stroke-width="2"/>
+    <!-- Clock glyph (matches the inline SVG used by the plugin) -->
+    <g transform="translate(166 279)" fill="none" stroke="#374151" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="0" cy="0" r="9"/>
+      <polyline points="0 -5 0 0 3.5 2"/>
+    </g>
+    <text x="194" y="285" font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif" font-size="20" font-weight="700" letter-spacing="1" fill="#374151">7 MIN READ</text>
+  </g>
+
+  <!-- Mock article body -->
+  <rect x="140" y="346" width="840" height="16" rx="8" fill="#cbd5e1"/>
+  <rect x="140" y="382" width="840" height="16" rx="8" fill="#cbd5e1"/>
+  <rect x="140" y="418" width="760" height="16" rx="8" fill="#cbd5e1"/>
+  <rect x="140" y="478" width="840" height="16" rx="8" fill="#e2e8f0"/>
+  <rect x="140" y="514" width="840" height="16" rx="8" fill="#e2e8f0"/>
+  <rect x="140" y="550" width="700" height="16" rx="8" fill="#e2e8f0"/>
+  <rect x="140" y="610" width="840" height="16" rx="8" fill="#eef2f7"/>
+  <rect x="140" y="646" width="620" height="16" rx="8" fill="#eef2f7"/>
+
+  <!-- Dark-theme swatch: same badge on a dark surface, proving theme adaptivity -->
+  <g>
+    <rect x="820" y="346" width="160" height="316" rx="14" fill="#0f172a"/>
+    <rect x="852" y="392" width="120" height="40" rx="20" fill="#ffffff1f" stroke="#ffffff33" stroke-width="2"/>
+    <g transform="translate(874 412)" fill="none" stroke="#e2e8f0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="0" cy="0" r="7"/>
+      <polyline points="0 -4 0 0 2.6 1.6"/>
+    </g>
+    <text x="894" y="417" font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif" font-size="15" font-weight="700" letter-spacing="0.6" fill="#e2e8f0">7 MIN</text>
+    <rect x="852" y="468" width="96" height="10" rx="5" fill="#334155"/>
+    <rect x="852" y="494" width="96" height="10" rx="5" fill="#334155"/>
+    <rect x="852" y="520" width="72" height="10" rx="5" fill="#334155"/>
+  </g>
+
+  <!-- Caption -->
+  <text x="600" y="868" font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif" font-size="22" font-weight="600" fill="#475569" text-anchor="middle">Reading Time Badge — theme-adaptive, light &amp; dark, zero layout shift</text>
+</svg>

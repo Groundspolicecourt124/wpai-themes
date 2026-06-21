@@ -5,11 +5,12 @@
     "layout": { "contentSize": "704px", "wideSize": "1024px" },
     "color": {
       "palette": [
-        { "slug": "ink", "color": "#1e2230", "name": "Ink" },
+        { "slug": "ink", "color": "#181b27", "name": "Ink" },
         { "slug": "soft", "color": "#4a5168", "name": "Soft" },
         { "slug": "accent", "color": "#6366f1", "name": "Indigo" },
         { "slug": "violet", "color": "#8b5cf6", "name": "Violet" },
-        { "slug": "canvas", "color": "#f7f8fc", "name": "Canvas" },
+        { "slug": "accent-deep", "color": "#4f46e5", "name": "Deep Indigo" },
+        { "slug": "canvas", "color": "#f6f7fb", "name": "Canvas" },
         { "slug": "surface", "color": "#ffffff", "name": "Surface" }
       ],
       "gradients": [
@@ -23,12 +24,12 @@
     "typography": {
       "fontFamilies": [
         {
-          "fontFamily": "\"Geist\", \"Inter\", system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif",
+          "fontFamily": "ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif",
           "slug": "sans",
           "name": "Sans"
         },
         {
-          "fontFamily": "\"SF Mono\", \"JetBrains Mono\", ui-monospace, Menlo, Consolas, monospace",
+          "fontFamily": "ui-monospace, \"SF Mono\", \"Cascadia Code\", \"JetBrains Mono\", Menlo, Consolas, monospace",
           "slug": "mono",
           "name": "Mono"
         }
@@ -37,14 +38,21 @@
         { "slug": "small", "size": "0.875rem", "name": "Small" },
         { "slug": "medium", "size": "1.0625rem", "name": "Medium" },
         { "slug": "large", "size": "1.25rem", "name": "Large" },
-        { "slug": "x-large", "size": "2rem", "name": "Extra large" }
+        { "slug": "x-large", "size": "2rem", "name": "Extra large" },
+        { "slug": "xx-large", "size": "3rem", "name": "Huge" }
       ]
     }
   },
   "styles": {
-    "color": { "background": "#f7f8fc", "text": "#1e2230" },
+    "color": { "background": "#f6f7fb", "text": "#181b27" },
+    "typography": {
+      "fontFamily": "ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif",
+      "lineHeight": "1.7"
+    },
     "elements": {
-      "link": { "color": { "text": "#4f46e5" } }
+      "link": { "color": { "text": "#3f37c9" } },
+      "h1": { "typography": { "fontWeight": "800", "letterSpacing": "-0.022em" } },
+      "h2": { "typography": { "fontWeight": "800", "letterSpacing": "-0.022em" } }
     }
   }
 }

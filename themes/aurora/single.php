@@ -10,21 +10,29 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 get_header();
+?>
+<div class="layout">
+	<div class="layout__main">
+		<?php
+		while ( have_posts() ) :
+			the_post();
 
-while ( have_posts() ) :
-	the_post();
-	get_template_part( 'template-parts/content', get_post_type() );
+			get_template_part( 'template-parts/content', get_post_type() );
 
-	the_post_navigation( array(
-		'prev_text' => '← %title',
-		'next_text' => '%title →',
-	) );
+			the_post_navigation( array(
+				'prev_text' => '<span class="post-nav__label">' . esc_html__( 'Previous', 'aurora' ) . '</span><span class="post-nav__title">%title</span>',
+				'next_text' => '<span class="post-nav__label">' . esc_html__( 'Next', 'aurora' ) . '</span><span class="post-nav__title">%title</span>',
+			) );
 
-	if ( comments_open() || get_comments_number() ) :
-		comments_template();
-	endif;
+			if ( comments_open() || get_comments_number() ) :
+				comments_template();
+			endif;
 
-endwhile;
+		endwhile;
+		?>
+	</div><!-- .layout__main -->
 
-get_sidebar();
+	<?php get_sidebar(); ?>
+</div><!-- .layout -->
+<?php
 get_footer();

@@ -1,0 +1,82 @@
+/**
+ * Reading Time Badge
+ *
+ * A small, theme-adaptive "X min read" badge shown above single-post content.
+ *
+ * Design notes:
+ * - Colors derive from `currentColor` / `inherit`, so the badge reads correctly
+ *   on both light and dark themes without hardcoded grays. A theme can override
+ *   any of the --rtb-* custom properties to fully restyle it.
+ * - Sizing is fixed and reserved up front (no images, no web fonts, no JS), so
+ *   the badge introduces zero cumulative layout shift.
+ * - Respects prefers-reduced-motion.
+ */
+
+.rtb-badge {
+	/* Tunable surface — themes may override these custom properties. */
+	--rtb-gap: 0.5em;
+	--rtb-pad-y: 0.3em;
+	--rtb-pad-x: 0.7em;
+	--rtb-radius: 999px;
+	/* Tint the badge from the surrounding text color so it adapts to any theme. */
+	--rtb-fg: currentColor;
+	--rtb-bg: color-mix(in srgb, currentColor 8%, transparent);
+	--rtb-border: color-mix(in srgb, currentColor 16%, transparent);
+
+	display: inline-flex;
+	align-items: center;
+	gap: var(--rtb-gap);
+	box-sizing: border-box;
+	max-width: 100%;
+	margin: 0 0 1.4em;
+	padding: var(--rtb-pad-y) var(--rtb-pad-x);
+	border: 1px solid var(--rtb-border);
+	border-radius: var(--rtb-radius);
+	background: var(--rtb-bg);
+	/* Full-strength text color for guaranteed AA contrast; the badge is muted
+	   via its translucent surface, not by dimming the (load-bearing) label. */
+	color: var(--rtb-fg);
+	font-family: inherit;
+	font-size: 0.8rem;
+	font-weight: 600;
+	line-height: 1.4;
+	letter-spacing: 0.03em;
+	text-transform: uppercase;
+	vertical-align: middle;
+	white-space: nowrap;
+	transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+/* Browsers without color-mix() fall back to a subtle inherited tint. The text
+   stays full-strength; only the surface/border are softened. */
+@supports not (background: color-mix(in srgb, currentColor 8%, transparent)) {
+	.rtb-badge {
+		background: transparent;
+		border-color: currentColor;
+	}
+}
+
+.rtb-badge__icon {
+	flex: 0 0 auto;
+	width: 1.05em;
+	height: 1.05em;
+	/* The clock face shouldn't shout — render it a touch lighter than the text. */
+	opacity: 0.85;
+}
+
+.rtb-badge__text {
+	display: inline-block;
+}
+
+/* Keyboard / pointer affordance if a theme makes the badge focusable. */
+.rtb-badge:focus-visible {
+	outline: 2px solid currentColor;
+	outline-offset: 2px;
+}
+
+/* Disable the subtle surface transition for users who prefer reduced motion. */
+@media (prefers-reduced-motion: reduce) {
+	.rtb-badge {
+		transition: none;
+	}
+}
