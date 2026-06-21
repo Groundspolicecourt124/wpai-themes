@@ -224,3 +224,5 @@ if ( ! function_exists( 'nimbus_placeholder_cover' ) ) {
 		echo '<span class="placeholder-mark" aria-hidden="true">' . esc_html( mb_strtoupper( $mark ) ) . '</span>';
 	}
 }
+
+require_once get_template_directory() . '/inc/companions.php'; // Recommended companion plugins (admin one-click install).

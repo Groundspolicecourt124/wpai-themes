@@ -321,3 +321,5 @@ function aurora_body_classes( $classes ) {
 	return $classes;
 }
 add_filter( 'body_class', 'aurora_body_classes' );
+
+require_once get_template_directory() . '/inc/companions.php'; // Recommended companion plugins (admin one-click install).

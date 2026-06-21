@@ -309,3 +309,5 @@ if ( ! function_exists( 'ledger_render_story_card' ) ) {
 		<?php
 	}
 }
+
+require_once get_template_directory() . '/inc/companions.php'; // Recommended companion plugins (admin one-click install).
