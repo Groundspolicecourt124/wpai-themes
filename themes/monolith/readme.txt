@@ -32,6 +32,9 @@ Features:
 * Large framed featured images on single posts and pages
 * Custom logo, primary navigation menu (with dropdowns), featured images, threaded comments
 * Numbered pagination and styled comment form
+* Hand-rolled motion system: a brutalist marquee ticker, clip-path scroll
+  reveals, magnetic hovers, a custom blocky cursor, count-up index numbers, and
+  a scroll-progress rule — all vanilla JS, no external libraries or fonts
 * Visible :focus-visible states; respects prefers-reduced-motion
 * Block editor color palette and font sizes via theme.json
 * Translation-ready (text domain: monolith)
@@ -46,6 +49,25 @@ Features:
 5. Assign a menu to the "Primary Menu" location under Appearance > Menus.
 
 == Changelog ==
+
+= 1.3.0 =
+* New hand-rolled motion system (assets/js/motion.js) — vanilla JS, no
+  libraries or CDNs, deferred and footer-loaded. Adds: clip-path / wipe scroll
+  reveals with a staggered cascade (IntersectionObserver, one-shot), magnetic
+  oversized link/button hovers, an animated index/entry counter that ticks up,
+  a thin electric scroll-progress rule, and a pulsing accent square.
+* Signature move: a horizontal brutalist MARQUEE ticker ("SELECTED WORK ///")
+  under the homepage masthead, plus a custom blocky accent cursor that trails
+  the pointer and snaps onto interactive targets, and a hard diagonal accent
+  shard that wipes across project covers on hover.
+* Fully accessible: respects prefers-reduced-motion (JS reveals everything
+  immediately and skips all interactions; a CSS reduced-motion block disables
+  every animation/transition, the custom cursor, and the progress bar).
+  Keyboard focus is never trapped or hidden.
+* Progressive enhancement: a tiny inline head snippet adds a `js` class to
+  <html>, so with JavaScript disabled all content is fully visible and the
+  decorative bar/cursor never appear. Only transform/opacity animate — no
+  layout thrash and no cumulative layout shift.
 
 = 1.2.0 =
 * Added Customizer color controls (Appearance > Customize > "Colors & Style") with

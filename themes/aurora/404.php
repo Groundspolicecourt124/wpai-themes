@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 get_header();
 ?>
-<section class="error-404">
+<section class="error-404" data-aurora-reveal>
 	<p class="error-404__code" aria-hidden="true">404</p>
 	<h1 class="error-404__title"><?php esc_html_e( 'This page slipped away', 'aurora' ); ?></h1>
 	<p class="error-404__lead">

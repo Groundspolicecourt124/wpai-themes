@@ -13,8 +13,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $nimbus_is_listing = ! is_singular();
 $nimbus_is_post    = ( 'post' === get_post_type() );
+
+// On listing pages the card gets the motion hooks: a springy staggered
+// scroll entrance (.nm-reveal) and a small 3D hover tilt (.nm-tilt). The
+// lead feature spans full width, so it skips the tilt to stay calm.
+$nimbus_card_classes = 'entry';
+if ( $nimbus_is_listing ) {
+	$nimbus_card_classes .= ' nm-reveal';
+	if ( empty( $GLOBALS['nimbus_feature'] ) ) {
+		$nimbus_card_classes .= ' nm-tilt';
+	}
+}
 ?>
-<article id="post-<?php the_ID(); ?>" <?php post_class( 'entry' ); ?>>
+<article id="post-<?php the_ID(); ?>" <?php post_class( $nimbus_card_classes ); ?>>
 
 	<?php if ( $nimbus_is_listing ) : ?>
 		<?php /* Listing card: full-bleed cover with category chip, then padded body. */ ?>

@@ -14,6 +14,7 @@ $verdant_classes = array( 'entry' );
 
 if ( ! is_singular() ) {
 	$verdant_classes[] = 'entry--card';
+	$verdant_classes[] = 'v-reveal';
 	$verdant_classes[] = $verdant_is_lead ? 'entry--lead' : 'entry--compact';
 	$verdant_classes[] = has_post_thumbnail() ? 'has-thumb' : 'no-thumb';
 }
@@ -21,7 +22,7 @@ if ( ! is_singular() ) {
 <article id="post-<?php the_ID(); ?>" <?php post_class( $verdant_classes ); ?>>
 
 	<?php if ( ! is_singular() ) : ?>
-		<a class="featured-image" href="<?php the_permalink(); ?>" aria-hidden="true" tabindex="-1">
+		<a class="featured-image featured-image--mask" href="<?php the_permalink(); ?>" aria-hidden="true" tabindex="-1">
 			<?php
 			if ( has_post_thumbnail() ) {
 				// The lead post's image sits above the fold, so load it eagerly

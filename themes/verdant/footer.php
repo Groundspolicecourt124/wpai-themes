@@ -13,6 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 </main><!-- .site-main -->
 
 <footer class="site-footer">
+	<?php echo verdant_botanical_drift( 3 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static inline SVG markup. ?>
 	<div class="site-wrap">
 		<span class="site-footer__mark" aria-hidden="true">&#10087;</span>
 		<p>

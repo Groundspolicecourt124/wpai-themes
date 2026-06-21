@@ -22,18 +22,18 @@ if ( have_posts() ) :
 		$monolith_tagline = get_bloginfo( 'description', 'display' );
 		?>
 		<section class="home-masthead" aria-label="<?php esc_attr_e( 'Introduction', 'monolith' ); ?>">
-			<p class="home-masthead__kicker"><?php esc_html_e( 'Selected Work', 'monolith' ); ?></p>
-			<h1 class="home-masthead__title">
+			<p class="home-masthead__kicker m-reveal m-reveal--up"><?php esc_html_e( 'Selected Work', 'monolith' ); ?></p>
+			<h1 class="home-masthead__title m-reveal m-reveal--wipe">
 				<?php
 				if ( $monolith_tagline ) {
 					echo wp_kses_post( $monolith_tagline );
 				} else {
 					echo esc_html( get_bloginfo( 'name' ) );
 				}
-				?><span class="accent">.</span>
+				?><span class="accent m-square" aria-hidden="true">.</span>
 			</h1>
 			<?php if ( $monolith_tagline ) : ?>
-				<p class="home-masthead__lead">
+				<p class="home-masthead__lead m-reveal m-reveal--up">
 					<?php
 					printf(
 						/* translators: %s: site name */
@@ -43,19 +43,30 @@ if ( have_posts() ) :
 					?>
 				</p>
 			<?php endif; ?>
-			<p class="home-masthead__rule">
-				<?php esc_html_e( 'Studio Journal', 'monolith' ); ?> <span>/</span>
+			<p class="home-masthead__rule m-reveal m-reveal--up">
+				<?php
+				$monolith_total = (int) $GLOBALS['wp_query']->found_posts;
+				if ( $monolith_total > 0 ) :
+					?>
+					<span class="m-count" data-m-count="<?php echo esc_attr( $monolith_total ); ?>"><?php echo esc_html( sprintf( '%02d', $monolith_total ) ); ?></span>
+					<?php
+					/* translators: shown after an animated count of published entries. */
+					esc_html_e( 'Entries', 'monolith' );
+					?> <span>/</span>
+				<?php endif; ?>
 				<?php esc_html_e( 'Brutalist by design', 'monolith' ); ?> <span>/</span>
 				<time datetime="<?php echo esc_attr( gmdate( 'Y' ) ); ?>"><?php echo esc_html( gmdate( 'Y' ) ); ?></time>
 			</p>
 		</section>
 
-		<p class="index-label"><?php esc_html_e( 'Latest', 'monolith' ); ?></p>
+		<?php monolith_marquee(); ?>
+
+		<p class="index-label m-reveal m-reveal--up"><?php esc_html_e( 'Latest', 'monolith' ); ?></p>
 		<?php
 
 	elseif ( is_home() && ! is_front_page() ) :
 		?>
-		<header class="page-header">
+		<header class="page-header m-reveal m-reveal--up">
 			<p class="page-kicker"><?php esc_html_e( 'Journal', 'monolith' ); ?></p>
 			<h1 class="entry-title"><?php single_post_title(); ?></h1>
 		</header>
@@ -63,7 +74,7 @@ if ( have_posts() ) :
 	endif;
 	?>
 
-	<div class="project-grid">
+	<div class="project-grid" data-m-stagger>
 		<?php
 		$monolith_i = 0;
 		while ( have_posts() ) :

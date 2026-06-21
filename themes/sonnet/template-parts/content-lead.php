@@ -10,10 +10,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 ?>
-<article id="post-<?php the_ID(); ?>" <?php post_class( 'lead-essay' ); ?>>
+<article id="post-<?php the_ID(); ?>" <?php post_class( 'lead-essay' ); ?> data-sonnet-stagger>
 
 	<?php if ( has_post_thumbnail() ) : ?>
-		<a class="lead-essay__cover" href="<?php the_permalink(); ?>" aria-hidden="true" tabindex="-1">
+		<a class="lead-essay__cover" href="<?php the_permalink(); ?>" aria-hidden="true" tabindex="-1" data-sonnet-reveal>
 			<?php
 			// The lead essay's cover is the hero image, above the fold on the blog
 			// home, so load it eagerly with high priority to avoid a blank flash.
@@ -28,7 +28,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<?php endif; ?>
 
 	<div class="lead-essay__body">
-		<header class="lead-essay__header">
+		<header class="lead-essay__header" data-sonnet-reveal>
 			<p class="entry-kicker">
 				<span class="entry-kicker__label"><?php esc_html_e( 'Featured', 'sonnet' ); ?></span>
 				<?php
@@ -44,11 +44,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<p class="entry-meta"><?php sonnet_posted_meta(); ?></p>
 		</header>
 
-		<div class="lead-essay__excerpt has-dropcap">
+		<div class="lead-essay__excerpt has-dropcap" data-sonnet-reveal>
 			<?php the_excerpt(); ?>
 		</div>
 
-		<a class="read-more" href="<?php the_permalink(); ?>">
+		<a class="read-more" href="<?php the_permalink(); ?>" data-sonnet-reveal>
 			<span class="read-more__text"><?php esc_html_e( 'Read the essay', 'sonnet' ); ?></span>
 			<span class="read-more__arrow" aria-hidden="true">&rarr;</span>
 		</a>

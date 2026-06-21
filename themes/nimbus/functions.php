@@ -58,13 +58,55 @@ add_action( 'after_setup_theme', 'nimbus_content_width', 0 );
  * Enqueue styles and scripts.
  */
 function nimbus_assets() {
-	wp_enqueue_style( 'nimbus-style', get_stylesheet_uri(), array(), wp_get_theme()->get( 'Version' ) );
+	$version = wp_get_theme()->get( 'Version' );
+
+	wp_enqueue_style( 'nimbus-style', get_stylesheet_uri(), array(), $version );
+
+	// Self-contained motion system: scroll reveals, magnetic CTA, card tilt,
+	// count-up stats, and the living gradient hero. Loaded in the footer with
+	// defer; the script gates itself on prefers-reduced-motion internally.
+	wp_enqueue_script(
+		'nimbus-motion',
+		get_template_directory_uri() . '/assets/js/motion.js',
+		array(),
+		$version,
+		true
+	);
+	wp_script_add_data( 'nimbus-motion', 'defer', true );
 
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 		wp_enqueue_script( 'comment-reply' );
 	}
 }
 add_action( 'wp_enqueue_scripts', 'nimbus_assets' );
+
+/**
+ * Add a `defer` attribute to scripts that opted in via wp_script_add_data().
+ *
+ * @param string $tag    The full <script> tag.
+ * @param string $handle The script handle.
+ * @return string
+ */
+function nimbus_defer_scripts( $tag, $handle ) {
+	if ( wp_scripts()->get_data( $handle, 'defer' ) && false === strpos( $tag, ' defer' ) ) {
+		$tag = str_replace( ' src=', ' defer src=', $tag );
+	}
+	return $tag;
+}
+add_filter( 'script_loader_tag', 'nimbus_defer_scripts', 10, 2 );
+
+/**
+ * Print a tiny no-dependency snippet in <head> that flags JS as available.
+ *
+ * Adds a `js` class to <html> before paint so motion start-states only apply
+ * when JS can finish them — no-JS users see all content immediately (no FOUC,
+ * no hidden-and-stuck elements). This must run as early as possible, so it is
+ * inlined in <head> rather than deferred to the footer.
+ */
+function nimbus_js_class_head() {
+	echo "<script>document.documentElement.className += ' js';</script>\n";
+}
+add_action( 'wp_head', 'nimbus_js_class_head', 0 );
 
 /**
  * Load the Customizer integration (live color & style controls).

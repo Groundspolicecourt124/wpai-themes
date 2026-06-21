@@ -4,7 +4,7 @@ Theme URI: https://lordbasilaiassistant-sudo.github.io/wpai-themes/
 Author: WPAI Themes
 Author URI: https://github.com/lordbasilaiassistant-sudo/wpai-themes
 Description: A refined, minimal serif theme for personal blogs and essayists. Aurora leads with one beautifully set featured story, then a quiet editorial list — generous whitespace, a comfortable reading measure, and gorgeous long-form typography. Light, fast, and accessible, with no external fonts.
-Version: 1.2.0
+Version: 1.3.0
 Requires at least: 5.0
 Tested up to: 6.5
 Requires PHP: 7.4
@@ -1637,7 +1637,214 @@ button[type="submit"]:active {
 }
 
 /* =========================================================================
-   24. Motion preferences
+   24. Motion system
+   -------------------------------------------------------------------------
+   Progressive enhancement contract:
+   - Without JS, none of these start-states apply, so all content is visible.
+   - `.js` is added synchronously by a tiny inline script in <head>. The
+     `.aurora-motion` class is added by motion.js itself, as its first action,
+     only when IntersectionObserver is supported and reduced motion is NOT
+     requested. Start-states are scoped to `.js.aurora-motion`, so if motion.js
+     never runs (or bails), the class is absent and ALL content stays fully
+     visible — true progressive enhancement. The `.is-inview` class is what
+     motion.js adds to reveal each element on scroll.
+   - We animate only transform & opacity. No layout properties, no CLS.
+   ========================================================================= */
+
+/* --- Scroll reveals: gentle fade + rise ------------------------------------ */
+.js.aurora-motion [data-aurora-reveal] {
+	opacity: 0;
+	transform: translateY(18px);
+	transition:
+		opacity 0.7s var(--a-ease),
+		transform 0.7s var(--a-ease);
+}
+
+/* Hint the compositor only while the element is still waiting to reveal, then
+   drop it once revealed so we don't keep promoting layers for good. */
+.js.aurora-motion [data-aurora-reveal]:not(.is-inview) {
+	will-change: opacity, transform;
+}
+
+.js.aurora-motion [data-aurora-reveal].is-inview {
+	opacity: 1;
+	transform: none;
+}
+
+/* Accessibility: if a keyboard user tabs into a block that has not yet been
+   revealed (it is still opacity:0 and translated), reveal it immediately so the
+   focus ring is never hidden by motion. Covers the element itself and any
+   focusable descendant link/button. */
+.js.aurora-motion [data-aurora-reveal]:focus-within,
+.js.aurora-motion [data-aurora-reveal]:focus {
+	opacity: 1;
+	transform: none;
+	transition: none;
+}
+
+/* Stagger consecutive list cards so a column of posts breathes in, one after
+   another, rather than all at once. Pure CSS, capped depth. */
+.js.aurora-motion .entry--list[data-aurora-reveal] {
+	transition-delay: 0.02s;
+}
+.js.aurora-motion .entry--list[data-aurora-reveal]:nth-of-type(2) { transition-delay: 0.07s; }
+.js.aurora-motion .entry--list[data-aurora-reveal]:nth-of-type(3) { transition-delay: 0.12s; }
+.js.aurora-motion .entry--list[data-aurora-reveal]:nth-of-type(4) { transition-delay: 0.17s; }
+.js.aurora-motion .entry--list[data-aurora-reveal]:nth-of-type(n+5) { transition-delay: 0.2s; }
+
+/* --- Word-by-word lead headline reveal ------------------------------------- */
+.js.aurora-motion .words-ready .a-word {
+	display: inline-block;
+	opacity: 0;
+	transform: translateY(0.5em);
+	transition:
+		opacity 0.55s var(--a-ease),
+		transform 0.55s var(--a-ease);
+	transition-delay: var(--w-delay, 0s);
+}
+
+/* Compositor hint only until the headline reveals, then released. */
+.js.aurora-motion .words-ready:not(.words-in) .a-word {
+	will-change: opacity, transform;
+}
+
+.js.aurora-motion .words-in .a-word {
+	opacity: 1;
+	transform: none;
+}
+
+/* Same focus safety for word headlines: a focused descendant forces the whole
+   headline visible so text can never read as blank while focused. */
+.js.aurora-motion .words-ready:focus-within .a-word {
+	opacity: 1;
+	transform: none;
+	transition: none;
+}
+
+/* --- Signature: the hand-drawn ink underline ------------------------------- */
+.ink-underline {
+	display: block;
+	width: 100%;
+	max-width: 9.5em;
+	height: 0.55em;
+	margin-top: 0.18em;
+	color: var(--a-accent);
+	overflow: visible;
+	pointer-events: none;
+}
+
+.ink-underline path {
+	/* Path length of the stroke (≈ measured from the viewBox geometry). The
+	   dasharray/offset hides it, then `.is-drawn` draws it left-to-right. */
+	stroke-dasharray: 300;
+	stroke-dashoffset: 300;
+	opacity: 0.92;
+}
+
+/* When JS motion is active, the stroke starts hidden and draws on reveal. */
+.js.aurora-motion .ink-underline path {
+	transition:
+		stroke-dashoffset 0.9s var(--a-ease) 0.15s,
+		opacity 0.3s var(--a-ease);
+}
+
+.js.aurora-motion .ink-underline.is-drawn path,
+/* No-JS / no-motion: the underline is simply present and full. */
+html:not(.aurora-motion) .ink-underline path {
+	stroke-dashoffset: 0;
+}
+
+.ink-underline--lead {
+	max-width: 7.5em;
+	height: 0.6em;
+	margin-top: 0.3em;
+}
+
+.ink-underline--label {
+	max-width: 5.5em;
+	height: 0.5em;
+	margin-top: 0.55rem;
+}
+
+/* The lead-essay line stacks its text and the flourish. */
+.lead-essay__line {
+	display: block;
+}
+
+.lead-essay__text,
+.entry-title__text {
+	display: inline;
+}
+
+/* --- Reading-progress bar (single posts) ----------------------------------- */
+.reading-progress {
+	position: fixed;
+	inset: 0 0 auto 0;
+	height: 3px;
+	z-index: 900;
+	pointer-events: none;
+	background: transparent;
+}
+
+.reading-progress__bar {
+	display: block;
+	height: 100%;
+	width: 100%;
+	transform: scaleX(0);
+	transform-origin: 0 50%;
+	background: linear-gradient(90deg, var(--a-accent), var(--a-accent-deep));
+	box-shadow: 0 1px 6px -1px color-mix(in srgb, var(--a-accent) 45%, transparent);
+	will-change: transform;
+}
+
+/* --- Link micro-interaction: refined animated underline -------------------- */
+/* Links in the comment body and sidebar widgets carry no underline at rest, so
+   a terracotta underline that grows from the left on hover/focus is a clean,
+   crafted echo of the nav and entry-title gesture — one move, used everywhere.
+   (In-article body links keep their existing dotted→solid accent underline.) */
+.comment-content a,
+.widget a {
+	background-image: linear-gradient(var(--a-accent), var(--a-accent));
+	background-size: 0% 1.5px;
+	background-position: 0 100%;
+	background-repeat: no-repeat;
+	transition:
+		background-size 0.3s var(--a-ease),
+		color 0.18s var(--a-ease);
+}
+
+.comment-content a:hover,
+.comment-content a:focus,
+.widget a:hover,
+.widget a:focus {
+	background-size: 100% 1.5px;
+}
+
+/* --- Read-more & button hover lift ----------------------------------------- */
+.read-more {
+	transition: color 0.18s var(--a-ease);
+}
+
+.button,
+.wp-block-button__link,
+button[type="submit"],
+input[type="submit"] {
+	transition:
+		background 0.18s var(--a-ease),
+		transform 0.16s var(--a-ease),
+		box-shadow 0.2s var(--a-ease);
+}
+
+.button:hover,
+.wp-block-button__link:hover,
+button[type="submit"]:hover,
+input[type="submit"]:hover {
+	transform: translateY(-1px);
+	box-shadow: 0 6px 18px -10px color-mix(in srgb, var(--a-accent) 70%, transparent);
+}
+
+/* =========================================================================
+   25. Motion preferences
    ========================================================================= */
 @media (prefers-reduced-motion: reduce) {
 	html {
@@ -1655,6 +1862,31 @@ button[type="submit"]:active {
 
 	a.entry-media:hover .entry-media__img,
 	a.entry-media:focus .entry-media__img {
+		transform: none;
+	}
+
+	/* Force every motion start-state to its visible end-state so nothing can
+	   ever stay hidden when the reader has asked for reduced motion. */
+	.js.aurora-motion [data-aurora-reveal],
+	.js.aurora-motion .words-ready .a-word {
+		opacity: 1 !important;
+		transform: none !important;
+	}
+
+	.ink-underline path {
+		stroke-dashoffset: 0 !important;
+		transition: none !important;
+	}
+
+	/* The progress bar still reflects position, but jumps instead of easing. */
+	.reading-progress__bar {
+		transition: none !important;
+	}
+
+	.button:hover,
+	.wp-block-button__link:hover,
+	button[type="submit"]:hover,
+	input[type="submit"]:hover {
 		transform: none;
 	}
 }

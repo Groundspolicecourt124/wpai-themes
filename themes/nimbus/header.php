@@ -20,6 +20,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 <?php wp_body_open(); ?>
 <a class="skip-link" href="#content"><?php esc_html_e( 'Skip to content', 'nimbus' ); ?></a>
 
+<div class="nm-progress" aria-hidden="true"><span class="nm-progress__fill"></span></div>
+
 <header class="site-header">
 	<div class="site-wrap site-header__inner">
 		<div class="site-branding">

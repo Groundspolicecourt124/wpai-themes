@@ -4,7 +4,7 @@ Tags: reading time, posts, badge, content, accessibility
 Requires at least: 5.0
 Tested up to: 6.5
 Requires PHP: 7.4
-Stable tag: 1.1.0
+Stable tag: 1.3.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -20,10 +20,16 @@ theme, adds no settings page, makes no external requests, and stores no data.
   so the badge looks right on both light and dark themes. Themes can override the
   `--rtb-*` custom properties to restyle it.
 * **Accessible.** A decorative inline clock glyph (SVG) is hidden from assistive
-  technology, the label is fully translatable, and `prefers-reduced-motion` is honored.
-* **Zero layout shift.** The badge ships as a real, self-contained CSS file with fixed
-  sizing — no images, web fonts, or JavaScript — so it never shifts the page.
-* **Self-contained.** No external network calls, no third-party services, no tracking.
+  technology, the label is fully translatable, and `prefers-reduced-motion` is honored
+  at every layer — reduced-motion visitors get the badge with no animation at all.
+* **Crafted entrance.** When the badge scrolls into view it fades and slides up a few
+  pixels, and the clock hands take one gentle sweep. The motion animates only
+  `transform` and `opacity` (no layout shift) and is pure progressive enhancement —
+  with JavaScript off, or if it fails, the badge is simply visible from the start.
+* **Zero layout shift.** The badge ships as real, self-contained CSS and JS asset files
+  with fixed sizing — no images and no web fonts — so it never shifts the page.
+* **Self-contained.** No external libraries, CDNs, network calls, or tracking. The
+  scroll reveal is hand-rolled with vanilla `IntersectionObserver`.
 
 Developers can tune the reading speed:
 
@@ -57,6 +63,17 @@ No. It is zero-config and fully self-contained — no settings page, no external
 requests, and no stored data.
 
 == Changelog ==
+
+= 1.3.0 =
+* Added a crafted, accessible entrance: the badge fades and slides up as it scrolls
+  into view, and the clock hands take one gentle sweep on reveal.
+* Motion is hand-rolled with vanilla JavaScript (`IntersectionObserver`) — no external
+  libraries or CDNs — and ships as a real enqueued asset (`assets/js/motion.js`) loaded
+  in the footer with `defer`.
+* Animates only `transform` and `opacity`, so the entrance adds zero layout shift.
+* Fully respects `prefers-reduced-motion: reduce` (JS gate plus a CSS safety net) and
+  degrades gracefully: with JavaScript off, or if it errors, the badge is visible from
+  the start (progressive enhancement via an early `rtb-js` class on `<html>`).
 
 = 1.1.0 =
 * Added an inline clock glyph (decorative SVG, hidden from assistive technology).

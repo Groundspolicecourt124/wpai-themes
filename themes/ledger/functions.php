@@ -63,13 +63,98 @@ add_action( 'after_setup_theme', 'ledger_content_width', 0 );
  * Enqueue styles and scripts.
  */
 function ledger_assets() {
-	wp_enqueue_style( 'ledger-style', get_stylesheet_uri(), array(), wp_get_theme()->get( 'Version' ) );
+	$ledger_version = wp_get_theme()->get( 'Version' );
+
+	wp_enqueue_style( 'ledger-style', get_stylesheet_uri(), array(), $ledger_version );
+
+	// Crisp, journalistic motion system: scroll reveals, drawing rules, the
+	// "LATEST" ticker, an animated dateline, the article reading-progress bar,
+	// and duotone featured-image hovers. Self-contained vanilla JS, deferred,
+	// and fully gated behind prefers-reduced-motion inside the file.
+	wp_enqueue_script(
+		'ledger-motion',
+		get_template_directory_uri() . '/assets/js/motion.js',
+		array(),
+		$ledger_version,
+		array(
+			'in_footer' => true,
+			'strategy'  => 'defer',
+		)
+	);
 
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 		wp_enqueue_script( 'comment-reply' );
 	}
 }
 add_action( 'wp_enqueue_scripts', 'ledger_assets' );
+
+/**
+ * Print a tiny, render-blocking head snippet that flags JS support on <html>.
+ *
+ * Adding the `js` class up front (before paint) lets the stylesheet hide the
+ * entrance states for capable browsers only — no-JS visitors keep every
+ * element visible, so the theme is a pure progressive enhancement.
+ */
+if ( ! function_exists( 'ledger_js_flag' ) ) {
+	function ledger_js_flag() {
+		echo "<script>document.documentElement.className += ' js';</script>\n";
+	}
+}
+add_action( 'wp_head', 'ledger_js_flag', 0 );
+
+/**
+ * Render the "LATEST" news ticker — the theme's signature strip.
+ *
+ * Pulls the most recent posts and prints them as a horizontally scrolling
+ * marquee beneath the masthead navigation. The track is duplicated so the
+ * CSS marquee loops seamlessly; the duplicate is hidden from assistive tech.
+ * Pure progressive enhancement: with motion disabled it simply becomes a
+ * static, scrollable row of recent links.
+ *
+ * @param int $count Number of recent posts to show.
+ */
+if ( ! function_exists( 'ledger_render_ticker' ) ) {
+	function ledger_render_ticker( $count = 7 ) {
+		$ledger_ticker_q = new WP_Query( array(
+			'post_type'           => 'post',
+			'posts_per_page'      => absint( $count ),
+			'post_status'         => 'publish',
+			'ignore_sticky_posts' => true,
+			'no_found_rows'       => true,
+		) );
+
+		if ( ! $ledger_ticker_q->have_posts() ) {
+			wp_reset_postdata();
+			return;
+		}
+
+		$ledger_items = array();
+		while ( $ledger_ticker_q->have_posts() ) {
+			$ledger_ticker_q->the_post();
+			$ledger_items[] = sprintf(
+				'<a class="l-ticker__item" href="%1$s">%2$s</a>',
+				esc_url( get_permalink() ),
+				esc_html( get_the_title() )
+			);
+		}
+		wp_reset_postdata();
+
+		$ledger_track = implode( '<span class="l-ticker__dot" aria-hidden="true">&bull;</span>', $ledger_items );
+		?>
+		<aside class="l-ticker" aria-label="<?php esc_attr_e( 'Latest headlines', 'ledger' ); ?>">
+			<div class="site-wrap l-ticker__inner">
+				<span class="l-ticker__label l-label"><?php esc_html_e( 'Latest', 'ledger' ); ?></span>
+				<div class="l-ticker__viewport">
+					<div class="l-ticker__track">
+						<span class="l-ticker__group"><?php echo wp_kses_post( $ledger_track ); ?></span>
+						<span class="l-ticker__group l-ticker__group--clone" aria-hidden="true"><?php echo wp_kses_post( $ledger_track ); ?></span>
+					</div>
+				</div>
+			</div>
+		</aside>
+		<?php
+	}
+}
 
 /**
  * Register the sidebar widget area.
@@ -172,9 +257,9 @@ if ( ! function_exists( 'ledger_render_lead_story' ) ) {
 	function ledger_render_lead_story() {
 		$has_image = has_post_thumbnail();
 		?>
-		<article id="post-<?php the_ID(); ?>" <?php post_class( 'lead-story' . ( $has_image ? '' : ' lead-story--noimg' ) ); ?>>
+		<article id="post-<?php the_ID(); ?>" <?php post_class( 'lead-story' . ( $has_image ? '' : ' lead-story--noimg' ) ); ?> data-reveal="lead">
 			<?php if ( $has_image ) : ?>
-				<figure class="lead-story__media">
+				<figure class="lead-story__media l-duotone">
 					<a href="<?php the_permalink(); ?>" aria-hidden="true" tabindex="-1">
 						<?php
 						// Lead story is above the fold: load eagerly and prioritize
@@ -209,9 +294,9 @@ if ( ! function_exists( 'ledger_render_lead_story' ) ) {
 if ( ! function_exists( 'ledger_render_story_card' ) ) {
 	function ledger_render_story_card() {
 		?>
-		<article id="post-<?php the_ID(); ?>" <?php post_class( 'story-card' ); ?>>
+		<article id="post-<?php the_ID(); ?>" <?php post_class( 'story-card' ); ?> data-reveal="card">
 			<?php if ( has_post_thumbnail() ) : ?>
-				<a class="story-card__media" href="<?php the_permalink(); ?>" aria-hidden="true" tabindex="-1">
+				<a class="story-card__media l-duotone" href="<?php the_permalink(); ?>" aria-hidden="true" tabindex="-1">
 					<?php the_post_thumbnail( 'medium_large' ); ?>
 				</a>
 			<?php endif; ?>

@@ -1,13 +1,33 @@
 /**
  * Smooth Back to Top
  *
- * A floating, accessible "return to top" button. Fixed to the viewport, so it
- * causes zero layout shift. Fades and scales in once the user scrolls past the
- * threshold (the .sbtt-visible class is toggled by sbtt.js). Honors
- * prefers-reduced-motion and adapts to light and dark themes.
+ * A floating, accessible "return to top" control with a circular scroll-progress
+ * ring around an up-arrow. Fixed to the viewport, so it causes zero layout shift.
+ *
+ * Progressive enhancement model:
+ *   - Without JS the button is simply visible and fully usable.
+ *   - motion.js adds `.sbtt-js-ready`, which hands visibility to the script: the
+ *     button starts hidden and fades + scales in once `.sbtt-visible` is set
+ *     (past the scroll threshold).
+ *   - The ring's fill is driven by a single custom property, --sbtt-progress
+ *     (0 -> 1), which JS updates on scroll; CSS turns it into stroke-dashoffset.
+ *
+ * Only `transform` and `opacity` are animated. Honors prefers-reduced-motion and
+ * adapts to light and dark themes.
  */
 
 .sbtt-button {
+	/* Ring geometry: r=20 in a 44x44 box => circumference = 2 * PI * 20. */
+	--sbtt-ring-circumference: 125.6637;
+	--sbtt-progress: 0;
+	--sbtt-size: 3.25rem;
+	--sbtt-bg: #111827;
+	--sbtt-fg: #ffffff;
+	--sbtt-track: rgba( 255, 255, 255, 0.22 );
+	--sbtt-ring: #ffffff;
+	--sbtt-glow: rgba( 17, 24, 39, 0.32 );
+	--sbtt-accent: #6366f1;
+
 	position: fixed;
 	right: 1.25rem;
 	bottom: 1.25rem;
@@ -15,107 +35,226 @@
 	right: calc( 1.25rem + env( safe-area-inset-right, 0px ) );
 	bottom: calc( 1.25rem + env( safe-area-inset-bottom, 0px ) );
 	z-index: 2147483000;
+
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
 	box-sizing: border-box;
-	width: 3rem;
-	height: 3rem;
+	width: var( --sbtt-size );
+	height: var( --sbtt-size );
 	margin: 0;
 	padding: 0;
 	border: 0;
 	border-radius: 50%;
-	background-color: #111827;
-	color: #ffffff;
+	background-color: var( --sbtt-bg );
+	color: var( --sbtt-fg );
 	font: inherit;
 	line-height: 0;
 	cursor: pointer;
-	opacity: 0;
-	visibility: hidden;
-	transform: translateY( 0.5rem ) scale( 0.85 );
+
+	/* Soft, premium float. */
+	box-shadow:
+		0 6px 16px var( --sbtt-glow ),
+		0 2px 4px rgba( 0, 0, 0, 0.18 );
+
 	transition:
-		opacity 0.25s ease,
-		transform 0.25s ease,
-		visibility 0s linear 0.25s;
-	box-shadow: 0 4px 14px rgba( 0, 0, 0, 0.25 );
+		transform 0.32s cubic-bezier( 0.22, 1, 0.36, 1 ),
+		box-shadow 0.32s cubic-bezier( 0.22, 1, 0.36, 1 ),
+		opacity 0.3s ease,
+		visibility 0s linear 0s,
+		background-color 0.2s ease;
+
 	-webkit-tap-highlight-color: transparent;
 	-webkit-appearance: none;
 	appearance: none;
 }
 
-.sbtt-button.sbtt-visible {
+/*
+ * Once JS is in control the button starts hidden and only reveals when scrolled.
+ * Without this class (no JS) the button stays visible and fully functional.
+ */
+.sbtt-button.sbtt-js-ready {
+	opacity: 0;
+	visibility: hidden;
+	transform: translateY( 0.625rem ) scale( 0.8 );
+	/* Promote to its own layer only while JS controls the reveal animation,
+	   instead of permanently, so an idle fixed button costs no compositor layer. */
+	will-change: transform, opacity;
+	transition:
+		transform 0.32s cubic-bezier( 0.22, 1, 0.36, 1 ),
+		box-shadow 0.32s cubic-bezier( 0.22, 1, 0.36, 1 ),
+		opacity 0.3s ease,
+		visibility 0s linear 0.3s,
+		background-color 0.2s ease;
+}
+
+.sbtt-button.sbtt-js-ready.sbtt-visible {
 	opacity: 1;
 	visibility: visible;
 	transform: translateY( 0 ) scale( 1 );
 	transition:
-		opacity 0.25s ease,
-		transform 0.25s ease,
-		visibility 0s linear 0s;
+		transform 0.4s cubic-bezier( 0.34, 1.56, 0.64, 1 ),
+		box-shadow 0.32s cubic-bezier( 0.22, 1, 0.36, 1 ),
+		opacity 0.3s ease,
+		visibility 0s linear 0s,
+		background-color 0.2s ease;
 }
 
+/* Satisfying hover: lift up, deepen the glow, brighten the ring accent. */
 .sbtt-button:hover {
-	background-color: #000000;
+	transform: translateY( -0.1875rem ) scale( 1.06 );
+	box-shadow:
+		0 12px 26px var( --sbtt-glow ),
+		0 4px 8px rgba( 0, 0, 0, 0.22 );
 }
 
+.sbtt-button:hover .sbtt-ring-progress {
+	stroke: var( --sbtt-accent );
+}
+
+.sbtt-button:hover .sbtt-arrow {
+	transform: translateY( -1px );
+}
+
+/* Press feedback: settle back down with a confident little squish. */
 .sbtt-button:active {
-	transform: translateY( 0 ) scale( 0.92 );
+	transform: translateY( 0 ) scale( 0.94 );
+	box-shadow:
+		0 4px 10px var( --sbtt-glow ),
+		0 1px 3px rgba( 0, 0, 0, 0.2 );
+	transition-duration: 0.08s;
 }
 
 .sbtt-button:focus-visible {
-	outline: 3px solid #2563eb;
-	outline-offset: 2px;
+	outline: 3px solid var( --sbtt-accent );
+	outline-offset: 3px;
 }
 
-.sbtt-button svg {
+/* The stacked SVG: progress ring underneath, arrow glyph on top. */
+.sbtt-button .sbtt-icon {
+	position: relative;
 	display: block;
-	width: 1.25rem;
-	height: 1.25rem;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+}
+
+.sbtt-ring,
+.sbtt-glyph {
+	position: absolute;
+	inset: 0;
+	display: block;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+}
+
+/* Progress ring sits at the rim of the button. */
+.sbtt-ring {
+	transform: rotate( -90deg ); /* Start the fill at 12 o'clock. */
+	transform-origin: 50% 50%;
+}
+
+.sbtt-ring circle {
+	fill: none;
+	stroke-linecap: round;
+}
+
+.sbtt-ring-track {
+	stroke: var( --sbtt-track );
+	stroke-width: 2.5;
+}
+
+.sbtt-ring-progress {
+	stroke: var( --sbtt-ring );
+	stroke-width: 2.5;
+	stroke-dasharray: var( --sbtt-ring-circumference );
+	stroke-dashoffset: calc(
+		var( --sbtt-ring-circumference ) * ( 1 - var( --sbtt-progress ) )
+	);
+	transition:
+		stroke-dashoffset 0.12s linear,
+		stroke 0.2s ease;
+}
+
+/* Up-arrow glyph, centered inside the ring. */
+.sbtt-glyph {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.sbtt-arrow {
+	display: block;
+	width: 1.125rem;
+	height: 1.125rem;
 	fill: none;
 	stroke: currentColor;
 	stroke-width: 2.5;
 	stroke-linecap: round;
 	stroke-linejoin: round;
-	pointer-events: none;
+	transition: transform 0.25s cubic-bezier( 0.22, 1, 0.36, 1 );
 }
 
 /* Dark themes: lighten the button so it stays visible against dark pages. */
 @media ( prefers-color-scheme: dark ) {
 	.sbtt-button {
-		background-color: #f3f4f6;
-		color: #111827;
-		box-shadow: 0 4px 14px rgba( 0, 0, 0, 0.55 );
+		--sbtt-bg: #f3f4f6;
+		--sbtt-fg: #111827;
+		--sbtt-track: rgba( 17, 24, 39, 0.18 );
+		--sbtt-ring: #111827;
+		--sbtt-glow: rgba( 0, 0, 0, 0.55 );
+		--sbtt-accent: #818cf8;
 	}
 
 	.sbtt-button:hover {
-		background-color: #ffffff;
-	}
-
-	.sbtt-button:focus-visible {
-		outline-color: #60a5fa;
+		--sbtt-bg: #ffffff;
 	}
 }
 
 /* On small screens, tuck the button a touch closer to the corner. */
 @media ( max-width: 480px ) {
 	.sbtt-button {
+		--sbtt-size: 3rem;
 		right: calc( 0.875rem + env( safe-area-inset-right, 0px ) );
 		bottom: calc( 0.875rem + env( safe-area-inset-bottom, 0px ) );
-		width: 2.75rem;
-		height: 2.75rem;
+	}
+
+	.sbtt-arrow {
+		width: 1rem;
+		height: 1rem;
 	}
 }
 
-/* Respect users who ask for reduced motion: no fade, scale, or slide. */
+/* Respect users who ask for reduced motion: no fade, scale, slide, or eased ring. */
 @media ( prefers-reduced-motion: reduce ) {
 	.sbtt-button,
-	.sbtt-button.sbtt-visible {
+	.sbtt-button.sbtt-js-ready,
+	.sbtt-button.sbtt-js-ready.sbtt-visible {
 		transform: none;
 		transition:
 			opacity 0.01ms linear,
 			visibility 0s linear;
 	}
 
+	.sbtt-button:hover,
 	.sbtt-button:active {
 		transform: none;
+	}
+
+	.sbtt-button:hover .sbtt-arrow,
+	.sbtt-arrow {
+		transform: none;
+		transition: none;
+	}
+
+	.sbtt-ring-progress {
+		transition: none;
+	}
+
+	.sbtt-button,
+	.sbtt-button.sbtt-js-ready,
+	.sbtt-button.sbtt-js-ready.sbtt-visible {
+		will-change: auto;
 	}
 }

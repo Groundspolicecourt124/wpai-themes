@@ -31,6 +31,8 @@ has no image.
 Features:
 
 * Full-width lead-story homepage with a masthead, dateline, and sticky nav
+* Signature "LATEST" headline ticker and a crisp, accessible motion system
+  (scroll reveals, drawing rule-lines, reading-progress bar, duotone hovers)
 * "More Stories" two-column grid for secondary articles
 * Column-ruled article + sidebar layout
 * Serif body type tuned for long-form reading (comfortable measure)
@@ -51,6 +53,14 @@ Features:
    the full lead-story treatment.
 
 == Changelog ==
+
+= 1.3.0 =
+* New signature "LATEST" headline ticker beneath the masthead — a seamless, pausable newswire marquee of recent posts.
+* Added a crisp, journalistic motion system: staggered scroll reveals for the lead story, "More Stories" cards, and archive entries via IntersectionObserver.
+* Masthead hairlines and section-heading rules now draw across on entry; the dateline settles in with a press-start cue on load.
+* Thin red reading-progress bar fills as you read a single post.
+* Duotone-to-colour contrast shift on featured-image hover.
+* All motion is self-contained vanilla JS/CSS (no libraries), animates only transform/opacity, and is fully gated behind prefers-reduced-motion. Progressive enhancement: all content stays visible without JS via an `html.js` flag.
 
 = 1.2.0 =
 * Added Customizer "Colors & Style" controls (accent, background, and surface colors) with instant live preview.

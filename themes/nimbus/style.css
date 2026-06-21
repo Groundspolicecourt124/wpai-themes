@@ -4,7 +4,7 @@ Theme URI: https://lordbasilaiassistant-sudo.github.io/wpai-themes/
 Author: WPAI Themes
 Author URI: https://github.com/lordbasilaiassistant-sudo/wpai-themes
 Description: A bright, conversion-grade SaaS and startup theme. Crisp white cards float on a soft light canvas, a violet-to-indigo gradient powers the homepage hero, pill buttons, and category chips, and a geometric system sans keeps everything modern and fast. Full-bleed featured-image covers, a two-column reading layout with a card sidebar, and accessible focus states throughout.
-Version: 1.2.0
+Version: 1.3.0
 Requires at least: 5.0
 Tested up to: 6.5
 Requires PHP: 7.4
@@ -913,14 +913,264 @@ input[type="submit"]:hover {
 .error-404 .search-form { max-width: 26rem; margin: var(--n-space-3) auto 0; }
 .error-404 .btn-ghost { margin-top: var(--n-space-3); }
 
-/* Reduced motion */
+/* =====================================================================
+   MOTION SYSTEM — "funded startup" feel: a living gradient-mesh hero,
+   a magnetic gradient CTA, small 3D card tilt, springy staggered scroll
+   entrances, count-up stats, and a scroll progress bar.
+
+   Progressive enhancement: the start-states below ONLY apply once JS has
+   added the .js (in <head>) and .nm-motion (on boot) classes, so no-JS and
+   pre-paint users always see fully-rendered content. Everything animates
+   transform/opacity only — no layout properties, no CLS.
+   ===================================================================== */
+
+/* Springy easing tokens reused across the system. */
+:root {
+  --n-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --n-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ---- Scroll progress bar -------------------------------------------- */
+.nm-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  z-index: 60;
+  pointer-events: none;
+  background: transparent;
+}
+.nm-progress__fill {
+  display: block;
+  height: 100%;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  background: var(--n-gradient);
+  box-shadow: 0 0 12px rgba(99, 102, 241, 0.45);
+  will-change: transform;
+}
+
+/* ---- SIGNATURE: living animated gradient-mesh hero ------------------ */
+.nimbus-hero__mesh {
+  position: absolute;
+  inset: -22%;
+  z-index: 0;
+  pointer-events: none;
+  filter: blur(46px) saturate(125%);
+  opacity: 0.92;
+}
+.nimbus-hero__blob {
+  position: absolute;
+  width: 46%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  mix-blend-mode: multiply;
+  will-change: transform;
+  transform: translateZ(0);
+}
+.nimbus-hero__blob--1 {
+  top: -6%;
+  left: 4%;
+  background: radial-gradient(circle at 30% 30%, color-mix(in srgb, var(--n-accent-2) 85%, #fff) 0%, transparent 70%);
+  animation: nm-blob-1 19s var(--n-ease-out) infinite alternate;
+}
+.nimbus-hero__blob--2 {
+  top: -18%;
+  right: -4%;
+  width: 52%;
+  background: radial-gradient(circle at 60% 40%, color-mix(in srgb, var(--n-accent) 88%, #fff) 0%, transparent 70%);
+  animation: nm-blob-2 23s var(--n-ease-out) infinite alternate;
+}
+.nimbus-hero__blob--3 {
+  bottom: -22%;
+  left: 26%;
+  width: 50%;
+  background: radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--n-accent-deep) 70%, #fff) 0%, transparent 72%);
+  animation: nm-blob-3 27s var(--n-ease-out) infinite alternate;
+}
+/* The blobs never touch layout — only transform drifts. */
+@keyframes nm-blob-1 {
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  50%  { transform: translate3d(14%, 10%, 0) scale(1.12); }
+  100% { transform: translate3d(6%, 20%, 0) scale(0.96); }
+}
+@keyframes nm-blob-2 {
+  0%   { transform: translate3d(0, 0, 0) scale(1.05); }
+  50%  { transform: translate3d(-16%, 12%, 0) scale(0.92); }
+  100% { transform: translate3d(-6%, 22%, 0) scale(1.14); }
+}
+@keyframes nm-blob-3 {
+  0%   { transform: translate3d(0, 0, 0) scale(0.98); }
+  50%  { transform: translate3d(12%, -14%, 0) scale(1.16); }
+  100% { transform: translate3d(-10%, -6%, 0) scale(1.02); }
+}
+/* Keep the dotted-grid mask and text above the mesh. */
+.nimbus-hero::after { z-index: 1; }
+.nimbus-hero__inner { z-index: 2; }
+
+/* ---- Hero stats with count-up --------------------------------------- */
+.nimbus-stats {
+  margin: var(--n-space-4) auto 0;
+  padding: var(--n-space-3) 0 0;
+  border-top: 1px solid var(--n-line);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--n-space-3);
+  max-width: 34rem;
+}
+.nimbus-stat { text-align: center; }
+.nimbus-stat__value {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.05em;
+  font-size: clamp(1.6rem, 4.5vw, 2.35rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  background: var(--n-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.nimbus-stat__suffix { font-size: 0.7em; }
+.nimbus-stat__label {
+  margin: 0.5rem 0 0;
+  font-size: var(--n-text-sm);
+  color: var(--n-faint);
+  font-weight: 600;
+  line-height: 1.3;
+}
+@media (max-width: 460px) {
+  .nimbus-stats { grid-template-columns: 1fr; gap: var(--n-space-2); max-width: 18rem; }
+}
+
+/* ---- Magnetic CTA --------------------------------------------------- */
+.nm-magnetic {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  /* Springy return after the JS releases the transform. */
+  transition: transform 0.4s var(--n-ease-spring), box-shadow 0.2s ease;
+  will-change: transform;
+}
+.nm-magnetic .nm-magnetic__label {
+  display: inline-block;
+  position: relative;
+  z-index: 1;
+  transition: transform 0.4s var(--n-ease-spring);
+  will-change: transform;
+}
+/* Sheen sweep that catches the light on hover/focus. */
+.nm-magnetic::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(115deg, transparent 0%, rgba(255, 255, 255, 0.45) 50%, transparent 100%);
+  transform: translateX(-130%);
+  transition: transform 0.6s var(--n-ease-out);
+  pointer-events: none;
+}
+.nm-magnetic:hover::before,
+.nm-magnetic:focus-visible::before { transform: translateX(130%); }
+.nm-magnetic:hover { transform: translateY(-2px); }
+
+/* ---- 3D card tilt --------------------------------------------------- */
+.nm-tilt {
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+/* While actively tilting, JS owns the transform — disable the lift transition
+   that would otherwise fight the per-frame updates and cause jitter. */
+.nm-tilt.is-tilting {
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+/* Lift the cover image slightly on the Z-axis for a layered, premium feel. */
+.nm-tilt .featured-image { transform: translateZ(22px); }
+.nm-tilt .entry__pad { transform: translateZ(14px); }
+
+/* ---- Springy staggered scroll entrances ----------------------------- */
+/* Start-states apply ONLY when motion JS is live. Without .nm-motion the
+   element is fully visible (progressive enhancement / no-JS / reduced-motion
+   fallback all land here). */
+.nm-motion .nm-reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.7s var(--n-ease-out), transform 0.7s var(--n-ease-spring);
+  will-change: opacity, transform;
+}
+.nm-motion .nm-reveal.is-inview {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---- Animated underline for nav + footer links --------------------- */
+.main-nav a:not(.current-menu-item > a) {
+  position: relative;
+}
+.main-nav li:not(.current-menu-item):not(.current_page_item):not(.current-menu-ancestor) > a::after {
+  content: "";
+  position: absolute;
+  left: 0.95rem;
+  right: 0.95rem;
+  bottom: 0.32rem;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--n-gradient);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 0.28s var(--n-ease-out);
+}
+.main-nav li:not(.current-menu-item):not(.current_page_item):not(.current-menu-ancestor) > a:hover::after,
+.main-nav li:not(.current-menu-item):not(.current_page_item):not(.current-menu-ancestor) > a:focus-visible::after {
+  transform: scaleX(1);
+}
+/* Footer links get the same animated underline. */
+.site-footer a {
+  background-image: var(--n-gradient);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 2px;
+  transition: background-size 0.28s var(--n-ease-out);
+  padding-bottom: 1px;
+}
+.site-footer a:hover,
+.site-footer a:focus-visible { background-size: 100% 2px; text-decoration: none; }
+
+/* Read-more arrow gets a springy nudge from the shared token. */
+.read-more::after { transition: margin-left 0.2s var(--n-ease-spring); }
+
+/* =====================================================================
+   Reduced motion — disable ALL of the above. The JS also self-gates, but
+   this guarantees calm even if scripts run; covers the signature mesh,
+   reveals, tilt, magnetic sheen, progress bar, and underlines.
+   ===================================================================== */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
     scroll-behavior: auto !important;
   }
   html { scroll-behavior: auto; }
+
+  /* Freeze the living hero mesh. */
+  .nimbus-hero__blob { animation: none !important; }
+
+  /* Reveal everything immediately, with no transform start-state. */
+  .nm-motion .nm-reveal { opacity: 1 !important; transform: none !important; }
+
+  /* No card tilt, no magnetic drift, no sheen sweep. */
+  .nm-tilt,
+  .nm-tilt .featured-image,
+  .nm-tilt .entry__pad,
+  .nm-magnetic,
+  .nm-magnetic .nm-magnetic__label { transform: none !important; }
+  .nm-magnetic::before { display: none; }
 }
 html { scroll-behavior: smooth; }

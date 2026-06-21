@@ -18,7 +18,7 @@ $aurora_is_lead     = (bool) get_query_var( 'aurora_is_lead' );
 $aurora_is_singular = is_singular();
 $aurora_mode        = $aurora_is_singular ? 'singular' : ( $aurora_is_lead ? 'lead' : 'list' );
 ?>
-<article id="post-<?php the_ID(); ?>" <?php post_class( 'entry entry--' . $aurora_mode ); ?>>
+<article id="post-<?php the_ID(); ?>" <?php post_class( 'entry entry--' . $aurora_mode ); ?> data-aurora-reveal>
 
 	<?php if ( 'lead' === $aurora_mode ) : ?>
 
@@ -68,15 +68,23 @@ $aurora_mode        = $aurora_is_singular ? 'singular' : ( $aurora_is_lead ? 'le
 				</div>
 			<?php endif; ?>
 
-			<?php the_title( '<h1 class="entry-title">', '</h1>' ); ?>
+			<?php
+			the_title(
+				'<h1 class="entry-title" data-aurora-words><span class="entry-title__text">',
+				'</span></h1>'
+			);
+			aurora_ink_underline();
+			?>
 
 			<?php if ( has_excerpt() && 'post' === get_post_type() ) : ?>
-				<p class="entry-standfirst"><?php echo esc_html( get_the_excerpt() ); ?></p>
+				<p class="entry-standfirst" data-aurora-reveal><?php echo esc_html( get_the_excerpt() ); ?></p>
 			<?php endif; ?>
 		</header>
 
 		<?php if ( has_post_thumbnail() ) : ?>
-			<?php aurora_featured_media( 'large', false ); ?>
+			<div data-aurora-reveal>
+				<?php aurora_featured_media( 'large', false ); ?>
+			</div>
 		<?php endif; ?>
 
 		<div class="entry-content">

@@ -3,7 +3,7 @@ Contributors: wpaithemes
 Requires at least: 5.0
 Tested up to: 6.5
 Requires PHP: 7.4
-Stable tag: 1.2.0
+Stable tag: 1.3.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Tags: blog, business, landing, custom-menu, featured-images, two-columns, right-sidebar, threaded-comments, translation-ready, light
@@ -46,6 +46,12 @@ Features:
 6. Add widgets under Appearance > Widgets to populate the sidebar.
 
 == Changelog ==
+
+= 1.3.0 =
+* Added a self-contained motion system (assets/js/motion.js, no libraries or CDNs): a living animated gradient-mesh hero, a magnetic gradient CTA, a small 3D tilt on post cards, springy staggered scroll-reveal entrances, count-up hero stats, and a scroll progress bar.
+* Added a hero stats row (published stories, uptime, and teams) with animated count-up.
+* Fully respects prefers-reduced-motion (JS self-gates and a CSS block disables every animation) and degrades gracefully with no JS via a `js`/`nm-motion` progressive-enhancement hook — all content stays visible.
+* Animations are transform/opacity only (no layout thrash, no cumulative layout shift); scroll reveals use IntersectionObserver and unobserve after firing.
 
 = 1.2.0 =
 * Added Customizer color controls (Accent, Background, Secondary accent) under Appearance > Customize > Colors & Style with instant live preview.

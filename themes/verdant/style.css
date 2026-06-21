@@ -4,7 +4,7 @@ Theme URI: https://lordbasilaiassistant-sudo.github.io/wpai-themes/
 Author: WPAI Themes
 Author URI: https://github.com/lordbasilaiassistant-sudo/wpai-themes
 Description: A calm, organic wellness and small-business theme. A light paper canvas, sage and forest greens, and soft generous rounding make it warm and welcoming. The homepage opens with a gentle welcome hero and featured images sit in soft rounded cards.
-Version: 1.2.0
+Version: 1.3.0
 Requires at least: 5.0
 Tested up to: 6.5
 Requires PHP: 7.4
@@ -643,7 +643,216 @@ textarea:focus,
 .aligncenter { display: block; margin-inline: auto; }
 
 /* =========================================================================
-   16. Reduced motion
+   16. Motion system  (organic, gentle — fits the calm wellness personality)
+   -------------------------------------------------------------------------
+   Progressive enhancement: entrance states only apply once <html> has the
+   `v-motion-ready` class. The inline head snippet sets it before first paint
+   (so above-the-fold reveals never flash) AND arms a watchdog that reveals
+   everything on load if motion.js never runs; motion.js re-asserts the class
+   on execution. With no JS, the class is absent — all content renders
+   normally. The reduced-motion block (§17) neutralises everything below for
+   visitors who ask for less movement.
+   ========================================================================= */
+
+/* Motion timing tokens — slow, soft, organic. */
+:root {
+  --v-ease-spring: cubic-bezier(0.34, 1.32, 0.46, 1);   /* gentle settle/overshoot */
+  --v-ease-soft: cubic-bezier(0.22, 0.61, 0.36, 1);     /* mirrors --v-ease */
+  --v-reveal-delay: 0ms;
+}
+
+/* --- Scroll reveals: float up + soft fade ------------------------------- */
+/* Hidden-then-revealed ONLY once the motion script has actually executed
+   (it adds `.v-motion-ready` synchronously before doing any work). Gating on
+   proof-of-execution — not merely the `.js` flag — means that if motion.js
+   404s, is blocked, or throws, nothing is ever hidden and ALL content stays
+   visible. With no JS at all, the class is absent and everything renders too. */
+.v-motion-ready .v-reveal {
+  opacity: 0;
+  transform: translate3d(0, 26px, 0);
+  transition:
+    opacity 0.9s var(--v-ease-soft),
+    transform 1s var(--v-ease-spring);
+  transition-delay: var(--v-reveal-delay);
+  will-change: transform, opacity;
+}
+.v-motion-ready .v-reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+/* A keyboard user can tab to a link inside a card that hasn't scrolled into
+   view yet; never let motion hide a focused control. Reveal on focus-within
+   as a CSS safety net (the JS focusin handler does the same, with a class). */
+.v-motion-ready .v-reveal:focus-within {
+  opacity: 1;
+  transform: none;
+  transition-delay: 0ms;
+}
+/* Drop will-change once settled (set by the same class the observer adds). */
+.v-motion-ready .v-reveal.is-visible { will-change: auto; }
+
+/* --- Organic image mask reveal ----------------------------------------- */
+/* The card image grows out from a soft inset clip as the card appears, then
+   settles to scale(1) so §6's hover zoom (scale 1.04) still works after. */
+.v-motion-ready .featured-image--mask img {
+  clip-path: inset(0 0 0 0 round 0);
+  transition:
+    clip-path 1.1s var(--v-ease-soft),
+    transform 0.5s var(--v-ease);
+  transition-delay: calc(var(--v-reveal-delay) + 120ms);
+}
+.v-motion-ready .v-reveal:not(.is-visible) .featured-image--mask img {
+  clip-path: inset(8% 6% 12% 6% round 28px);
+  transform: scale(1.1);
+  transition-delay: 0ms;
+}
+
+/* --- Hero: a slow, living breath --------------------------------------- */
+/* The corner glow softly expands and contracts, like calm breathing. */
+.home-hero__sprig {
+  animation: v-breathe 9s var(--v-ease-soft) infinite;
+  transform-origin: 60% 40%;
+  will-change: transform, opacity;
+}
+@keyframes v-breathe {
+  0%, 100% { transform: scale(1); opacity: 0.9; }
+  50%      { transform: scale(1.12); opacity: 1; }
+}
+
+/* --- Signature move: a slowly drifting field of leaves & seeds ---------- */
+/* The hero wrapper is the full-bleed positioned layer the JS parallax nudges;
+   it must be sized so its absolutely-positioned .v-drift child fills the hero
+   even after a transform creates a new containing block. */
+.home-hero__drift {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  will-change: transform;
+}
+.v-drift {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+.v-drift__leaf {
+  position: absolute;
+  display: block;
+  color: var(--v-accent);
+  opacity: 0;
+  /* Each shape is given its own start point, scale, drift and timing via --v-i
+     so the field never looks tiled or synchronised. */
+  --v-dur: calc(22s + var(--v-i) * 7s);
+  --v-delay: calc(var(--v-i) * -6s);
+  --v-scale: calc(0.6 + var(--v-i) * 0.18);
+  animation:
+    v-drift-float var(--v-dur) linear var(--v-delay) infinite,
+    v-drift-fade calc(var(--v-dur) / 2) ease-in-out var(--v-delay) infinite alternate;
+  will-change: transform, opacity;
+}
+.v-drift__leaf svg { display: block; }
+
+/* Scatter the shapes with nth-child so each starts in a different place. */
+.v-drift__leaf:nth-child(1) { top: 12%;  left: 8%;   --v-i: 0; }
+.v-drift__leaf:nth-child(2) { top: 62%;  left: 22%;  --v-i: 1; }
+.v-drift__leaf:nth-child(3) { top: 28%;  left: 74%;  --v-i: 2; }
+.v-drift__leaf:nth-child(4) { top: 74%;  left: 58%;  --v-i: 3; }
+.v-drift__leaf:nth-child(5) { top: 44%;  left: 40%;  --v-i: 4; }
+
+@keyframes v-drift-float {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(var(--v-scale));
+  }
+  25% {
+    transform: translate3d(22px, -26px, 0) rotate(28deg) scale(var(--v-scale));
+  }
+  50% {
+    transform: translate3d(-14px, -52px, 0) rotate(-18deg) scale(var(--v-scale));
+  }
+  75% {
+    transform: translate3d(26px, -78px, 0) rotate(20deg) scale(var(--v-scale));
+  }
+  100% {
+    transform: translate3d(0, -110px, 0) rotate(0deg) scale(var(--v-scale));
+  }
+}
+@keyframes v-drift-fade {
+  0%   { opacity: 0; }
+  30%  { opacity: 0.5; }
+  70%  { opacity: 0.32; }
+  100% { opacity: 0; }
+}
+
+/* Footer drift sits behind the centred mark; tint it for the dark ground. */
+.site-footer .v-drift__leaf { color: var(--v-accent); }
+.site-footer .v-drift__leaf:nth-child(1) { top: 18%; left: 14%; --v-i: 0; }
+.site-footer .v-drift__leaf:nth-child(2) { top: 30%; left: 80%; --v-i: 2; }
+.site-footer .v-drift__leaf:nth-child(3) { top: 64%; left: 50%; --v-i: 4; }
+
+/* Keep hero text and content above the drifting field. */
+.home-hero__inner { z-index: 2; }
+.site-footer .site-wrap { position: relative; z-index: 2; }
+
+/* --- Hover micro-interactions ------------------------------------------ */
+/* Soft-spring card lift (overrides §6's linear ease with a gentle settle). */
+.entry--card {
+  transition:
+    transform 0.45s var(--v-ease-spring),
+    box-shadow 0.45s var(--v-ease-soft),
+    border-color 0.3s var(--v-ease-soft);
+}
+
+/* Animated underline that grows from the left on title & read-more links. */
+.entry-title a,
+.read-more {
+  position: relative;
+}
+.entry-title a::after,
+.read-more::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 2px;
+  background: currentColor;
+  border-radius: 2px;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.4s var(--v-ease-spring);
+}
+.entry-title a:hover::after,
+.entry--card:hover .entry-title a::after,
+.read-more:hover::after {
+  transform: scaleX(1);
+}
+/* The read-more already underlines via text on hover; suppress that so only
+   the animated bar shows. */
+.read-more:hover { text-decoration: none; }
+
+/* Buttons: settle with a soft spring + a whisper deeper press. */
+.wp-block-button__link,
+.button,
+.search-submit,
+button[type="submit"],
+input[type="submit"] {
+  transition:
+    background 0.25s var(--v-ease-soft),
+    transform 0.35s var(--v-ease-spring),
+    box-shadow 0.35s var(--v-ease-soft);
+}
+.wp-block-button__link:active,
+.button:active,
+.search-submit:active,
+button[type="submit"]:active,
+input[type="submit"]:active {
+  transform: translateY(0) scale(0.97);
+}
+
+/* =========================================================================
+   17. Reduced motion
    ========================================================================= */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
@@ -656,4 +865,18 @@ textarea:focus,
   }
   .entry--card:hover { transform: none; }
   .entry--card:hover .featured-image img { transform: none; }
+
+  /* Reveal everything immediately — never leave content hidden. */
+  .v-motion-ready .v-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .v-motion-ready .featured-image--mask img,
+  .v-motion-ready .v-reveal:not(.is-visible) .featured-image--mask img {
+    clip-path: none !important;
+    transform: none !important;
+  }
+  /* Stop the ambient/breathing loops outright. */
+  .home-hero__sprig { animation: none !important; }
+  .v-drift { display: none !important; }
 }

@@ -15,9 +15,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $sonnet_is_post = ( 'post' === get_post_type() );
 ?>
-<article id="post-<?php the_ID(); ?>" <?php post_class( 'entry entry--single' ); ?>>
+<article id="post-<?php the_ID(); ?>" <?php post_class( 'entry entry--single' ); ?> data-sonnet-stagger>
 
-	<header class="entry-header entry-header--single">
+	<header class="entry-header entry-header--single" data-sonnet-reveal>
 		<?php if ( $sonnet_is_post ) : ?>
 			<?php
 			$sonnet_cat = sonnet_primary_category();
@@ -35,7 +35,7 @@ $sonnet_is_post = ( 'post' === get_post_type() );
 	</header>
 
 	<?php if ( has_post_thumbnail() ) : ?>
-		<figure class="featured-image featured-image--single">
+		<figure class="featured-image featured-image--single" data-sonnet-reveal>
 			<?php
 			the_post_thumbnail( 'large', array( 'fetchpriority' => 'high' ) );
 			$sonnet_caption = wp_get_attachment_caption( get_post_thumbnail_id() );
@@ -46,7 +46,7 @@ $sonnet_is_post = ( 'post' === get_post_type() );
 		</figure>
 	<?php endif; ?>
 
-	<div class="entry-content">
+	<div class="entry-content" data-sonnet-reveal>
 		<?php
 		the_content();
 

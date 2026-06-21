@@ -45,6 +45,13 @@ Features:
 
 == Changelog ==
 
+= 1.3.0 =
+* New: organic motion system — gentle float-up scroll reveals with a soft stagger (IntersectionObserver), a living "breathing" hero glow, and an organic mask reveal on featured images.
+* New: signature drifting botanicals — a few hand-drawn leaf and seed shapes that slowly drift behind the hero and footer, each on its own path and rhythm (pure CSS).
+* New: soft-spring hover micro-interactions — cards settle in, links grow an animated underline, and buttons press with a gentle spring.
+* Accessibility: every animation is gated behind prefers-reduced-motion (both JS and CSS), content ships fully visible without JS (progressive enhancement via a `js` class), and keyboard focus is never trapped or hidden.
+* Performance: motion animates only transform/opacity, reveals unobserve after firing, and the deferred footer script never blocks first paint.
+
 = 1.2.0 =
 * New: Customizer color controls (accent, background, and card surface) under Appearance > Customize > Colors & Style, with instant live preview — recolor the whole theme with no code.
 * New: derived accent shades follow the chosen accent automatically via color-mix, and the site title/tagline update live.

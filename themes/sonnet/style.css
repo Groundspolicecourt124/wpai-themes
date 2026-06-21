@@ -4,7 +4,7 @@ Theme URI: https://lordbasilaiassistant-sudo.github.io/wpai-themes/
 Author: WPAI Themes
 Author URI: https://github.com/lordbasilaiassistant-sudo/wpai-themes
 Description: A dark-mode-first longform theme for writers. Deep charcoal, warm off-white serif at a narrow reading measure, and a muted gold accent. The homepage opens as a quiet literary journal — a featured lead essay with its cover image, then a refined reading list. Drop-cap lead-ins, italic pull-quotes, and hairline ornament throughout.
-Version: 1.2.0
+Version: 1.3.0
 Requires at least: 5.0
 Tested up to: 6.5
 Requires PHP: 7.4
@@ -1227,7 +1227,270 @@ textarea::placeholder { color: var(--s-faint); }
 }
 
 /* =========================================================================
-   23. Motion preferences
+   23. Motion system — entrance reveals, signature, micro-interactions
+   -------------------------------------------------------------------------
+   Slow, literary motion. Everything below is PROGRESSIVE ENHANCEMENT: the
+   hidden-then-reveal entrance states only apply when motion.js has confirmed
+   it is safe to run (html.js.sonnet-motion-ready) AND the user has not asked
+   for reduced motion. No-JS, JS-failure, or reduced-motion users always see
+   content in its final, visible state — see the @media block at the very end.
+   Only transform/opacity are animated. No layout properties, no CLS.
+   ========================================================================= */
+
+/* --- 23a. Scroll-reveal entrance states ---------------------------------- */
+/* Default: fully visible. We only opt INTO the hidden state once JS is ready. */
+.js.sonnet-motion-ready [data-sonnet-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 18px, 0);
+  /* Long, graceful ease — the theme's slow literary cadence. */
+  transition:
+    opacity 1100ms cubic-bezier(.16, 1, .3, 1),
+    transform 1100ms cubic-bezier(.16, 1, .3, 1);
+  will-change: opacity, transform;
+}
+.js.sonnet-motion-ready [data-sonnet-reveal].is-revealed {
+  opacity: 1;
+  transform: none;
+  will-change: auto;
+}
+
+/* Accessibility safety net: if keyboard focus lands inside a block that has not
+   yet been revealed (e.g. tabbing/anchoring ahead of the IntersectionObserver),
+   force it visible immediately so focus is never trapped behind opacity:0. */
+.js.sonnet-motion-ready [data-sonnet-reveal]:focus-within {
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
+
+/* The lead cover lifts a touch further for a cinematic settle. */
+.js.sonnet-motion-ready .lead-essay__cover[data-sonnet-reveal] {
+  transform: translate3d(0, 26px, 0) scale(1.012);
+  transition:
+    opacity 1300ms cubic-bezier(.16, 1, .3, 1),
+    transform 1300ms cubic-bezier(.16, 1, .3, 1);
+}
+.js.sonnet-motion-ready .lead-essay__cover[data-sonnet-reveal].is-revealed {
+  transform: none;
+}
+
+/* The masthead lede drifts up slightly slower than its kicker. */
+.js.sonnet-motion-ready .masthead__lede[data-sonnet-reveal] {
+  transition:
+    opacity 1400ms cubic-bezier(.16, 1, .3, 1),
+    transform 1400ms cubic-bezier(.16, 1, .3, 1);
+}
+
+/* --- 23b. Drop-cap reveal ------------------------------------------------ */
+/* motion.js wraps the first glyph in .sonnet-dropcap so it can be animated
+   (::first-letter is not animatable). When JS owns the cap, suppress the
+   CSS ::first-letter so the two never double up. */
+.js.sonnet-motion-ready .lead-essay__excerpt.has-js-dropcap > p:first-of-type::first-letter,
+.js.sonnet-motion-ready .entry--single .entry-content > p.has-js-dropcap:first-of-type::first-letter {
+  font-size: inherit;
+  line-height: inherit;
+  float: none;
+  margin: 0;
+  padding: 0;
+  color: inherit;
+  font-weight: inherit;
+}
+.sonnet-dropcap {
+  font-family: var(--s-serif);
+  font-size: 3.5em;
+  line-height: .72;
+  float: left;
+  margin: .06em .1em -.04em 0;
+  padding-right: .04em;
+  color: var(--s-accent);
+  font-weight: 600;
+}
+.js.sonnet-motion-ready .sonnet-dropcap {
+  opacity: 0;
+  transform: translateY(.06em) scale(.7);
+  transform-origin: 12% 80%;
+  transition:
+    opacity 900ms ease,
+    transform 1100ms cubic-bezier(.16, 1, .3, 1);
+}
+.js.sonnet-motion-ready .sonnet-dropcap.is-revealed {
+  opacity: 1;
+  transform: none;
+}
+
+/* --- 23c. Signature: gold shimmer sweep on eyebrows ---------------------- */
+/* A slow gold glint travels across the all-caps eyebrows on a long loop, like
+   light catching gilt lettering. Pure background-position; clipped to text. */
+@keyframes sonnet-shimmer {
+  0%   { background-position: -180% 0; }
+  /* The glint passes, then a long quiet rest before it returns. */
+  22%  { background-position: 220% 0; }
+  100% { background-position: 220% 0; }
+}
+.js.sonnet-motion-ready .masthead__kicker,
+.js.sonnet-motion-ready .page-header__kicker,
+.js.sonnet-motion-ready .entry-kicker__cat,
+.js.sonnet-motion-ready .post-list__title {
+  background-image: linear-gradient(
+    100deg,
+    currentColor 0%,
+    currentColor 38%,
+    var(--s-accent-hi) 50%,
+    currentColor 62%,
+    currentColor 100%
+  );
+  background-size: 220% 100%;
+  background-repeat: no-repeat;
+  background-position: -180% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: var(--s-accent);
+  animation: sonnet-shimmer 9s ease-in-out 1.2s infinite;
+}
+/* post-list__title is muted, not gold — let its own color carry through. */
+.js.sonnet-motion-ready .post-list__title { color: var(--s-faint); }
+
+/* --- 23d. Signature: constellation canvas -------------------------------- */
+.sonnet-constellation {
+  position: fixed;
+  inset: 0;
+  z-index: 0;            /* sits above the body gradient (-1), below content */
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1600ms ease;
+}
+.sonnet-constellation.is-lit { opacity: 1; }
+/* Keep the canvas strictly behind all real content. */
+.site-header,
+.site-main,
+.site-footer { position: relative; z-index: 1; }
+
+/* --- 23e. Reading-progress line ------------------------------------------ */
+.sonnet-progress {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  z-index: 200;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 400ms ease;
+}
+.sonnet-progress.is-active { opacity: 1; }
+.sonnet-progress__bar {
+  display: block;
+  height: 100%;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  background: linear-gradient(90deg, var(--s-accent-deep), var(--s-accent), var(--s-accent-hi));
+  box-shadow: 0 0 10px var(--s-accent-glow);
+}
+
+/* --- 23f. Refined custom caret ------------------------------------------- */
+.sonnet-caret {
+  position: fixed;
+  top: 0; left: 0;
+  z-index: 300;
+  width: 26px;
+  height: 26px;
+  border: 1px solid color-mix(in srgb, var(--s-accent) 70%, transparent);
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  /* translate is driven by JS; only the ring's scale/opacity transition here. */
+  transition: opacity 240ms ease, width 200ms ease, height 200ms ease,
+    border-color 200ms ease, background-color 200ms ease;
+  mix-blend-mode: screen;
+  box-shadow: 0 0 14px -2px var(--s-accent-glow);
+}
+.sonnet-caret::after {
+  content: "";
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 3px; height: 3px;
+  margin: -1.5px 0 0 -1.5px;
+  border-radius: 50%;
+  background: var(--s-accent-hi);
+}
+.sonnet-caret.is-visible { opacity: .9; }
+.sonnet-caret.is-active {
+  width: 42px;
+  height: 42px;
+  border-color: color-mix(in srgb, var(--s-accent) 90%, transparent);
+  background-color: var(--s-accent-glow);
+}
+.sonnet-caret.is-press { width: 18px; height: 18px; }
+/* The native cursor stays — the caret is an additive flourish, never a
+   replacement, so the pointer is never lost. Touch devices never see it. */
+
+/* --- 23g. Hover micro-interactions --------------------------------------- */
+/* Read-more underline grows from the left under the label on hover. */
+.read-more__text {
+  position: relative;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 1px;
+  transition: background-size 320ms cubic-bezier(.16, 1, .3, 1);
+  padding-bottom: 1px;
+}
+.read-more:hover .read-more__text,
+.read-more:focus-visible .read-more__text { background-size: 100% 1px; }
+
+/* Titles in the reading list get a gentle gold warm-up on hover. */
+.post-item__title a,
+.lead-essay__title a { transition: color 220ms ease, opacity 220ms ease; }
+
+/* Tag pills lift a hair on hover. */
+.entry-tag a { transition: border-color 160ms ease, color 160ms ease, transform 160ms ease; }
+.entry-tag a:hover { transform: translateY(-1px); }
+
+/* Post-to-post nav cards lift slightly and warm their border. */
+.post-navigation .nav-previous a,
+.post-navigation .nav-next a { transition: border-color 200ms ease, background 200ms ease, transform 200ms ease; }
+.post-navigation .nav-previous a:hover,
+.post-navigation .nav-next a:hover { transform: translateY(-2px); }
+
+/* Buttons get a quiet sheen sweep on hover (transform/opacity only). */
+.wp-block-button__link,
+.button,
+.search-submit,
+.comment-form input[type="submit"],
+input[type="submit"] { position: relative; overflow: hidden; }
+.wp-block-button__link::after,
+.button::after,
+.search-submit::after,
+.comment-form input[type="submit"]::after,
+input[type="submit"]::after {
+  content: "";
+  position: absolute;
+  top: 0; bottom: 0;
+  left: 0;
+  width: 40%;
+  pointer-events: none;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, .35), transparent);
+  opacity: 0;
+  transform: translateX(-160%);
+  transition: transform 620ms ease, opacity 620ms ease;
+}
+.wp-block-button__link:hover::after,
+.button:hover::after,
+.search-submit:hover::after,
+.comment-form input[type="submit"]:hover::after,
+input[type="submit"]:hover::after {
+  opacity: 1;
+  transform: translateX(360%);
+}
+
+/* =========================================================================
+   24. Motion preferences — the reduced-motion firewall
+   -------------------------------------------------------------------------
+   Two ways in: the OS-level media query, and motion.js adding
+   .sonnet-reveal-all if the user flips the setting on mid-session. Both must
+   force every animated element to its resting, fully-visible state.
    ========================================================================= */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
@@ -1235,7 +1498,41 @@ textarea::placeholder { color: var(--s-faint); }
     animation-duration: .001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: .001ms !important;
+    scroll-behavior: auto !important;
   }
   .lead-essay__cover:hover img,
   .post-item__thumb:hover img { transform: none; }
+
+  /* Reveal targets: fully visible, never offset. */
+  [data-sonnet-reveal] { opacity: 1 !important; transform: none !important; }
+  .sonnet-dropcap { opacity: 1 !important; transform: none !important; }
+
+  /* Kill the shimmer and clip — show plain gold text. */
+  .masthead__kicker,
+  .page-header__kicker,
+  .entry-kicker__cat,
+  .post-list__title {
+    animation: none !important;
+    background: none !important;
+    -webkit-text-fill-color: currentColor !important;
+  }
+
+  /* Hide the purely-decorative motion chrome entirely. */
+  .sonnet-constellation,
+  .sonnet-caret { display: none !important; }
+  .sonnet-progress { opacity: 1; } /* a static progress line is harmless + useful */
 }
+
+/* motion.js mirror of the above for a mid-session opt-in (class on <html>). */
+html.sonnet-reveal-all [data-sonnet-reveal] { opacity: 1 !important; transform: none !important; }
+html.sonnet-reveal-all .sonnet-dropcap { opacity: 1 !important; transform: none !important; }
+html.sonnet-reveal-all .masthead__kicker,
+html.sonnet-reveal-all .page-header__kicker,
+html.sonnet-reveal-all .entry-kicker__cat,
+html.sonnet-reveal-all .post-list__title {
+  animation: none !important;
+  background: none !important;
+  -webkit-text-fill-color: currentColor !important;
+}
+html.sonnet-reveal-all .sonnet-constellation,
+html.sonnet-reveal-all .sonnet-caret { display: none !important; }

@@ -1,5 +1,15 @@
-// Renders the gallery from gallery.json and wires up live previews + downloads.
+// Renders the gallery from gallery.json and wires up live previews + downloads,
+// plus tasteful, accessible motion (scroll reveals, pointer tilt, count-up).
+document.documentElement.classList.add('js');
+const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const PLAYGROUND = 'https://playground.wordpress.net/';
+
+// Reveal cards as they scroll into view (staggered). No-op under reduced motion.
+const revealObserver = REDUCED ? null : new IntersectionObserver((entries, obs) => {
+  for (const e of entries) {
+    if (e.isIntersecting) { e.target.classList.add('is-in'); obs.unobserve(e.target); }
+  }
+}, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
 
 const state = { data: null, view: 'themes', q: '', tag: null };
 
@@ -78,14 +88,35 @@ function render() {
   renderChips();
   const list = filtered();
   grid.innerHTML = '';
-  list.forEach((it) => grid.appendChild(card(it)));
+  list.forEach((it, i) => {
+    const node = card(it);
+    node.classList.add('reveal');
+    node.style.setProperty('--i', i % 8);
+    grid.appendChild(node);
+    if (revealObserver) revealObserver.observe(node);
+    else node.classList.add('is-in');
+  });
   $('#empty').hidden = list.length > 0;
 }
 
 function setStats() {
   const c = state.data?.counts || { themes: 0, plugins: 0 };
-  $('#stats').textContent =
-    `${c.themes} theme${c.themes === 1 ? '' : 's'} · ${c.plugins} plugin${c.plugins === 1 ? '' : 's'} · all free · all GPL`;
+  const el = $('#stats');
+  el.innerHTML =
+    `<span class="stat" data-to="${c.themes}">0</span> theme${c.themes === 1 ? '' : 's'} ` +
+    `· <span class="stat" data-to="${c.plugins}">0</span> plugin${c.plugins === 1 ? '' : 's'} · all free · all GPL`;
+  el.querySelectorAll('.stat').forEach((s) => {
+    const to = +s.dataset.to;
+    if (REDUCED || to <= 0) { s.textContent = String(to); return; }
+    let cur = 0;
+    const step = () => {
+      cur += Math.max(1, Math.ceil(to / 16));
+      if (cur >= to) { s.textContent = String(to); return; }
+      s.textContent = String(cur);
+      requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  });
 }
 
 function wire() {

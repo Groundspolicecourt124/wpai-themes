@@ -24,13 +24,13 @@ if ( have_posts() ) :
 
 		/* ---- Literary masthead (uses the site tagline as a lead-in) ---- */
 		?>
-		<header class="masthead">
-			<p class="masthead__kicker"><?php echo esc_html( sonnet_masthead_kicker() ); ?></p>
+		<header class="masthead" data-sonnet-stagger>
+			<p class="masthead__kicker" data-sonnet-reveal><?php echo esc_html( sonnet_masthead_kicker() ); ?></p>
 			<?php
 			$sonnet_tagline = get_bloginfo( 'description', 'display' );
 			if ( $sonnet_tagline ) :
 				?>
-				<p class="masthead__lede"><?php echo esc_html( $sonnet_tagline ); ?></p>
+				<p class="masthead__lede" data-sonnet-reveal><?php echo esc_html( $sonnet_tagline ); ?></p>
 			<?php endif; ?>
 		</header>
 		<?php
@@ -42,8 +42,8 @@ if ( have_posts() ) :
 		/* ---- The refined list of everything after the lead ---- */
 		if ( have_posts() ) :
 			?>
-			<div class="post-list">
-				<h2 class="post-list__title"><?php esc_html_e( 'More reading', 'sonnet' ); ?></h2>
+			<div class="post-list" data-sonnet-stagger>
+				<h2 class="post-list__title" data-sonnet-reveal><?php esc_html_e( 'More reading', 'sonnet' ); ?></h2>
 				<?php
 				while ( have_posts() ) :
 					the_post();
@@ -59,14 +59,14 @@ if ( have_posts() ) :
 		/* ---- Archive / search / paged views: header + clean list ---- */
 		if ( is_home() && ! is_front_page() ) :
 			?>
-			<header class="page-header">
+			<header class="page-header" data-sonnet-reveal>
 				<p class="page-header__kicker"><?php esc_html_e( 'Journal', 'sonnet' ); ?></p>
 				<h1 class="page-title"><?php single_post_title(); ?></h1>
 			</header>
 			<?php
 		elseif ( is_archive() ) :
 			?>
-			<header class="page-header">
+			<header class="page-header" data-sonnet-reveal>
 				<p class="page-header__kicker"><?php echo esc_html( sonnet_archive_kicker() ); ?></p>
 				<?php the_archive_title( '<h1 class="page-title">', '</h1>' ); ?>
 				<?php the_archive_description( '<div class="page-header__desc">', '</div>' ); ?>
@@ -74,7 +74,7 @@ if ( have_posts() ) :
 			<?php
 		elseif ( is_search() ) :
 			?>
-			<header class="page-header">
+			<header class="page-header" data-sonnet-reveal>
 				<p class="page-header__kicker"><?php esc_html_e( 'Search', 'sonnet' ); ?></p>
 				<h1 class="page-title">
 					<?php
@@ -89,7 +89,7 @@ if ( have_posts() ) :
 			<?php
 		endif;
 		?>
-		<div class="post-list post-list--flush">
+		<div class="post-list post-list--flush" data-sonnet-stagger>
 			<?php
 			while ( have_posts() ) :
 				the_post();

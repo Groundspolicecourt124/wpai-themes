@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $ledger_is_post = ( 'post' === get_post_type() );
 ?>
-<article id="post-<?php the_ID(); ?>" <?php post_class( 'entry' ); ?>>
+<article id="post-<?php the_ID(); ?>" <?php post_class( 'entry' ); ?><?php echo is_singular( 'post' ) ? ' data-reading="article"' : ''; ?><?php echo is_singular() ? '' : ' data-reveal="entry"'; ?>>
 	<header class="entry-header">
 		<?php
 		if ( $ledger_is_post ) {

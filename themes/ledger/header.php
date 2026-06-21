@@ -76,4 +76,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	</div>
 </nav>
 
+<?php ledger_render_ticker(); ?>
+
+<?php if ( is_singular( 'post' ) ) : ?>
+	<div class="l-progress" aria-hidden="true"><span class="l-progress__bar"></span></div>
+<?php endif; ?>
+
 <main id="content" class="site-main">

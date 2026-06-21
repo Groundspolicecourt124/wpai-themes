@@ -3,7 +3,7 @@ Contributors: wpaithemes
 Requires at least: 5.0
 Tested up to: 6.5
 Requires PHP: 7.4
-Stable tag: 1.2.0
+Stable tag: 1.3.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Tags: blog, two-columns, right-sidebar, custom-menu, custom-logo, featured-images, threaded-comments, translation-ready, editor-style, block-styles, light, accessibility-ready
@@ -48,6 +48,21 @@ Features:
    Appearance > Widgets, and give your posts featured images for the best look.
 
 == Changelog ==
+
+= 1.3.0 =
+* New signature flourish: a hand-drawn ink underline (inline SVG) that draws
+  itself, left to right, beneath the lead headline, single-post titles, and
+  archive section labels — a quiet, crafted terracotta pen-stroke.
+* Added a cohesive, subtle motion system (assets/js/motion.js, deferred and
+  footer-loaded): gentle fade-and-rise reveals on scroll with a tasteful
+  stagger, a word-by-word reveal on lead headlines, and a refined animated
+  underline on body links.
+* New slim reading-progress bar on single posts.
+* Fully accessible and progressive: a 'js' class gates all motion so no-JS
+  readers see everything; IntersectionObserver drives reveals and unobserves
+  after firing; only transform/opacity animate (no layout shift); and
+  prefers-reduced-motion is honoured in both the script and the stylesheet —
+  everything reveals instantly with no animation.
 
 = 1.2.0 =
 * Added Customizer color controls (Accent, Background, Surface) under

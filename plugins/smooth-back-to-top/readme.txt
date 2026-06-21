@@ -4,7 +4,7 @@ Tags: back to top, scroll, accessibility, button, navigation
 Requires at least: 5.0
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 1.1.0
+Stable tag: 1.3.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -12,18 +12,22 @@ A lightweight, accessible floating button that appears on scroll and smoothly re
 
 == Description ==
 
-Smooth Back to Top adds a single, unobtrusive floating button to the bottom-right
-corner of your site. It fades in after the visitor scrolls down about 400 pixels and
-smoothly scrolls the page back to the top when clicked.
+Smooth Back to Top adds a single, delightful floating button to the bottom-right
+corner of your site. An up-arrow sits inside a circular progress ring that fills as
+the visitor reads down the page, so the control doubles as a live scroll indicator.
+It fades in after the visitor scrolls down about 300 pixels and smoothly scrolls the
+page back to the top when clicked.
 
 It is built to be polite and accessible:
 
 * Rendered as a native `<button>`, so it is fully keyboard-focusable and operable.
-* Carries a descriptive `aria-label` and a crisp upward-chevron icon.
-* Fades and scales in once you scroll past about 400 pixels — no layout shift, ever.
-* Respects the `prefers-reduced-motion` setting — it jumps instead of animating for users who ask for no motion.
+* Carries a descriptive `aria-label` and an up-arrow wrapped in a scroll-progress ring.
+* A circular SVG ring tracks how far down the page you are (animating only `transform` and `opacity`-class properties — no layout shift, ever).
+* Fades and scales in with a refined spring once you scroll past about 300 pixels, with a satisfying lift on hover.
+* Respects the `prefers-reduced-motion` setting — it jumps instead of animating for users who ask for no motion (both in JS and via a CSS media query).
 * Adapts to both light and dark themes via `prefers-color-scheme`.
 * Keeps clear of mobile safe-area insets (such as the iOS home indicator).
+* Progressive enhancement: the button works even if the script never loads.
 * Moves focus to the top of the page after scrolling, so keyboard users keep their place.
 
 It works on any theme, adds no settings page, makes no external requests, and stores no data.
@@ -56,6 +60,14 @@ Yes. The button is fixed to the viewport and does not depend on any specific the
 1. The floating Back to Top button in the lower-right corner of a page.
 
 == Changelog ==
+
+= 1.3.0 =
+* New: a circular scroll-progress ring now wraps the up-arrow and fills as you read down the page (driven by a single CSS custom property; animates stroke-dashoffset only).
+* New: refined spring reveal and a satisfying hover lift/glow, with a brighter ring accent on hover and focus — only `transform` and `opacity` are animated, so there is still zero layout shift.
+* Reveal threshold lowered to ~300px for a snappier feel.
+* Motion logic moved to a real enqueued, deferred asset (`assets/js/motion.js`) loaded in the footer — no inline script blobs.
+* Progressive enhancement: the button now renders visible and fully usable without JS; the script takes over visibility once it loads.
+* Hardened reduced-motion support: the script reacts live to OS changes and the stylesheet disables the ring/hover/reveal transitions under `prefers-reduced-motion: reduce`.
 
 = 1.1.0 =
 * Stylesheet now ships as a real, cache-busted asset file instead of inline CSS.

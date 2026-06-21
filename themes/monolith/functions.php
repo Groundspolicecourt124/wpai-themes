@@ -67,13 +67,98 @@ add_action( 'after_setup_theme', 'monolith_content_width', 0 );
  * Enqueue styles and scripts.
  */
 function monolith_assets() {
-	wp_enqueue_style( 'monolith-style', get_stylesheet_uri(), array(), wp_get_theme()->get( 'Version' ) );
+	$monolith_version = wp_get_theme()->get( 'Version' );
+
+	wp_enqueue_style( 'monolith-style', get_stylesheet_uri(), array(), $monolith_version );
+
+	// Self-contained motion system — vanilla JS, footer-loaded. Deferred via
+	// the script_loader_tag filter below for compatibility back to WP 5.0
+	// (the wp_enqueue_script() $args/strategy form only exists in WP 6.3+).
+	wp_enqueue_script(
+		'monolith-motion',
+		get_template_directory_uri() . '/assets/js/motion.js',
+		array(),
+		$monolith_version,
+		true
+	);
 
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 		wp_enqueue_script( 'comment-reply' );
 	}
 }
 add_action( 'wp_enqueue_scripts', 'monolith_assets' );
+
+/**
+ * Add `defer` to the motion script tag (compatible with all supported WP).
+ *
+ * @param string $monolith_tag    The full <script> tag.
+ * @param string $monolith_handle The script handle.
+ * @return string
+ */
+function monolith_defer_motion( $monolith_tag, $monolith_handle ) {
+	if ( 'monolith-motion' === $monolith_handle && false === strpos( $monolith_tag, ' defer' ) ) {
+		$monolith_tag = str_replace( ' src=', ' defer src=', $monolith_tag );
+	}
+	return $monolith_tag;
+}
+add_filter( 'script_loader_tag', 'monolith_defer_motion', 10, 2 );
+
+/**
+ * Add a `js` class to <html> before paint so no-JS visitors always see every
+ * bit of content (the motion CSS only hides-then-reveals under `.js`). Printed
+ * as early as possible in <head> via wp_head; no external request.
+ */
+function monolith_html_js_class() {
+	echo "<script>document.documentElement.className+=' js';</script>\n";
+}
+add_action( 'wp_head', 'monolith_html_js_class', 0 );
+
+/**
+ * Render the signature brutalist marquee ticker.
+ *
+ * A horizontal scrolling strip of studio labels — the theme's signature move.
+ * The phrase set is doubled in markup so the CSS animation can loop seamlessly,
+ * and the duplicate is hidden from assistive tech. Filterable so child themes
+ * can swap the phrases.
+ *
+ * @param string $monolith_class Optional extra class on the wrapper.
+ */
+if ( ! function_exists( 'monolith_marquee' ) ) {
+	function monolith_marquee( $monolith_class = '' ) {
+		$monolith_phrases = apply_filters(
+			'monolith_marquee_phrases',
+			array(
+				esc_html__( 'Selected Work', 'monolith' ),
+				esc_html__( 'Studio Journal', 'monolith' ),
+				esc_html__( 'Brutalist by Design', 'monolith' ),
+				esc_html__( 'Design & Engineering', 'monolith' ),
+				esc_html__( 'No Rounded Corners', 'monolith' ),
+			)
+		);
+
+		if ( empty( $monolith_phrases ) ) {
+			return;
+		}
+
+		// Build one run of "PHRASE ///" items.
+		$monolith_run = '';
+		foreach ( $monolith_phrases as $monolith_phrase ) {
+			$monolith_run .= '<span class="m-marquee__item">' . esc_html( $monolith_phrase ) . '</span>';
+			$monolith_run .= '<span class="m-marquee__sep" aria-hidden="true">///</span>';
+		}
+
+		$monolith_wrap = 'm-marquee';
+		if ( $monolith_class ) {
+			$monolith_wrap .= ' ' . sanitize_html_class( $monolith_class );
+		}
+
+		printf(
+			'<div class="%1$s" aria-hidden="true"><div class="m-marquee__track"><div class="m-marquee__run">%2$s</div><div class="m-marquee__run" aria-hidden="true">%2$s</div></div></div>',
+			esc_attr( $monolith_wrap ),
+			$monolith_run // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- each phrase escaped above.
+		);
+	}
+}
 
 /**
  * Register the sidebar widget area.

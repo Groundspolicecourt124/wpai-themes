@@ -3,7 +3,7 @@ Contributors: wpaithemes
 Requires at least: 5.0
 Tested up to: 6.5
 Requires PHP: 7.4
-Stable tag: 1.2.0
+Stable tag: 1.3.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Tags: blog, one-column, custom-menu, featured-images, threaded-comments, translation-ready, dark, editor-style, full-width-template
@@ -48,6 +48,22 @@ Features:
    Appearance > Widgets.
 
 == Changelog ==
+
+= 1.3.0 =
+* Added a hand-rolled, self-contained motion system (assets/js/motion.js, no
+  libraries): slow literary fade-and-lift scroll reveals with a tasteful stagger
+  (IntersectionObserver, unobserved on reveal), a thin gold reading-progress
+  line, a drop-cap that fades and scales in, a gold shimmer that sweeps the
+  all-caps eyebrows, animated read-more underlines and a button sheen, and a
+  refined trailing gold caret (fine pointers only).
+* Signature element: a faint, drifting gold constellation rendered on a fixed
+  decorative canvas behind the page — slow-twinkling stars threaded with
+  hairlines that wake gently around the pointer. Capped density/DPR, paused when
+  the tab is hidden, and tinted from the live Customizer accent color.
+* Fully accessible and progressive: an inline `js` flag on <html> means no-JS
+  users see all content; the script is gated on prefers-reduced-motion (reveals
+  everything and draws nothing), and a matching CSS reduced-motion block disables
+  every transition/animation. Only transform/opacity animate — no layout shift.
 
 = 1.2.0 =
 * Added a "Colors & Style" section to Appearance > Customize with live preview:

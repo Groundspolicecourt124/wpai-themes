@@ -4,7 +4,7 @@ Theme URI: https://lordbasilaiassistant-sudo.github.io/wpai-themes/
 Author: WPAI Themes
 Author URI: https://github.com/lordbasilaiassistant-sudo/wpai-themes
 Description: A bold brutalist portfolio and agency theme. Oversized uppercase display type, a monospace UI, a hard 1px grid, zero rounded corners, and an electric accent on near-black. Confident for studios, portfolios, and engineering blogs.
-Version: 1.2.0
+Version: 1.3.0
 Requires at least: 5.0
 Tested up to: 6.5
 Requires PHP: 7.4
@@ -735,4 +735,261 @@ h1, h2, h3, h4, h5, h6 {
 /* Body utility for full-bleed first impression on small screens */
 @media (max-width: 30rem) {
   body { background-size: 2rem 2rem; }
+}
+
+/* ==========================================================================
+   MOTION SYSTEM — Monolith 1.3.0
+   --------------------------------------------------------------------------
+   Snappy, confident, brutalist motion. Everything below is progressive
+   enhancement: states only engage when <html> has the `js` class (added by a
+   tiny inline head snippet). With no JS, all `.m-reveal` content is fully
+   visible. Only transform/opacity animate. A reduced-motion block at the end
+   neutralises every animation/transition.
+   ========================================================================== */
+
+/* --- Entrance reveals --------------------------------------------------- *
+ * Content is ONLY hidden once motion.js has actually booted (it adds the
+ * `m-motion-ready` class). That means: no JS, or motion.js failing to load,
+ * both leave every `.m-reveal` fully visible — true progressive enhancement,
+ * no content can ever get stuck hidden. */
+html.js.m-motion-ready .m-reveal {
+  opacity: 0;
+  transition:
+    opacity var(--m-mid) var(--m-ease),
+    transform var(--m-mid) var(--m-ease),
+    clip-path 420ms var(--m-ease);
+}
+/* Only hint the compositor while the element is still waiting to enter; once it
+   has revealed (.is-in) we drop will-change so the promoted layer is released
+   instead of being pinned in memory for the life of the page. */
+html.js.m-motion-ready .m-reveal:not(.is-in) {
+  will-change: transform, opacity, clip-path;
+}
+html.js.m-motion-ready .m-reveal.is-in {
+  opacity: 1;
+  transform: none;
+  clip-path: inset(0 0 0 0);
+  will-change: auto;
+}
+
+/* Default + variant entrance offsets */
+html.js.m-motion-ready .m-reveal--up    { transform: translateY(22px); }
+html.js.m-motion-ready .m-reveal--card  { transform: translateY(28px); }
+/* Hard clip-path wipe — the brutalist signature entrance: content snaps in
+   from the left edge with no fade-out of structure, just a clean reveal. */
+html.js.m-motion-ready .m-reveal--wipe {
+  opacity: 1;                       /* the clip does the reveal, not a fade */
+  clip-path: inset(0 100% 0 0);
+  transform: none;
+}
+html.js.m-motion-ready .m-reveal--wipe.is-in { clip-path: inset(0 0 0 0); }
+
+/* --- Signature marquee ticker ------------------------------------------- */
+.m-marquee {
+  --m-marquee-dur: 28s;
+  position: relative;
+  overflow: hidden;
+  border-top: 1px solid var(--m-line-strong);
+  border-bottom: 1px solid var(--m-line-strong);
+  background: var(--m-bg);
+  margin: clamp(1.5rem, 3vw, 2.4rem) 0 clamp(2rem, 4vw, 3rem);
+  /* Break the ticker out to the full content width even with a sidebar. */
+  user-select: none;
+}
+.monolith-home:not(.monolith-no-sidebar) .m-marquee {
+  margin-right: calc(-1 * (var(--m-sidebar) + var(--m-gap)));
+}
+@media (max-width: 60rem) {
+  .monolith-home:not(.monolith-no-sidebar) .m-marquee { margin-right: 0; }
+}
+/* Hairline accent edges top + bottom for that hard machined feel. */
+.m-marquee::before,
+.m-marquee::after {
+  content: "";
+  position: absolute; left: 0; right: 0; height: 1px;
+  background: var(--m-accent); opacity: .5;
+}
+.m-marquee::before { top: -1px; }
+.m-marquee::after  { bottom: -1px; }
+
+.m-marquee__track {
+  display: flex;
+  width: max-content;
+  animation: m-marquee-scroll var(--m-marquee-dur) linear infinite;
+}
+.m-marquee:hover .m-marquee__track { animation-play-state: paused; }
+.m-marquee__run {
+  display: flex;
+  align-items: center;
+  flex: none;
+  padding: .9rem 0;
+}
+.m-marquee__item {
+  font-family: var(--m-display);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  font-size: clamp(1.1rem, 2.4vw, 1.7rem);
+  color: var(--m-ink);
+  white-space: nowrap;
+  padding: 0 1.1rem;
+}
+.m-marquee__sep {
+  font-family: var(--m-mono);
+  font-weight: 700;
+  font-size: clamp(1rem, 2vw, 1.5rem);
+  color: var(--m-accent);
+  padding: 0 .4rem;
+}
+@keyframes m-marquee-scroll {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
+}
+
+/* --- Scroll-progress bar ------------------------------------------------- */
+.m-progress {
+  position: fixed; top: 0; left: 0; right: 0; height: 2px;
+  z-index: 80; pointer-events: none;
+  background: transparent;
+}
+.m-progress__fill {
+  display: block; height: 100%; width: 100%;
+  background: var(--m-accent);
+  transform: scaleX(0); transform-origin: 0 50%;
+  box-shadow: 0 0 8px rgba(0, 229, 160, .55);
+}
+/* No-JS: hide the empty bar entirely so it never shows a dead rule. */
+html:not(.js) .m-progress { display: none; }
+
+/* --- Accent square: pulse + snap on the masthead full-stop -------------- */
+.m-square {
+  display: inline-block;
+  color: var(--m-accent);
+}
+html.js .m-square {
+  animation: m-square-pulse 2.4s var(--m-ease) infinite;
+  transform-origin: 60% 90%;
+}
+@keyframes m-square-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  8%       { transform: scale(1.45); opacity: .85; }
+  16%      { transform: scale(1); opacity: 1; }
+}
+
+/* --- Animated index counter --------------------------------------------- */
+.m-count {
+  color: var(--m-accent);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+/* --- Magnetic targets: spring back smoothly when released --------------- */
+html.js [data-m-magnetic] {
+  transition: transform 240ms var(--m-ease);
+  will-change: transform;
+}
+
+/* --- Signature hover: hard clip-path shard wipe on project covers --------
+   On hover an electric accent shard wipes diagonally across the cover (via the
+   ::after below) while the numbered index badge snaps. Confident, brutalist.
+   The image itself is never clipped, so it is always fully visible (no CLS). */
+/* Snap the numbered index badge on hover for a mechanical click-in. */
+html.js .project-card .project-card__index {
+  transition: transform var(--m-fast) var(--m-ease), background var(--m-fast) var(--m-ease);
+}
+html.js .project-card:hover .project-card__index,
+html.js .project-card:focus-within .project-card__index {
+  transform: translateX(2px) translateY(-1px);
+}
+/* A hard diagonal accent shard wipes across the cover on hover, then settles
+   to a thin lit edge. Single transition so it replays reliably on every hover
+   and reverses cleanly on mouse-out. Image is never obscured (overlay blend). */
+html.js .project-card__cover::after {
+  content: "";
+  position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(115deg,
+    rgba(0, 229, 160, .55) 0%,
+    rgba(0, 229, 160, .12) 42%,
+    transparent 60%);
+  mix-blend-mode: screen;
+  clip-path: polygon(0 0, 0 0, -20% 100%, 0 100%);
+  transition: clip-path 420ms var(--m-ease), opacity var(--m-mid) var(--m-ease);
+  opacity: 0;
+  pointer-events: none;
+}
+html.js .project-card:hover .project-card__cover::after,
+html.js .project-card:focus-within .project-card__cover::after {
+  opacity: 1;
+  clip-path: polygon(0 0, 120% 0, 100% 100%, 0 100%);
+}
+
+/* --- Animated underline on the read-more arrow -------------------------- */
+html.js .read-more span[aria-hidden="true"] {
+  display: inline-block;
+  transition: transform var(--m-fast) var(--m-ease);
+}
+html.js .read-more:hover span[aria-hidden="true"] { transform: translateX(4px); }
+
+/* --- Signature blocky custom cursor ------------------------------------- */
+.m-cursor {
+  position: fixed; top: 0; left: 0;
+  width: 14px; height: 14px;
+  background: var(--m-accent);
+  z-index: 90; pointer-events: none;
+  opacity: 0;
+  mix-blend-mode: difference;
+  transition: opacity 160ms var(--m-ease),
+              width 160ms var(--m-ease),
+              height 160ms var(--m-ease),
+              background 160ms var(--m-ease);
+  will-change: transform;
+}
+.m-cursor.is-on  { opacity: 1; }
+.m-cursor.is-hot {
+  width: 34px; height: 34px;
+  background: transparent;
+  outline: 2px solid var(--m-accent);
+}
+.m-cursor.is-down { width: 10px; height: 10px; }
+/* Only dim the native cursor over non-interactive ground, and only when the
+   custom cursor is active — focusable controls keep their native cursor so
+   keyboard + accessibility are never compromised. */
+html.m-has-cursor body { cursor: none; }
+html.m-has-cursor a,
+html.m-has-cursor button,
+html.m-has-cursor input,
+html.m-has-cursor textarea,
+html.m-has-cursor select,
+html.m-has-cursor label,
+html.m-has-cursor [tabindex] { cursor: pointer; }
+html.m-has-cursor input[type="text"],
+html.m-has-cursor input[type="email"],
+html.m-has-cursor input[type="url"],
+html.m-has-cursor input[type="search"],
+html.m-has-cursor input[type="password"],
+html.m-has-cursor textarea { cursor: text; }
+
+/* ==========================================================================
+   REDUCED MOTION — kill every entrance, loop, and pointer effect.
+   This complements the global reduce block above and the JS gate.
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  html.js.m-motion-ready .m-reveal,
+  html.js.m-motion-ready .m-reveal--up,
+  html.js.m-motion-ready .m-reveal--card,
+  html.js.m-motion-ready .m-reveal--wipe {
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
+    transition: none !important;
+  }
+  .m-marquee__track { animation: none !important; transform: none !important; }
+  html.js .m-square { animation: none !important; transform: none !important; }
+  .m-progress { display: none !important; }
+  .m-cursor { display: none !important; }
+  html.m-has-cursor body,
+  html.m-has-cursor a,
+  html.m-has-cursor button { cursor: auto !important; }
+  html.js [data-m-magnetic] { transform: none !important; transition: none !important; }
+  html.js .project-card__cover::after { display: none !important; }
 }

@@ -4,7 +4,7 @@ Theme URI: https://lordbasilaiassistant-sudo.github.io/wpai-themes/
 Author: WPAI Themes
 Author URI: https://github.com/lordbasilaiassistant-sudo/wpai-themes
 Description: An authoritative editorial and magazine theme. Off-white paper, near-black serif type, and a single red accent, opening with a real masthead and a full-width lead-story treatment. Small-caps bylines, category kickers, a drop cap on single posts, and a column-ruled article-plus-sidebar layout deliver a print-newsstand feel built for long-form reading.
-Version: 1.2.0
+Version: 1.3.0
 Requires at least: 5.0
 Tested up to: 6.5
 Requires PHP: 7.4
@@ -603,16 +603,226 @@ hr { border: 0; border-top: 1px solid var(--l-line); margin: 2rem 0; }
   .search-form .search-submit { width: 100%; }
 }
 
+/* ========================================================= */
+/* MOTION SYSTEM  (v1.3.0)                                    */
+/* Crisp, journalistic enhancement layer. Everything below    */
+/* animates ONLY transform / opacity and is a pure progressive */
+/* enhancement: entrance states apply only when <html> has the */
+/* `js` class, so no-JS visitors see all content immediately. */
+/* ========================================================= */
+
+/* ---- "LATEST" news ticker (signature strip) ---- */
+.l-ticker {
+  background: var(--l-surface);
+  border-bottom: 1px solid var(--l-rule);
+  overflow: hidden;
+}
+.l-ticker__inner {
+  display: flex; align-items: stretch; gap: 0;
+}
+.l-ticker__label {
+  flex: none; display: flex; align-items: center;
+  background: var(--l-accent); color: #fff;
+  padding: .55rem .9rem; margin-right: 1rem;
+  font-size: .66rem; letter-spacing: .2em;
+  position: relative; z-index: 2;
+}
+/* A small "live" pip blinks beside the label once motion is on. */
+.l-ticker.is-live .l-ticker__label::after {
+  content: ""; width: .42em; height: .42em; margin-left: .6em;
+  border-radius: 50%; background: #fff;
+  animation: l-pip 1.6s steps(1, end) infinite;
+}
+.l-ticker__viewport {
+  position: relative; flex: 1; min-width: 0; overflow: hidden;
+  display: flex; align-items: center;
+}
+/* Fade the headlines into the paper at both edges. */
+.l-ticker__viewport::before,
+.l-ticker__viewport::after {
+  content: ""; position: absolute; top: 0; bottom: 0; width: 2.2rem; z-index: 1;
+  pointer-events: none;
+}
+.l-ticker__viewport::before { left: 0; background: linear-gradient(90deg, var(--l-surface), transparent); }
+.l-ticker__viewport::after { right: 0; background: linear-gradient(270deg, var(--l-surface), transparent); }
+.l-ticker__track {
+  display: flex; flex-wrap: nowrap; white-space: nowrap;
+  will-change: transform;
+}
+.l-ticker__group {
+  display: inline-flex; align-items: center; flex: none;
+  padding-right: 0;
+}
+.l-ticker__item {
+  display: inline-block; flex: none;
+  font-family: var(--l-sans); font-size: .76rem; font-weight: 700;
+  color: var(--l-ink); letter-spacing: .01em;
+  padding: .55rem 0; line-height: 1;
+}
+.l-ticker__item:hover { color: var(--l-accent); text-decoration: none; }
+.l-ticker__dot {
+  color: var(--l-accent); padding: 0 1rem; flex: none;
+  font-size: .7rem; user-select: none;
+}
+/* Without JS the track is just a horizontally scrollable strip. */
+html:not(.js) .l-ticker__viewport { overflow-x: auto; }
+html:not(.js) .l-ticker__group--clone { display: none; }
+
+@keyframes l-pip {
+  0%, 60% { opacity: 1; }
+  61%, 100% { opacity: .15; }
+}
+
+/* ---- Animated dateline (press-start cue) ---- *
+ * Gated on `.l-motion-on` (added by motion.js at runtime) rather than the
+ * up-front `.js` flag, so a failed/blocked script never leaves the dateline
+ * dimmed or the motto stuck at opacity:0. No-JS / failed-JS = fully visible. */
+.l-motion-on .site-dateline { opacity: .55; transition: opacity .9s ease; }
+.l-motion-on .site-dateline__motto { transform: translateY(-2px); opacity: 0; transition: opacity .9s ease .15s, transform .9s ease .15s; }
+.l-motion-on .site-dateline.is-set { opacity: 1; }
+.l-motion-on .site-dateline.is-set .site-dateline__motto { opacity: 1; transform: none; }
+
+/* ---- Reading-progress bar (single posts) ---- */
+/* Fixed hairline pinned to the very top edge of the viewport, above the
+ * sticky nav, so it never fights the masthead for z-index or position. */
+.l-progress {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 60;
+  height: 3px; background: transparent; pointer-events: none;
+}
+.l-progress__bar {
+  display: block; height: 100%; width: 100%;
+  background: var(--l-accent);
+  transform: scaleX(0); transform-origin: left center;
+  will-change: transform;
+}
+html:not(.js) .l-progress { display: none; }
+
+/* ---- Drawing rule-lines (masthead hairlines) ---- */
+/* The flanking masthead rules sweep in from the masthead toward the edges. */
+.js .site-header__rule {
+  transform: scaleX(0); transform-origin: var(--l-rule-origin, center);
+  transition: transform .9s cubic-bezier(.2, .7, .2, 1) .2s;
+}
+.js .site-header__rule--l { --l-rule-origin: right center; }
+.js .site-header__rule--r { --l-rule-origin: left center; }
+.js .site-header__rule { transform: scaleX(1); }
+
+/* ---- Scroll-reveal entrance states ---- *
+ * Hide ONLY once motion.js is actually running (`.l-motion-on`), never on the
+ * up-front `.js` flag alone. If the script is blocked, fails to parse, or the
+ * IntersectionObserver path throws, `.l-motion-on` is absent (or motion.js has
+ * already stripped [data-reveal]), so content is never stranded at opacity:0.
+ * The `is-revealed` class (added by the IntersectionObserver) flips home. */
+.l-motion-on [data-reveal] {
+  opacity: 0;
+  transition:
+    opacity .7s cubic-bezier(.2, .7, .2, 1),
+    transform .7s cubic-bezier(.2, .7, .2, 1);
+  transition-delay: calc(var(--l-reveal-i, 0) * .09s);
+}
+.l-motion-on [data-reveal].is-revealed { opacity: 1; transform: none; }
+
+/* Lead story: rises and settles. */
+.l-motion-on [data-reveal="lead"] { transform: translateY(26px); }
+/* Story cards / list entries: rise with a hair of stagger. */
+.l-motion-on [data-reveal="card"],
+.l-motion-on [data-reveal="entry"] { transform: translateY(22px); }
+/* Section heading: the title fades up while its trailing rule draws across. */
+.l-motion-on [data-reveal="rule"] { transform: translateY(14px); }
+.l-motion-on .section-heading[data-reveal]::after {
+  transform: scaleX(0); transform-origin: left center;
+  transition: transform .8s cubic-bezier(.2, .7, .2, 1) .15s;
+}
+.l-motion-on .section-heading[data-reveal].is-revealed::after { transform: scaleX(1); }
+
+/* ---- Duotone / contrast shift on featured-image hover ---- *
+ * Resting images read slightly cool and desaturated, like newsprint; on
+ * hover they warm to full colour and lift, a tactile "this is the story"
+ * cue. Layout never moves — only filter/transform change. */
+.l-duotone img {
+  transition: transform .5s cubic-bezier(.2, .7, .2, 1), filter .5s ease;
+}
+.js .l-duotone img {
+  filter: saturate(.62) contrast(1.06) brightness(.97);
+}
+.js .l-duotone:hover img,
+.js .l-duotone:focus-within img {
+  filter: saturate(1.04) contrast(1) brightness(1);
+}
+
+/* ---- Animated underline on read-more / kicker links ---- */
+.read-more { position: relative; }
+.read-more::before {
+  content: ""; position: absolute; left: 0; right: 1.1em; bottom: -2px;
+  height: 2px; background: currentColor;
+  transform: scaleX(0); transform-origin: left center;
+  transition: transform .3s cubic-bezier(.2, .7, .2, 1);
+}
+.read-more:hover::before,
+.read-more:focus-visible::before { transform: scaleX(1); }
+
+/* The arrow on read-more nudges forward on hover. */
+.read-more::after { transition: transform .25s ease; display: inline-block; }
+.read-more:hover::after { transform: translateX(.18em); }
+
+/* Lead kicker underline grows from the accent rule on hover. */
+.lead-title a,
+.story-card__title a,
+.entry-title a { background-image: none; }
+
+/* Buttons get a subtle press-lift. */
+.wp-block-button__link, .button, .search-submit {
+  transition: background .15s ease, transform .12s ease;
+}
+.wp-block-button__link:active, .button:active, .search-submit:active {
+  transform: translateY(1px);
+}
+
+/* ---- Page-header rule draw on load (top-of-page sections) ---- */
+.js .page-header { animation: l-fade-up .7s cubic-bezier(.2, .7, .2, 1) both; }
+@keyframes l-fade-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: none; }
+}
+
 /* ---- Motion preferences ---- */
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+    scroll-behavior: auto !important;
+  }
+  /* Force every motion hook to its resting/visible state. */
   .lead-story__media a:hover img,
-  .story-card__media:hover img { transform: none; }
+  .story-card__media:hover img,
+  .l-duotone img,
+  .l-duotone:hover img { transform: none; filter: none; }
+  [data-reveal],
+  [data-reveal].is-revealed { opacity: 1 !important; transform: none !important; }
+  .site-header__rule { transform: none !important; }
+  .section-heading[data-reveal]::after { transform: scaleX(1) !important; }
+  .site-dateline,
+  .site-dateline__motto { opacity: 1 !important; transform: none !important; }
+  .l-progress { display: none !important; }
+  .l-ticker.is-live .l-ticker__label::after { animation: none !important; }
+  .l-ticker__track { transform: none !important; }
+  .page-header { animation: none !important; }
+}
+
+/* ---- Ticker responsive ---- */
+@media (max-width: 540px) {
+  .l-ticker__label { padding: .5rem .7rem; margin-right: .7rem; font-size: .62rem; letter-spacing: .14em; }
+  .l-ticker__item { font-size: .72rem; }
+  .l-ticker__dot { padding: 0 .7rem; }
 }
 
 /* ---- Print ---- */
 @media print {
-  .main-nav, .widget-area, .site-dateline, .comments-area, .read-more, .post-navigation { display: none; }
+  .main-nav, .widget-area, .site-dateline, .comments-area, .read-more, .post-navigation,
+  .l-ticker, .l-progress { display: none; }
   body { background: #fff; font-size: 12pt; }
   .content-area { grid-template-columns: 1fr; }
+  [data-reveal] { opacity: 1 !important; transform: none !important; }
+  .l-duotone img { filter: none !important; }
 }

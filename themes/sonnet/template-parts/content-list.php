@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $sonnet_has_thumb = has_post_thumbnail();
 ?>
-<article id="post-<?php the_ID(); ?>" <?php post_class( $sonnet_has_thumb ? 'post-item has-thumb' : 'post-item no-thumb' ); ?>>
+<article id="post-<?php the_ID(); ?>" <?php post_class( $sonnet_has_thumb ? 'post-item has-thumb' : 'post-item no-thumb' ); ?> data-sonnet-reveal>
 
 	<?php if ( $sonnet_has_thumb ) : ?>
 		<a class="post-item__thumb" href="<?php the_permalink(); ?>" aria-hidden="true" tabindex="-1">

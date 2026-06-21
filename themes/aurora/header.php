@@ -14,11 +14,24 @@ if ( ! defined( 'ABSPATH' ) ) {
 <head>
 	<meta charset="<?php bloginfo( 'charset' ); ?>" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<script>
+		/* Flag that JS is on so the no-JS fallback shows all content. motion.js
+		   adds the `aurora-motion` class (which arms the reveal start-states)
+		   only after confirming support and motion preferences — so if scripts
+		   fail, nothing is ever left hidden. */
+		document.documentElement.className += ' js';
+	</script>
 	<?php wp_head(); ?>
 </head>
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
 <a class="skip-link screen-reader-text" href="#content"><?php esc_html_e( 'Skip to content', 'aurora' ); ?></a>
+
+<?php if ( is_single() ) : ?>
+	<div class="reading-progress" aria-hidden="true" hidden>
+		<span class="reading-progress__bar"></span>
+	</div>
+<?php endif; ?>
 
 <header class="site-header">
 	<div class="site-wrap site-header__inner">

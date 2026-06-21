@@ -29,7 +29,7 @@ if ( ! is_singular() ) :
 		}
 	}
 	?>
-	<article id="post-<?php the_ID(); ?>" <?php post_class( 'project-card' ); ?>>
+	<article id="post-<?php the_ID(); ?>" <?php post_class( 'project-card m-reveal m-reveal--card' ); ?>>
 
 		<?php if ( has_post_thumbnail() ) : ?>
 			<a class="project-card__cover" href="<?php the_permalink(); ?>" aria-hidden="true" tabindex="-1">
@@ -77,7 +77,7 @@ if ( ! is_singular() ) :
 			<div class="project-card__excerpt"><?php the_excerpt(); ?></div>
 
 			<div class="project-card__more">
-				<a class="read-more" href="<?php the_permalink(); ?>">
+				<a class="read-more" href="<?php the_permalink(); ?>" data-m-magnetic>
 					<?php
 					/* translators: %s: post title (hidden, for screen readers). */
 					printf( esc_html__( 'Read more %s', 'monolith' ), '<span class="screen-reader-text">' . esc_html( get_the_title() ) . '</span>' );
@@ -96,7 +96,7 @@ endif;
  * ---------------------------------------------------------------------- */
 ?>
 <article id="post-<?php the_ID(); ?>" <?php post_class( 'entry' ); ?>>
-	<header class="entry-header">
+	<header class="entry-header m-reveal m-reveal--up">
 		<?php if ( $monolith_is_page ) : ?>
 			<p class="page-kicker"><?php esc_html_e( 'Page', 'monolith' ); ?></p>
 		<?php else : ?>
@@ -118,7 +118,7 @@ endif;
 	</header>
 
 	<?php if ( has_post_thumbnail() ) : ?>
-		<div class="featured-image">
+		<div class="featured-image m-reveal m-reveal--wipe">
 			<?php
 			the_post_thumbnail(
 				'large',

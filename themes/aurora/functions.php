@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! defined( 'AURORA_VERSION' ) ) {
-	define( 'AURORA_VERSION', '1.2.0' );
+	define( 'AURORA_VERSION', '1.3.0' );
 }
 
 // Customizer: live color & style controls.
@@ -83,11 +83,41 @@ function aurora_assets() {
 		true
 	);
 
+	// Motion system: scroll reveals, ink-underline draw, reading progress,
+	// and the word-by-word lead headline. Deferred, footer-loaded, and fully
+	// gated behind prefers-reduced-motion inside the script itself.
+	wp_enqueue_script(
+		'aurora-motion',
+		get_template_directory_uri() . '/assets/js/motion.js',
+		array(),
+		AURORA_VERSION,
+		true
+	);
+
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 		wp_enqueue_script( 'comment-reply' );
 	}
 }
 add_action( 'wp_enqueue_scripts', 'aurora_assets' );
+
+/**
+ * Add the `defer` attribute to Aurora's footer scripts so they never block
+ * paint. Uses the loader-tag filter for compatibility back to WP 5.0.
+ *
+ * @param string $tag    The full <script> tag.
+ * @param string $handle The script's registered handle.
+ * @return string
+ */
+function aurora_defer_scripts( $tag, $handle ) {
+	$deferred = array( 'aurora-navigation', 'aurora-motion' );
+
+	if ( in_array( $handle, $deferred, true ) && false === strpos( $tag, ' defer' ) ) {
+		$tag = str_replace( ' src=', ' defer src=', $tag );
+	}
+
+	return $tag;
+}
+add_filter( 'script_loader_tag', 'aurora_defer_scripts', 10, 2 );
 
 /**
  * Register the sidebar widget area.
@@ -173,6 +203,36 @@ if ( ! function_exists( 'aurora_category_pill' ) ) {
 			'<a class="entry-cat" href="%1$s">%2$s</a>',
 			esc_url( get_category_link( $category->term_id ) ),
 			esc_html( $category->name )
+		);
+	}
+}
+
+/**
+ * Print Aurora's signature hand-drawn ink underline.
+ *
+ * A single SVG path with a deliberately uneven, pen-stroke shape. It renders
+ * statically as a quiet terracotta flourish; when JS is on (and motion is
+ * allowed) motion.js draws it on, left-to-right, the moment it scrolls in.
+ *
+ * The element is decorative, so it is hidden from assistive tech.
+ *
+ * @param string $variant Optional modifier ('lead', 'label') for sizing.
+ */
+if ( ! function_exists( 'aurora_ink_underline' ) ) {
+	function aurora_ink_underline( $variant = '' ) {
+		$class = 'ink-underline';
+		if ( $variant ) {
+			$class .= ' ink-underline--' . sanitize_html_class( $variant );
+		}
+
+		// viewBox 0 0 300 20. A loose, slightly rising pen stroke with a tiny
+		// tail — drawn rather than ruled, so it reads as a human hand.
+		$path = 'M3 13.5c34-6 64-7.5 95-7 38 .6 74 4 112 3.2 24-.5 48-2.4 72-5.7';
+
+		printf(
+			'<svg class="%1$s" viewBox="0 0 300 20" fill="none" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="%2$s" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>',
+			esc_attr( $class ),
+			esc_attr( $path )
 		);
 	}
 }

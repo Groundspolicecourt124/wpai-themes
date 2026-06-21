@@ -20,6 +20,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 <?php wp_body_open(); ?>
 <a class="skip-link" href="#content"><?php esc_html_e( 'Skip to content', 'monolith' ); ?></a>
 
+<div class="m-progress" aria-hidden="true"><span class="m-progress__fill"></span></div>
+
 <header class="site-header">
 	<div class="site-wrap site-header__inner">
 		<div class="site-branding">
@@ -28,7 +30,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<?php endif; ?>
 			<div>
 				<p class="site-title">
-					<a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a>
+					<a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home" data-m-magnetic><?php bloginfo( 'name' ); ?></a>
 				</p>
 				<?php
 				$monolith_desc = get_bloginfo( 'description', 'display' );

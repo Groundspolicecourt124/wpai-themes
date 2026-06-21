@@ -18,16 +18,19 @@ $aurora_is_blog_home = ( is_home() && ! is_paged() );
 ?>
 
 <?php if ( $aurora_is_blog_home && get_bloginfo( 'description', 'display' ) ) : ?>
-	<section class="lead-essay" aria-label="<?php esc_attr_e( 'Introduction', 'aurora' ); ?>">
+	<section class="lead-essay" aria-label="<?php esc_attr_e( 'Introduction', 'aurora' ); ?>" data-aurora-reveal>
 		<p class="lead-essay__kicker"><?php esc_html_e( 'The journal', 'aurora' ); ?></p>
-		<p class="lead-essay__line"><?php echo esc_html( get_bloginfo( 'description', 'display' ) ); ?></p>
+		<p class="lead-essay__line" data-aurora-words>
+			<span class="lead-essay__text"><?php echo esc_html( get_bloginfo( 'description', 'display' ) ); ?></span>
+			<?php aurora_ink_underline( 'lead' ); ?>
+		</p>
 	</section>
 <?php endif; ?>
 
 <?php if ( have_posts() ) : ?>
 
 	<?php if ( is_search() ) : ?>
-		<header class="page-header">
+		<header class="page-header" data-aurora-reveal>
 			<h1 class="page-header__title">
 				<?php
 				printf(
@@ -37,13 +40,13 @@ $aurora_is_blog_home = ( is_home() && ! is_paged() );
 				);
 				?>
 			</h1>
+			<?php aurora_ink_underline( 'label' ); ?>
 		</header>
 	<?php elseif ( is_archive() ) : ?>
-		<header class="page-header">
-			<?php
-			the_archive_title( '<h1 class="page-header__title">', '</h1>' );
-			the_archive_description( '<div class="page-header__desc">', '</div>' );
-			?>
+		<header class="page-header" data-aurora-reveal>
+			<?php the_archive_title( '<h1 class="page-header__title">', '</h1>' ); ?>
+			<?php aurora_ink_underline( 'label' ); ?>
+			<?php the_archive_description( '<div class="page-header__desc">', '</div>' ); ?>
 		</header>
 	<?php endif; ?>
 

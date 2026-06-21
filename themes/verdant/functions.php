@@ -62,13 +62,44 @@ add_action( 'after_setup_theme', 'verdant_content_width', 0 );
  * Enqueue styles and scripts.
  */
 function verdant_assets() {
-	wp_enqueue_style( 'verdant-style', get_stylesheet_uri(), array(), wp_get_theme()->get( 'Version' ) );
+	$verdant_version = wp_get_theme()->get( 'Version' );
+
+	wp_enqueue_style( 'verdant-style', get_stylesheet_uri(), array(), $verdant_version );
+
+	// Organic motion system: scroll reveals, drifting botanicals, hero breath.
+	// Loaded in the footer and deferred so it never blocks first paint, and
+	// degrades gracefully (markup ships fully visible) if it fails to run.
+	wp_enqueue_script(
+		'verdant-motion',
+		get_template_directory_uri() . '/assets/js/motion.js',
+		array(),
+		$verdant_version,
+		true
+	);
+	wp_script_add_data( 'verdant-motion', 'defer', true );
 
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 		wp_enqueue_script( 'comment-reply' );
 	}
 }
 add_action( 'wp_enqueue_scripts', 'verdant_assets' );
+
+/**
+ * Add a `defer` attribute to scripts that opted in via wp_script_add_data().
+ *
+ * Keeps the footer script non-blocking without inlining a <script> tag.
+ *
+ * @param string $tag    The full <script> tag.
+ * @param string $handle The script's registered handle.
+ * @return string Filtered tag.
+ */
+function verdant_defer_scripts( $tag, $handle ) {
+	if ( wp_scripts()->get_data( $handle, 'defer' ) && false === strpos( $tag, ' defer' ) ) {
+		$tag = str_replace( ' src=', ' defer src=', $tag );
+	}
+	return $tag;
+}
+add_filter( 'script_loader_tag', 'verdant_defer_scripts', 10, 2 );
 
 /**
  * Register the sidebar widget area.
@@ -133,6 +164,44 @@ if ( ! function_exists( 'verdant_category_pill' ) ) {
 if ( ! function_exists( 'verdant_leaf_mark' ) ) {
 	function verdant_leaf_mark() {
 		return '<svg class="leaf-mark" viewBox="0 0 64 64" width="64" height="64" aria-hidden="true" focusable="false" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M32 6C18 14 12 26 12 40c0 9 6 16 16 18 0-16 2-30 12-44-3 12-6 26-6 42 10-3 14-12 14-22C58 22 46 12 32 6Z" fill="currentColor" opacity="0.9"/><path d="M30 58c0-18 4-32 14-44" stroke="#fff" stroke-width="1.6" stroke-linecap="round" opacity="0.55"/></svg>';
+	}
+}
+
+/**
+ * Signature move: a slowly drifting field of hand-drawn leaf & seed shapes.
+ *
+ * Returns an aria-hidden container of inline-SVG botanicals. Each shape carries
+ * a `--v-i` index so the stylesheet can give it its own drift path, speed, and
+ * phase — making the field feel organic rather than synchronised. Pure CSS
+ * animation; no JS required for the drift itself.
+ *
+ * @param int $count Number of botanical shapes to scatter (default 5).
+ * @return string Escaped-safe HTML (static markup only).
+ */
+if ( ! function_exists( 'verdant_botanical_drift' ) ) {
+	function verdant_botanical_drift( $count = 5 ) {
+		// Two hand-drawn silhouettes — a leaf and a winged seed — alternated.
+		$shapes = array(
+			// Leaf with a central vein.
+			'<svg viewBox="0 0 64 64" width="44" height="44" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg"><path d="M32 6C18 14 12 26 12 40c0 9 6 16 16 18 0-16 2-30 12-44-3 12-6 26-6 42 10-3 14-12 14-22C58 22 46 12 32 6Z" fill="currentColor"/><path d="M30 58c0-18 4-32 14-44" stroke="#fff" stroke-width="1.6" stroke-linecap="round" opacity="0.5"/></svg>',
+			// Winged seed / samara.
+			'<svg viewBox="0 0 64 64" width="40" height="40" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg"><path d="M30 56c0-6 1-12 4-18 5-10 16-16 26-16-2 12-9 23-20 28-4 2-7 4-10 6Z" fill="currentColor"/><circle cx="27" cy="55" r="5" fill="currentColor"/><path d="M33 50c4-6 11-11 19-13" stroke="#fff" stroke-width="1.4" stroke-linecap="round" opacity="0.5"/></svg>',
+		);
+
+		$count = max( 0, (int) $count );
+		if ( 0 === $count ) {
+			return '';
+		}
+
+		$out = '<div class="v-drift" aria-hidden="true">';
+		for ( $i = 0; $i < $count; $i++ ) {
+			$out .= '<span class="v-drift__leaf" style="--v-i:' . (int) $i . ';">'
+				. $shapes[ $i % count( $shapes ) ]
+				. '</span>';
+		}
+		$out .= '</div>';
+
+		return $out;
 	}
 }
 

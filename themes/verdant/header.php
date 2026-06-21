@@ -14,6 +14,28 @@ if ( ! defined( 'ABSPATH' ) ) {
 <head>
 	<meta charset="<?php bloginfo( 'charset' ); ?>" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<script>
+	/* Motion bootstrap (inline, runs before first paint).
+	 * 1. Add `js` + `v-motion-ready` so scroll-reveal targets hide *before* the
+	 *    first paint — no flash-of-visible-then-hidden on above-the-fold items.
+	 * 2. Arm a self-healing watchdog: if the deferred motion.js never runs
+	 *    (404 / blocked / parse error), reveal ALL content on window load so
+	 *    nothing is ever stuck invisible. motion.js sets window.__vMotion once
+	 *    it takes over. */
+	( function () {
+		var d = document.documentElement;
+		d.className += " js v-motion-ready";
+		window.addEventListener( "load", function () {
+			setTimeout( function () {
+				if ( window.__vMotion ) { return; }
+				var els = document.querySelectorAll( ".v-reveal:not(.is-visible)" );
+				for ( var i = 0; i < els.length; i++ ) {
+					els[ i ].classList.add( "is-visible" );
+				}
+			}, 1200 );
+		} );
+	} )();
+	</script>
 	<?php wp_head(); ?>
 </head>
 <body <?php body_class(); ?>>

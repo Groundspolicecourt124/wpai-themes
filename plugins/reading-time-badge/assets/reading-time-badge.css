@@ -7,9 +7,14 @@
  * - Colors derive from `currentColor` / `inherit`, so the badge reads correctly
  *   on both light and dark themes without hardcoded grays. A theme can override
  *   any of the --rtb-* custom properties to fully restyle it.
- * - Sizing is fixed and reserved up front (no images, no web fonts, no JS), so
- *   the badge introduces zero cumulative layout shift.
- * - Respects prefers-reduced-motion.
+ * - Sizing is fixed and reserved up front (no images, no web fonts), so the
+ *   badge introduces zero cumulative layout shift — including during the
+ *   entrance, which animates only `transform` and `opacity`.
+ * - Motion is pure progressive enhancement. The badge is fully visible by
+ *   default; only when JS confirms it can run (`.rtb-js`) AND a badge is primed
+ *   by the motion script (`.rtb-will-reveal`) do we hide-then-reveal it.
+ * - Respects prefers-reduced-motion at every layer (JS gate + the @media block
+ *   at the bottom of this file).
  */
 
 .rtb-badge {
@@ -64,8 +69,70 @@
 	opacity: 0.85;
 }
 
+/* The hands group rotates around the dial center (12,12 in a 24×24 viewBox).
+   transform-box: fill-box makes transform-origin resolve against the element's
+   own geometry so 50% 50% lands exactly on center. */
+.rtb-badge__hands {
+	transform-box: fill-box;
+	transform-origin: 50% 50%;
+}
+
 .rtb-badge__text {
 	display: inline-block;
+}
+
+/* ---------------------------------------------------------------------------
+   Entrance motion (progressive enhancement)
+
+   Scoped to `.rtb-js .rtb-badge.rtb-will-reveal` so it ONLY applies when:
+     1. JavaScript is available (the head snippet set `.rtb-js`), and
+     2. the motion script has primed this specific badge.
+   If either is false the badge keeps its default, fully-visible styling above
+   and never moves — no flash, no stuck-hidden badge, no layout shift.
+
+   We animate only `transform` and `opacity` (GPU-friendly, no reflow). The
+   slide is a few pixels up; the will-change hint is dropped after reveal.
+--------------------------------------------------------------------------- */
+.rtb-js .rtb-badge.rtb-will-reveal {
+	opacity: 0;
+	transform: translate3d(0, 8px, 0);
+	will-change: transform, opacity;
+	transition:
+		opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+		transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.rtb-js .rtb-badge.rtb-is-revealed {
+	opacity: 1;
+	transform: translate3d(0, 0, 0);
+	/* Keep the surface transition from the base rule; movement is finished. */
+	transition:
+		opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+		transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Once revealed, settle: clear the compositor hint so we don't keep a layer. */
+.rtb-js .rtb-badge.rtb-is-revealed:not(.rtb-will-reveal) {
+	will-change: auto;
+}
+
+/* The signature move: on reveal the clock hands take one gentle clockwise
+   sweep and settle back. A single iteration, eased, then it's a static clock.
+   Rotating a <g> only spins the hands — the face stays put. */
+@keyframes rtb-hand-sweep {
+	0% {
+		transform: rotate(0deg);
+	}
+	60% {
+		transform: rotate(372deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+.rtb-js .rtb-badge.rtb-is-revealed .rtb-badge__hands {
+	animation: rtb-hand-sweep 0.9s cubic-bezier(0.34, 1.2, 0.64, 1) 0.12s both;
 }
 
 /* Keyboard / pointer affordance if a theme makes the badge focusable. */
@@ -74,9 +141,24 @@
 	outline-offset: 2px;
 }
 
-/* Disable the subtle surface transition for users who prefer reduced motion. */
+/* Reduced-motion safety net (mirrors the JS gate in motion.js).
+
+   The script already skips all animation when reduced motion is requested, so
+   a badge is never primed into the hidden state in the first place. This block
+   is belt-and-suspenders: even if a badge somehow carries a motion class, force
+   it visible and kill every transition/animation so the badge simply appears. */
 @media (prefers-reduced-motion: reduce) {
-	.rtb-badge {
-		transition: none;
+	.rtb-badge,
+	.rtb-js .rtb-badge.rtb-will-reveal,
+	.rtb-js .rtb-badge.rtb-is-revealed {
+		opacity: 1 !important;
+		transform: none !important;
+		transition: none !important;
+		will-change: auto;
+	}
+
+	.rtb-js .rtb-badge .rtb-badge__hands {
+		animation: none !important;
+		transform: none !important;
 	}
 }

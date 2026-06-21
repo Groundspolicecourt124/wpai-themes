@@ -65,13 +65,43 @@ add_action( 'after_setup_theme', 'sonnet_content_width', 0 );
  * Enqueue styles and scripts.
  */
 function sonnet_assets() {
-	wp_enqueue_style( 'sonnet-style', get_stylesheet_uri(), array(), wp_get_theme()->get( 'Version' ) );
+	$sonnet_version = wp_get_theme()->get( 'Version' );
+
+	wp_enqueue_style( 'sonnet-style', get_stylesheet_uri(), array(), $sonnet_version );
+
+	// The motion system: scroll reveals, reading-progress line, drop-cap reveal,
+	// gold shimmer sweep, refined caret, and the signature constellation canvas.
+	// Hand-rolled vanilla JS — no libraries. Loaded in the footer, deferred, and
+	// internally gated on prefers-reduced-motion. Content is fully visible if it
+	// never runs (progressive enhancement via the `js` class on <html>).
+	wp_enqueue_script(
+		'sonnet-motion',
+		get_template_directory_uri() . '/assets/js/motion.js',
+		array(),
+		$sonnet_version,
+		array(
+			'in_footer' => true,
+			'strategy'  => 'defer',
+		)
+	);
 
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 		wp_enqueue_script( 'comment-reply' );
 	}
 }
 add_action( 'wp_enqueue_scripts', 'sonnet_assets' );
+
+/**
+ * Print a tiny, render-blocking snippet in the <head> that flags the document
+ * as JS-enabled before first paint. The motion CSS only hides-then-reveals
+ * content when `html.js` is present, so no-JS users (and anyone whose script
+ * fails) always see every element in its final, visible state — zero FOUC,
+ * zero layout shift, no content trapped behind a transition that never fires.
+ */
+function sonnet_js_flag() {
+	echo "<script>document.documentElement.className+=' js';</script>\n";
+}
+add_action( 'wp_head', 'sonnet_js_flag', 0 );
 
 /**
  * Register the sidebar widget area.

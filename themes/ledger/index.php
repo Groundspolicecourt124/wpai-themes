@@ -37,8 +37,8 @@ endif;
 
 			if ( $ledger_is_lead_layout ) :
 				?>
-				<h2 class="section-heading"><?php esc_html_e( 'More Stories', 'ledger' ); ?></h2>
-				<div class="story-grid">
+				<h2 class="section-heading" data-reveal="rule"><?php esc_html_e( 'More Stories', 'ledger' ); ?></h2>
+				<div class="story-grid" data-stagger>
 					<?php
 					while ( have_posts() ) :
 						the_post();
@@ -82,10 +82,12 @@ endif;
 					<?php
 				endif;
 
+				echo '<div class="entry-list" data-stagger>';
 				while ( have_posts() ) :
 					the_post();
 					get_template_part( 'template-parts/content', get_post_type() );
 				endwhile;
+				echo '</div>';
 
 				the_posts_navigation( array(
 					'prev_text' => esc_html__( 'Older posts', 'ledger' ),

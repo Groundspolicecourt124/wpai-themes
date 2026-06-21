@@ -31,7 +31,7 @@ if ( have_posts() ) :
 
 	if ( $verdant_show_hero ) :
 		?>
-		<h2 class="section-label"><?php esc_html_e( 'Latest stories', 'verdant' ); ?></h2>
+		<h2 class="section-label v-reveal"><?php esc_html_e( 'Latest stories', 'verdant' ); ?></h2>
 		<?php
 	endif;
 
