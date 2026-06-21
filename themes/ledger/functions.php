@@ -176,7 +176,15 @@ if ( ! function_exists( 'ledger_render_lead_story' ) ) {
 			<?php if ( $has_image ) : ?>
 				<figure class="lead-story__media">
 					<a href="<?php the_permalink(); ?>" aria-hidden="true" tabindex="-1">
-						<?php the_post_thumbnail( 'large' ); ?>
+						<?php
+						// Lead story is above the fold: load eagerly and prioritize
+						// so it paints immediately instead of lazy-loading.
+						the_post_thumbnail( 'large', array(
+							'loading'       => 'eager',
+							'fetchpriority' => 'high',
+							'decoding'      => 'async',
+						) );
+						?>
 					</a>
 				</figure>
 			<?php endif; ?>

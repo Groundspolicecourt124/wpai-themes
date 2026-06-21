@@ -24,7 +24,17 @@ if ( ! is_singular() ) {
 		<a class="featured-image" href="<?php the_permalink(); ?>" aria-hidden="true" tabindex="-1">
 			<?php
 			if ( has_post_thumbnail() ) {
-				the_post_thumbnail( $verdant_is_lead ? 'large' : 'medium_large' );
+				// The lead post's image sits above the fold, so load it eagerly
+				// (with high fetch priority) to avoid a blank flash on first paint.
+				// All other thumbnails keep WordPress's default lazy loading.
+				$verdant_thumb_attr = $verdant_is_lead
+					? array(
+						'loading'       => 'eager',
+						'fetchpriority' => 'high',
+						'decoding'      => 'async',
+					)
+					: array();
+				the_post_thumbnail( $verdant_is_lead ? 'large' : 'medium_large', $verdant_thumb_attr );
 			} else {
 				echo '<span class="featured-image__placeholder">' . verdant_leaf_mark() . '</span>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static inline SVG.
 			}

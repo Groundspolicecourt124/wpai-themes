@@ -14,7 +14,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 	<?php if ( has_post_thumbnail() ) : ?>
 		<a class="lead-essay__cover" href="<?php the_permalink(); ?>" aria-hidden="true" tabindex="-1">
-			<?php the_post_thumbnail( 'large', array( 'fetchpriority' => 'high' ) ); ?>
+			<?php
+			// The lead essay's cover is the hero image, above the fold on the blog
+			// home, so load it eagerly with high priority to avoid a blank flash.
+			// WordPress would otherwise add loading="lazy"; override it explicitly.
+			the_post_thumbnail( 'large', array(
+				'loading'       => 'eager',
+				'fetchpriority' => 'high',
+				'decoding'      => 'async',
+			) );
+			?>
 		</a>
 	<?php endif; ?>
 

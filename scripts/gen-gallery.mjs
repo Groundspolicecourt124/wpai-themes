@@ -7,6 +7,7 @@ import {
   listThemes, listPlugins, DOCS_DIR, SITE_URL, ensureDir,
   parseThemeHeader, parsePluginHeader,
 } from './lib.mjs';
+import { DEMO_PACKS, DEFAULT_PACK } from './demo-packs.mjs';
 
 function tagList(v) {
   return v ? v.split(',').map((s) => s.trim()).filter(Boolean) : [];
@@ -15,97 +16,35 @@ function tagList(v) {
 const playgroundDir = join(DOCS_DIR, 'playground');
 ensureDir(playgroundDir);
 
-// A real demo site so live previews feel inhabited: posts with featured images,
-// categories, an About page, a populated nav menu, comments, and an author.
+// A real, per-theme demo site so each live preview feels inhabited: posts with
+// featured images, categories, an About page, a nav menu, comments, and an author.
+// Per-theme content comes from demo-packs.mjs; missing themes use DEFAULT_PACK.
 const IMG = (name) => `${SITE_URL}demo/${name}.jpg`;
 
-const DEMO = {
-  site: { name: 'Northwind', tagline: 'Ideas worth shipping.' },
-  author: { name: 'Mara Ellison', bio: 'Designer and engineer writing about craft, code, and calm.' },
-  pages: [
-    {
-      title: 'About',
-      image: IMG('slate'),
-      content:
-        '<p>Northwind is a small publication about craft, code, and calm — written for people who build things and care how they feel to use.</p>' +
-        '<p>It is run by <strong>Mara Ellison</strong>, a designer and engineer who has spent a decade shipping software and learning, slowly, that less is usually more. These are field notes from that work: half lessons, half reminders to herself.</p>' +
-        '<p>No trackers, no pop-ups, no newsletter to escape. Just writing, and the occasional good idea worth keeping.</p>',
-    },
-  ],
-  posts: [
-    {
-      title: 'Designing for calm',
-      category: 'Design',
-      image: IMG('dusk'),
-      excerpt: 'Good software feels quiet. Here is how to build interfaces that get out of the way.',
-      content:
-        '<p>Good software feels quiet. It does the thing you asked, then steps out of the way and leaves room for your own thoughts.</p>' +
-        '<h2>Less, but better</h2>' +
-        '<p>Every element on a page is a small request for attention. The craft is deciding which requests are worth making — and deleting the rest without mercy.</p>' +
-        '<blockquote>Simplicity is not the absence of detail. It is detail spent only where it counts.</blockquote>' +
-        '<p>When in doubt, remove. The page that remains is almost always stronger, and the people using it can finally hear themselves think.</p>',
-    },
-    {
-      title: 'The real cost of a slow website',
-      category: 'Engineering',
-      image: IMG('tide'),
-      excerpt: 'Speed is a feeling before it is a number. Here is where the milliseconds hide.',
-      content:
-        '<p>Speed is a feature you feel before you can name it. A page that loads instantly feels trustworthy; a slow one feels broken even when everything technically works.</p>' +
-        '<h2>Where the milliseconds go</h2>' +
-        '<ul><li>Web fonts that block the first paint</li><li>Hero images three times larger than their container</li><li>Scripts that run before anyone has scrolled a pixel</li></ul>' +
-        '<p>Trim each one and the whole experience lightens. Your visitors will not know why it feels good. They will just stay.</p>',
-    },
-    {
-      title: 'Notes on shipping small',
-      category: 'Craft',
-      image: IMG('ember'),
-      excerpt: 'The smallest version of an idea that still helps someone is the best place to start.',
-      content:
-        '<p>The smallest version of an idea that still helps someone is usually the right place to start. You learn more from one real user than from a month of speculation in a quiet room.</p>' +
-        '<h2>Ship, then listen</h2>' +
-        '<p>Release early, watch closely, and let the next step reveal itself. Momentum compounds in ways planning never can.</p>' +
-        '<p>Perfect is a story we tell ourselves to avoid the discomfort of being seen. Ship the honest version instead.</p>',
-    },
-    {
-      title: 'A field guide to better mornings',
-      category: 'Life',
-      image: IMG('grove'),
-      excerpt: 'Protect the first hour. The rest of the day tends to follow it.',
-      content:
-        '<p>The first hour sets the temperature for everything after it. Guard it like it matters, because it does.</p>' +
-        '<h2>Three small rituals</h2>' +
-        '<ul><li>Light before screens — open a window before you open a tab</li><li>One page of writing, badly, before the inbox</li><li>A walk short enough that you will actually take it</li></ul>' +
-        '<p>None of this is new. That is the point. The boring habits are the ones that hold.</p>',
-    },
-    {
-      title: 'What old maps teach us about design',
-      category: 'Ideas',
-      image: IMG('sand'),
-      excerpt: 'The best maps leave things out on purpose. So should the best products.',
-      content:
-        '<p>A map that showed everything would be useless — and exactly the size of the world. Every great map is an argument about what matters.</p>' +
-        '<h2>The art of leaving out</h2>' +
-        '<p>Designers are mapmakers. We choose a scale, pick a projection, and decide which roads earn a line. The omissions are the design.</p>' +
-        '<blockquote>The map is not the territory — but a good one tells you where to walk next.</blockquote>',
-    },
-  ],
-  comments: [
-    { author: 'Jonah Reed', content: 'This put words to something I have felt for years but could not name. Sharing it with my whole team.' },
-    { author: 'Priya Nair', content: '"Detail spent only where it counts" — I am stealing that for our design review on Monday.' },
-    { author: 'Sam Okafor', content: 'Came for the typography, stayed for the philosophy. More of this, please.' },
-  ],
-  menuCategories: ['Design', 'Engineering'],
-};
+// Resolve a pack's cover base names (e.g. "dusk") to absolute image URLs.
+function resolvePack(pack) {
+  const img = (name) => (name ? IMG(name) : '');
+  return {
+    site: pack.site,
+    author: pack.author,
+    menuCategories: pack.menuCategories || [],
+    pages: (pack.pages || []).map((p) => ({ ...p, image: img(p.image) })),
+    posts: (pack.posts || []).map((p) => ({ ...p, image: img(p.image) })),
+    comments: pack.comments || [],
+  };
+}
 
-const DEMO_PHP =
+
+function buildDemoPhp(pack) {
+  const d = resolvePack(pack);
+  return (
   "<?php\n" +
   "require_once '/wordpress/wp-load.php';\n" +
   "require_once '/wordpress/wp-admin/includes/media.php';\n" +
   "require_once '/wordpress/wp-admin/includes/file.php';\n" +
   "require_once '/wordpress/wp-admin/includes/image.php';\n" +
   "$d = json_decode(<<<'WPAIJSON'\n" +
-  JSON.stringify(DEMO) + "\n" +
+  JSON.stringify(d) + "\n" +
   "WPAIJSON, true);\n" +
   "if ( ! is_array( $d ) ) { return; }\n" +
   "function wpai_img( $url, $post_id = 0 ) {\n" +
@@ -163,10 +102,13 @@ const DEMO_PHP =
   "  if ( ! is_array( $locs ) ) { $locs = array(); }\n" +
   "  if ( is_array( $regs ) && $regs ) { foreach ( array_keys( $regs ) as $loc ) { $locs[ $loc ] = $menu_id; } } else { $locs['primary'] = $menu_id; }\n" +
   "  set_theme_mod( 'nav_menu_locations', $locs );\n" +
-  "}\n";
+  "}\n"
+  );
+}
 
-function demoSteps() {
-  return [{ step: 'runPHP', code: DEMO_PHP }];
+function demoSteps(slug) {
+  const pack = DEMO_PACKS[slug] || DEFAULT_PACK;
+  return [{ step: 'runPHP', code: buildDemoPhp(pack) }];
 }
 
 function writeBlueprint(slug, kind) {
@@ -179,7 +121,7 @@ function writeBlueprint(slug, kind) {
     landingPage: '/',
     preferredVersions: { php: '8.0', wp: 'latest' },
     features: { networking: true },
-    steps: [install, ...demoSteps()],
+    steps: [install, ...demoSteps(slug)],
   };
   writeFileSync(join(playgroundDir, `${slug}.json`), JSON.stringify(blueprint, null, 2));
 }

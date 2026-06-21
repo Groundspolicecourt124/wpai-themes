@@ -183,9 +183,12 @@ if ( ! function_exists( 'aurora_category_pill' ) ) {
  *
  * @param string $size  Image size handle.
  * @param bool   $link  Wrap the image in a permalink (used on archives).
+ * @param bool   $eager Load the image eagerly with high fetch priority. Used
+ *                      for the above-the-fold lead/hero cover on the blog home
+ *                      so it paints immediately instead of lazy-loading.
  */
 if ( ! function_exists( 'aurora_featured_media' ) ) {
-	function aurora_featured_media( $size = 'large', $link = false ) {
+	function aurora_featured_media( $size = 'large', $link = false, $eager = false ) {
 		$has_image = has_post_thumbnail();
 
 		// Deterministic hue from the post ID so placeholders feel intentional.
@@ -200,15 +203,21 @@ if ( ! function_exists( 'aurora_featured_media' ) ) {
 
 		$inner = '';
 		if ( $has_image ) {
-			$inner = get_the_post_thumbnail(
-				null,
-				$size,
-				array(
-					'class'    => 'entry-media__img',
-					'loading'  => is_singular() ? 'eager' : 'lazy',
-					'decoding' => 'async',
-				)
+			$load_eager = ( $eager || is_singular() );
+
+			$img_attr = array(
+				'class'    => 'entry-media__img',
+				'loading'  => $load_eager ? 'eager' : 'lazy',
+				'decoding' => 'async',
 			);
+
+			// The above-the-fold hero needs high fetch priority so it paints
+			// first; everything else stays lazy with default priority.
+			if ( $eager ) {
+				$img_attr['fetchpriority'] = 'high';
+			}
+
+			$inner = get_the_post_thumbnail( null, $size, $img_attr );
 		} else {
 			$title   = wp_strip_all_tags( get_the_title() );
 			$initial = function_exists( 'mb_substr' ) ? mb_substr( $title, 0, 1 ) : substr( $title, 0, 1 );

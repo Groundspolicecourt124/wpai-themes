@@ -22,7 +22,7 @@ $aurora_mode        = $aurora_is_singular ? 'singular' : ( $aurora_is_lead ? 'le
 
 	<?php if ( 'lead' === $aurora_mode ) : ?>
 
-		<?php aurora_featured_media( 'aurora-lead', true ); ?>
+		<?php aurora_featured_media( 'aurora-lead', true, true ); ?>
 		<div class="entry__body">
 			<div class="entry-meta">
 				<?php aurora_category_pill(); ?>

@@ -23,7 +23,17 @@ $nimbus_is_post    = ( 'post' === get_post_type() );
 			<a class="featured-image__link" href="<?php the_permalink(); ?>" tabindex="-1" aria-hidden="true">
 				<?php
 				if ( has_post_thumbnail() ) {
-					the_post_thumbnail( 'large' );
+					// The lead/feature card sits above the fold, so load its cover
+					// eagerly with a high fetch priority to avoid a blank flash.
+					if ( ! empty( $GLOBALS['nimbus_feature'] ) ) {
+						the_post_thumbnail( 'large', array(
+							'loading'       => 'eager',
+							'fetchpriority' => 'high',
+							'decoding'      => 'async',
+						) );
+					} else {
+						the_post_thumbnail( 'large' );
+					}
 				} else {
 					nimbus_placeholder_cover();
 				}

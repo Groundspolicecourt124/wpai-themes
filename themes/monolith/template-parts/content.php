@@ -40,13 +40,20 @@ if ( ! is_singular() ) :
 					<span class="project-card__cat"><?php echo wp_kses_post( $monolith_cat ); ?></span>
 				<?php endif; ?>
 				<?php
-				the_post_thumbnail(
-					'large',
-					array(
-						'alt'     => the_title_attribute( array( 'echo' => false ) ),
-						'loading' => 'lazy',
-					)
+				// The first card on the blog home is the lead/hero above the fold.
+				// Load it eagerly with high priority to avoid a blank flash; keep the rest lazy.
+				$monolith_is_lead = ( 1 === $monolith_index );
+				$monolith_thumb_attr = array(
+					'alt'      => the_title_attribute( array( 'echo' => false ) ),
+					'decoding' => 'async',
 				);
+				if ( $monolith_is_lead ) {
+					$monolith_thumb_attr['loading']       = 'eager';
+					$monolith_thumb_attr['fetchpriority'] = 'high';
+				} else {
+					$monolith_thumb_attr['loading'] = 'lazy';
+				}
+				the_post_thumbnail( 'large', $monolith_thumb_attr );
 				?>
 			</a>
 		<?php else : ?>
