@@ -95,6 +95,38 @@ function wire() {
   $('#search').addEventListener('input', (e) => { state.q = e.target.value; render(); });
 }
 
+// Emit an ItemList of every theme/plugin as JSON-LD for richer search results.
+function injectItemList(data) {
+  const all = [...(data.themes || []), ...(data.plugins || [])];
+  if (!all.length) return;
+  const ld = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Free WordPress Themes & Plugins',
+    numberOfItems: all.length,
+    itemListElement: all.map((it, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      item: {
+        '@type': 'SoftwareApplication',
+        name: it.name,
+        description: it.description,
+        applicationCategory: it.type === 'plugin' ? 'WordPress Plugin' : 'WordPress Theme',
+        operatingSystem: 'WordPress',
+        image: new URL(it.screenshot, location.href).href,
+        downloadUrl: new URL(it.zip, location.href).href,
+        softwareVersion: it.version,
+        license: 'https://www.gnu.org/licenses/gpl-2.0.html',
+        offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+      },
+    })),
+  };
+  const s = document.createElement('script');
+  s.type = 'application/ld+json';
+  s.textContent = JSON.stringify(ld);
+  document.head.appendChild(s);
+}
+
 async function init() {
   wire();
   try {
@@ -104,6 +136,7 @@ async function init() {
     state.data = { themes: [], plugins: [], counts: { themes: 0, plugins: 0 } };
   }
   setStats();
+  injectItemList(state.data);
   render();
 }
 

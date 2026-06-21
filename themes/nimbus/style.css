@@ -184,6 +184,56 @@ h1, h2, h3, h4 {
   margin: 0;
 }
 
+/* Hero (home / front page) */
+.nimbus-hero {
+  position: relative;
+  margin-bottom: var(--n-space-5);
+  padding: clamp(3rem, 8vw, 5.5rem) clamp(1.5rem, 5vw, 3.5rem);
+  text-align: center;
+  border-radius: var(--n-radius-lg);
+  border: 1px solid var(--n-line);
+  box-shadow: var(--n-shadow);
+  overflow: hidden;
+  background:
+    radial-gradient(70% 120% at 50% -20%, rgba(139, 92, 246, 0.20), transparent 60%),
+    radial-gradient(50% 100% at 85% 0%, rgba(99, 102, 241, 0.16), transparent 55%),
+    var(--n-surface);
+}
+.nimbus-hero__inner { position: relative; max-width: 42rem; margin-inline: auto; }
+.nimbus-hero__eyebrow {
+  margin: 0 0 1rem;
+  font-size: var(--n-text-sm);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  background: var(--n-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.nimbus-hero__title {
+  margin: 0;
+  font-size: clamp(2.25rem, 6vw, 3.75rem);
+  letter-spacing: -0.03em;
+  line-height: 1.04;
+}
+.nimbus-hero__sub {
+  margin: 1.1rem auto 0;
+  max-width: 34rem;
+  color: var(--n-ink-soft);
+  font-size: var(--n-text-lg);
+}
+.nimbus-hero__cta {
+  margin-top: var(--n-space-4);
+  display: flex;
+  gap: var(--n-space-2);
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.nimbus-hero__cta .search-form { width: min(20rem, 100%); }
+.nimbus-hero__cta .search-form input[type="search"] { border-radius: var(--n-radius-pill); }
+
 /* Entry card */
 .entry {
   background: var(--n-surface);

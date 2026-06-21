@@ -5,6 +5,9 @@ docs/downloads/
 docs/screenshots/
 docs/playground/
 docs/gallery.json
+docs/og-image.png
+docs/sitemap.xml
+docs/robots.txt
 
 # Rasterized theme/plugin screenshots (generated from screenshot.svg).
 themes/*/screenshot.png
